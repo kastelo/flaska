@@ -44,7 +44,7 @@ class CylinderViewMetric extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(
-              "%s (%.01f L %d bar, %.01f kg)".format([
+              "%s\n(%.01f L %d bar, %.01f kg)".format([
                 cylinder.name,
                 cylinder.waterVolume.liter,
                 cylinder.workingPressure.bar,
@@ -89,7 +89,7 @@ class CylinderViewMetric extends StatelessWidget {
                     style: airTimeStyle,
                   ),
                   TextSpan(
-                    text: " to %d bar (%.0f L rock bottom)".format([
+                    text: " to %d bar\n(%.0f L rock bottom)".format([
                       cylinder
                           .rockBottomPressure(sac: sac, depth: depth)
                           .bar
@@ -105,7 +105,7 @@ class CylinderViewMetric extends StatelessWidget {
         TableRow(children: [
           header("Buoyancy", context),
           Text(
-            "%+.01f kg at %d bar (%+.01f kg at %d bar)".format([
+            "%+.01f kg at %d bar\n(%+.01f kg at %d bar)".format([
               cylinder.buoyancy(pressure).kg,
               pressure.bar,
               cylinder.buoyancy(PressureBar(0)).kg,
@@ -199,7 +199,7 @@ class CylinderViewImperial extends StatelessWidget {
                     style: airTimeStyle,
                   ),
                   TextSpan(
-                    text: " to %d psi (%.1f ft³ rock bottom)".format([
+                    text: " to %d psi\n(%.1f ft³ rock bottom)".format([
                       cylinder
                           .rockBottomPressure(sac: sac, depth: depth)
                           .psi
@@ -214,7 +214,7 @@ class CylinderViewImperial extends StatelessWidget {
         ]),
         TableRow(children: [
           header("Buoyancy", context),
-          Text("%+.01f lb at %d psi (%+.01f lb at %d psi)".format([
+          Text("%+.01f lb at %d psi\n(%+.01f lb at %d psi)".format([
             cylinder.buoyancy(pressure).lb,
             pressure.psi,
             cylinder.buoyancy(PressurePsi(0)).lb,

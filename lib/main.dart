@@ -20,10 +20,14 @@ class MyApp extends StatelessWidget {
         textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.15),
       ),
       darkTheme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.dark,
         textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.15),
+        primaryColor: Color.fromRGBO(16, 16, 16, 1),
+        canvasColor: Color.fromRGBO(0, 0, 0, 1),
+        cardColor: Color.fromRGBO(24, 24, 24, 1),
+        accentColor: Colors.blueAccent,
       ),
       home: Scaffold(
         appBar: AppBar(

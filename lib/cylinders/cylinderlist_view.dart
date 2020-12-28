@@ -33,7 +33,7 @@ class _CylinderListViewState extends State<CylinderListView> {
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                children: model.cylinders.map(cylinder).toList() +
+                children: model.selectedCylinders.map(cylinder).toList() +
                     [
                       FlatButton(
                         onPressed: () {
@@ -127,10 +127,12 @@ class _CylinderListViewState extends State<CylinderListView> {
                 model.pressure = PressurePsi(v.toInt());
               }),
       Text(
-          model.metric
-              ? "%d bar".format([model.pressure.bar])
-              : "%d psi".format([model.pressure.psi]),
-          textAlign: TextAlign.right),
+        model.metric
+            ? "%d bar".format([model.pressure.bar])
+            : "%d psi".format([model.pressure.psi]),
+        textAlign: TextAlign.right,
+        style: Theme.of(context).textTheme.caption,
+      ),
     ]);
   }
 
@@ -155,10 +157,12 @@ class _CylinderListViewState extends State<CylinderListView> {
                   model.depth = DistanceFt(v);
                 }),
         Text(
-            model.metric
-                ? "%.0f m".format([model.depth.m])
-                : "%.0f ft".format([model.depth.ft]),
-            textAlign: TextAlign.right),
+          model.metric
+              ? "%.0f m".format([model.depth.m])
+              : "%.0f ft".format([model.depth.ft]),
+          textAlign: TextAlign.right,
+          style: Theme.of(context).textTheme.caption,
+        ),
       ],
     );
   }
@@ -184,10 +188,12 @@ class _CylinderListViewState extends State<CylinderListView> {
                   model.sac = VolumeCuFt(v);
                 }),
         Text(
-            model.metric
-                ? "%.0f L/min".format([model.sac.liter])
-                : "%.1f ft³/min".format([model.sac.cuft]),
-            textAlign: TextAlign.right),
+          model.metric
+              ? "%.0f L/min".format([model.sac.liter])
+              : "%.1f ft³/min".format([model.sac.cuft]),
+          textAlign: TextAlign.right,
+          style: Theme.of(context).textTheme.caption,
+        ),
       ],
     );
   }

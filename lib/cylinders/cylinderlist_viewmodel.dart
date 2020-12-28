@@ -32,6 +32,8 @@ class CylinderListViewModel extends ChangeNotifier {
 
   List<CylinderModel> _cylinders;
   List<CylinderModel> get cylinders => _cylinders;
+  List<CylinderModel> get selectedCylinders =>
+      _cylinders.where((c) => c.selected).toList();
 
   bool _metric = true;
   bool get metric => _metric;

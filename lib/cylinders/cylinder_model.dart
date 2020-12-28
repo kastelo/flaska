@@ -13,9 +13,10 @@ class CylinderModel {
   final Pressure workingPressure;
   final Weight weight;
   final Volume waterVolume;
+  final bool selected;
 
   const CylinderModel(this.name, this.metal, this.workingPressure,
-      this.waterVolume, this.weight);
+      this.waterVolume, this.weight, this.selected);
 
   CylinderModel.fromData(CylinderData d)
       : name = d.name,
@@ -28,7 +29,8 @@ class CylinderModel {
             : VolumeLiter.fromPressure(d.volume, d.workingPressure.toInt()),
         weight = d.measurements == MeasurementSystem.METRIC
             ? WeightKg(d.weight)
-            : WeightLb(d.weight);
+            : WeightLb(d.weight),
+        selected = d.selected;
 
   double get materialDensity {
     switch (metal) {
