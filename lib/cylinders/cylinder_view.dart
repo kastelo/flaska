@@ -59,6 +59,7 @@ class CylinderViewMetric extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: "%.0f L air at ".format([
                   cylinder.compressedVolume(pressure).liter,
@@ -81,6 +82,7 @@ class CylinderViewMetric extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 style: Theme.of(context).textTheme.bodyText2,
                 children: [
@@ -169,6 +171,7 @@ class CylinderViewImperial extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 text: "%.1f ft³ air at ".format([
                   cylinder.compressedVolume(pressure).cuft,
@@ -191,6 +194,7 @@ class CylinderViewImperial extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
+              textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
                 style: Theme.of(context).textTheme.bodyText2,
                 children: [
