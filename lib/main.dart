@@ -67,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
             shrinkWrap: true,
             children: cylinders.map(cylinder).toList() +
                 [
-                  Divider(),
                   FlatButton(
                     onPressed: () {
                       setState(() {
@@ -86,22 +85,40 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget cylinder(Cylinder c) {
     if (metric) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: CylinderViewMetric(
-          cylinder: c,
-          pressure: pressure,
-          sac: sac,
-          depth: depth,
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Theme.of(context).cardColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CylinderViewMetric(
+              cylinder: c,
+              pressure: pressure,
+              sac: sac,
+              depth: depth,
+            ),
+          ),
         ),
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: CylinderViewImperial(
-          cylinder: c,
-          pressure: pressure,
-          sac: sac,
-          depth: depth,
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Theme.of(context).cardColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CylinderViewImperial(
+              cylinder: c,
+              pressure: pressure,
+              sac: sac,
+              depth: depth,
+            ),
+          ),
         ),
       );
     }
