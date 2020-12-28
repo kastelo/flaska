@@ -227,43 +227,64 @@ class CylinderViewMetric extends CylinderView {
       children: [
         TableRow(children: [
           header("Tank", context),
-          Text("%s (%.01f L %d bar, %.01f kg)".format([
-            cylinder.name,
-            cylinder.waterVolume.liter,
-            cylinder.workingPressure.bar,
-            cylinder.weight.kg
-          ])),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: Text("%s (%.01f L %d bar, %.01f kg)".format([
+              cylinder.name,
+              cylinder.waterVolume.liter,
+              cylinder.workingPressure.bar,
+              cylinder.weight.kg
+            ])),
+          ),
         ]),
         TableRow(children: [
           header("Gas", context),
-          Row(
-            children: [
-              Text("%.0f L air at ".format([
-                cylinder.compressedVolume(pressure).liter,
-              ])),
-              Text(
-                "%d bar".format([
-                  pressure.bar,
-                ]),
-                style: pressureStyle,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  TextSpan(
+                      text: "%.0f L air at ".format([
+                    cylinder.compressedVolume(pressure).liter,
+                  ])),
+                  TextSpan(
+                    text: "%d bar".format([
+                      pressure.bar,
+                    ]),
+                    style: pressureStyle,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ]),
         TableRow(children: [
           header("Air Time", context),
-          Row(
-            children: [
-              Text("%.0f min".format([airTimeMin]), style: airTimeStyle),
-              Text(" to %d bar (%.0f L rock bottom)".format([
-                cylinder
-                    .rockBottomPressure(sac: sac, depth: depth)
-                    .bar
-                    .roundi(5),
-                cylinder.rockBottom(sac: sac, depth: depth).liter
-              ])),
-            ],
-          )
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  TextSpan(
+                    text: "%.0f min".format([airTimeMin]),
+                    style: airTimeStyle,
+                  ),
+                  TextSpan(
+                    text: " to %d bar (%.0f L rock bottom)".format([
+                      cylinder
+                          .rockBottomPressure(sac: sac, depth: depth)
+                          .bar
+                          .roundi(5),
+                      cylinder.rockBottom(sac: sac, depth: depth).liter
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ]),
         TableRow(children: [
           header("Buoyancy", context),
@@ -300,6 +321,15 @@ class CylinderViewImperial extends CylinderView {
       pressureStyle = warningStyle(context);
     }
 
+    final airTimeMin =
+        cylinder.airTimeMin(pressure: pressure, sac: sac, depth: depth);
+    TextStyle airTimeStyle;
+    if (airTimeMin <= 5) {
+      airTimeStyle = errorStyle(context);
+    } else if (airTimeMin <= 15) {
+      airTimeStyle = warningStyle(context);
+    }
+
     return Table(
       columnWidths: {
         0: IntrinsicColumnWidth(),
@@ -307,34 +337,62 @@ class CylinderViewImperial extends CylinderView {
       children: [
         TableRow(children: [
           header("Tank", context),
-          Text("%s (%.01f lb)".format([
-            cylinder.name,
-            cylinder.weight.lb,
-          ])),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: Text("%s (%.01f lb)".format([
+              cylinder.name,
+              cylinder.weight.lb,
+            ])),
+          ),
         ]),
         TableRow(children: [
           header("Gas", context),
-          Row(
-            children: [
-              Text("%.1f ft³ air at ".format([
-                cylinder.compressedVolume(pressure).cuft,
-              ])),
-              Text(
-                "%d psi".format([
-                  pressure.psi,
-                ]),
-                style: pressureStyle,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  TextSpan(
+                      text: "%.1f ft³ air at ".format([
+                    cylinder.compressedVolume(pressure).cuft,
+                  ])),
+                  TextSpan(
+                    text: "%d psi".format([
+                      pressure.psi,
+                    ]),
+                    style: pressureStyle,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ]),
         TableRow(children: [
           header("Air Time", context),
-          Text("%.0f min to %d psi (%.1f ft³ rock bottom)".format([
-            cylinder.airTimeMin(pressure: pressure, sac: sac, depth: depth),
-            cylinder.rockBottomPressure(sac: sac, depth: depth).psi.roundi(100),
-            cylinder.rockBottom(sac: sac, depth: depth).cuft
-          ]))
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  TextSpan(
+                    text: "%.0f min".format([airTimeMin]),
+                    style: airTimeStyle,
+                  ),
+                  TextSpan(
+                    text: " to %d psi (%.1f ft³ rock bottom)".format([
+                      cylinder
+                          .rockBottomPressure(sac: sac, depth: depth)
+                          .psi
+                          .roundi(100),
+                      cylinder.rockBottom(sac: sac, depth: depth).cuft
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ]),
         TableRow(children: [
           header("Buoyancy", context),
@@ -370,12 +428,11 @@ extension StringFormatExtension on String {
   String format(var arguments) => sprintf(this, arguments);
 }
 
-TextStyle warningStyle(BuildContext context) => Theme.of(context)
-    .textTheme
-    .bodyText2
-    .copyWith(color: Colors.yellowAccent, fontWeight: FontWeight.bold);
+TextStyle warningStyle(BuildContext context) =>
+    Theme.of(context).textTheme.bodyText2.copyWith(
+        color: Theme.of(context).accentColor, fontWeight: FontWeight.bold);
 
 TextStyle errorStyle(BuildContext context) => Theme.of(context)
     .textTheme
     .bodyText2
-    .copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold);
+    .copyWith(color: Theme.of(context).errorColor, fontWeight: FontWeight.bold);

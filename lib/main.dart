@@ -15,11 +15,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
+        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.2),
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.dark,
+        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.2),
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -58,44 +60,49 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-          children: <Widget>[
-                sliders(),
-              ] +
-              cylinders
-                  .map(
-                    (c) => Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: cylinder(c),
-                    ),
-                  )
-                  .toList() +
-              [
-                FlatButton(
+      child: Column(children: <Widget>[
+        sliders(),
+        Expanded(
+          child: ListView(
+            shrinkWrap: true,
+            children: cylinders.map(cylinder).toList() +
+                [
+                  Divider(),
+                  FlatButton(
                     onPressed: () {
                       setState(() {
                         metric = !metric;
                       });
                     },
-                    child: Text(metric ? "Metric" : "Imperial")),
-              ]),
+                    child: Text(metric ? "Metric" : "Imperial"),
+                  ),
+                ],
+          ),
+        ),
+      ]),
     );
   }
 
   Widget cylinder(Cylinder c) {
     if (metric) {
-      return CylinderViewMetric(
-        cylinder: c,
-        pressure: pressure,
-        sac: sac,
-        depth: depth,
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: CylinderViewMetric(
+          cylinder: c,
+          pressure: pressure,
+          sac: sac,
+          depth: depth,
+        ),
       );
     } else {
-      return CylinderViewImperial(
-        cylinder: c,
-        pressure: pressure,
-        sac: sac,
-        depth: depth,
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: CylinderViewImperial(
+          cylinder: c,
+          pressure: pressure,
+          sac: sac,
+          depth: depth,
+        ),
       );
     }
   }
