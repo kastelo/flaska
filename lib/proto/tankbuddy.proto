@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+enum MeasurementSystem {
+    METRIC = 0;
+    IMPERIAL = 1;
+}
+
+enum Metal {
+    STEEL = 0;
+    ALUMINIUM = 1;
+}
+
+message CylinderSet {
+    repeated CylinderData cylinders = 1;
+}
+
+message CylinderData {
+    string name = 1;
+    Metal metal = 2;
+    MeasurementSystem measurements = 3;
+    double volume = 4;
+    double working_pressure = 5;
+    double weight = 6;
+    bool selected = 7;
+}
