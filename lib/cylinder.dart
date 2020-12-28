@@ -243,12 +243,11 @@ class CylinderViewMetric extends CylinderView {
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
               text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
+                text: "%.0f L air at ".format([
+                  cylinder.compressedVolume(pressure).liter,
+                ]),
+                style: Theme.of(context).textTheme.bodyText1,
                 children: [
-                  TextSpan(
-                      text: "%.0f L air at ".format([
-                    cylinder.compressedVolume(pressure).liter,
-                  ])),
                   TextSpan(
                     text: "%d bar".format([
                       pressure.bar,
@@ -266,7 +265,7 @@ class CylinderViewMetric extends CylinderView {
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
               text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
+                style: Theme.of(context).textTheme.bodyText1,
                 children: [
                   TextSpan(
                     text: "%.0f min".format([airTimeMin]),
@@ -351,12 +350,11 @@ class CylinderViewImperial extends CylinderView {
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
               text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
+                text: "%.1f ft³ air at ".format([
+                  cylinder.compressedVolume(pressure).cuft,
+                ]),
+                style: Theme.of(context).textTheme.bodyText1,
                 children: [
-                  TextSpan(
-                      text: "%.1f ft³ air at ".format([
-                    cylinder.compressedVolume(pressure).cuft,
-                  ])),
                   TextSpan(
                     text: "%d psi".format([
                       pressure.psi,
@@ -374,7 +372,7 @@ class CylinderViewImperial extends CylinderView {
             padding: const EdgeInsets.only(bottom: 4.0),
             child: RichText(
               text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
+                style: Theme.of(context).textTheme.bodyText1,
                 children: [
                   TextSpan(
                     text: "%.0f min".format([airTimeMin]),
@@ -429,10 +427,10 @@ extension StringFormatExtension on String {
 }
 
 TextStyle warningStyle(BuildContext context) =>
-    Theme.of(context).textTheme.bodyText2.copyWith(
+    Theme.of(context).textTheme.bodyText1.copyWith(
         color: Theme.of(context).accentColor, fontWeight: FontWeight.bold);
 
 TextStyle errorStyle(BuildContext context) => Theme.of(context)
     .textTheme
-    .bodyText2
+    .bodyText1
     .copyWith(color: Theme.of(context).errorColor, fontWeight: FontWeight.bold);

@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.2),
+        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.15),
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.dark,
-        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.2),
+        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.15),
       ),
       home: Scaffold(
         appBar: AppBar(
