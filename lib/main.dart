@@ -33,23 +33,42 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final cylinders = [
-    MetricCylinder("12x232", Metal.Steel, PressureBar(232), 12.0, 14.7),
-    MetricCylinder("8x300", Metal.Steel, PressureBar(300), 8.0, 14.7),
-    ImperialCylinder("AL80", Metal.Aluminium, PressurePsi(3000), 77.4, 31.9),
+    Cylinder("12x232", Metal.Steel, PressureBar(232), VolumeLiter(12.0),
+        WeightKg(14.7)),
+    Cylinder("8x300", Metal.Steel, PressureBar(300), VolumeLiter(8.0),
+        WeightKg(14.7)),
+    Cylinder("AL80", Metal.Aluminium, PressurePsi(3000),
+        VolumeLiter.fromPressure(77.4, 3000), WeightLb(31.9)),
   ];
   @override
   Widget build(BuildContext context) {
     return Column(
       children: cylinders
-          .map((c) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CylinderViewMetric(
+              .map(
+                (c) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CylinderViewMetric(
                     cylinder: c,
                     pressure: PressureBar(200),
-                    sac: 13.0,
-                    avgDepth: 10.0),
-              ))
-          .toList(),
+                    sac: VolumeLiter(13.0),
+                    depth: DistanceM(10.0),
+                  ),
+                ),
+              )
+              .toList() +
+          cylinders
+              .map(
+                (c) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CylinderViewImperial(
+                    cylinder: c,
+                    pressure: PressurePsi(3000),
+                    sac: VolumeCuFt(0.5),
+                    depth: DistanceFt(30.0),
+                  ),
+                ),
+              )
+              .toList(),
     );
   }
 }

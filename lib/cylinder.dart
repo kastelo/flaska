@@ -4,6 +4,7 @@ import 'package:sprintf/sprintf.dart';
 const literPerCuft = 0.0353147;
 const barPerPsi = 0.0689476;
 const kgPerLbs = 0.453592;
+const mPerFt = 0.3048;
 const steelKgPerL = 8.05;
 const aluKgPerL = 2.7;
 const airKgPerL = 1.2041 / 1000;
@@ -39,50 +40,106 @@ Pressure equivalentPressure(Pressure p) {
       final y0 = airZ[pair.key - 1][1];
       final y1 = pair.value[1];
       final y = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
-      return PressureBar(p.bar / y);
+      return PressureBar(p.bar ~/ y);
     }
   }
-  return PressureBar(p.bar / airZ.last[1]);
+  return PressureBar(p.bar ~/ airZ.last[1]);
 }
 
 enum Metal { Steel, Aluminium }
 
 abstract class Pressure {
-  double get bar;
-  double get psi;
+  int get bar;
+  int get psi;
   const Pressure();
 }
 
 class PressureBar extends Pressure {
-  final double bar;
-  double get psi => bar / barPerPsi;
+  final int bar;
+  int get psi => bar ~/ barPerPsi;
   const PressureBar(this.bar);
 }
 
 class PressurePsi extends Pressure {
-  final double psi;
-  double get bar => psi * barPerPsi;
+  final int psi;
+  int get bar => (psi * barPerPsi).toInt();
   const PressurePsi(this.psi);
 }
 
-abstract class Cylinder {
+abstract class Volume {
+  double get liter;
+  double get cuft;
+  const Volume();
+}
+
+class VolumeLiter extends Volume {
+  final double liter;
+  double get cuft => liter * literPerCuft;
+  const VolumeLiter(this.liter);
+  VolumeLiter.fromPressure(double cuft, int psi)
+      : liter =
+            VolumeCuFt(cuft).liter / equivalentPressure(PressurePsi(psi)).bar;
+}
+
+class VolumeCuFt extends Volume {
+  final double cuft;
+  double get liter => cuft / literPerCuft;
+  const VolumeCuFt(this.cuft);
+}
+
+abstract class Distance {
+  double get m;
+  double get ft;
+  const Distance();
+}
+
+class DistanceM extends Distance {
+  final double m;
+  double get ft => m / mPerFt;
+  const DistanceM(this.m);
+}
+
+class DistanceFt extends Distance {
+  final double ft;
+  double get m => ft * mPerFt;
+  const DistanceFt(this.ft);
+}
+
+abstract class Weight {
+  double get kg;
+  double get lb;
+  const Weight();
+}
+
+class WeightKg extends Weight {
+  final double kg;
+  double get lb => kg / kgPerLbs;
+  const WeightKg(this.kg);
+}
+
+class WeightLb extends Weight {
+  final double lb;
+  double get kg => lb * kgPerLbs;
+  const WeightLb(this.lb);
+}
+
+class Cylinder {
   final String name;
   final Metal metal;
   final Pressure workingPressure;
-  double get volumeLiters;
-  double get weightKg;
+  final Weight weight;
+  final Volume waterVolume;
 
-  const Cylinder(this.name, this.metal, this.workingPressure);
+  const Cylinder(this.name, this.metal, this.workingPressure, this.waterVolume,
+      this.weight);
 
-  double get compressedVolumeCuft =>
-      compressedVolumeL(workingPressure) * literPerCuft;
-  double compressedVolumeL(Pressure p) =>
-      volumeLiters * equivalentPressure(p).bar;
-  double buoyancyKg(Pressure p) =>
-      externalVolume * waterPerL -
-      weightKg +
+  Volume compressedVolume(Pressure p) =>
+      VolumeLiter(waterVolume.liter * equivalentPressure(p).bar);
+
+  Weight buoyancy(Pressure p) => WeightKg(externalVolume.liter * waterPerL -
+      weight.kg +
       valveBuyoancyKg -
-      equivalentPressure(p).bar * volumeLiters * airKgPerL;
+      equivalentPressure(p).bar * waterVolume.liter * airKgPerL);
 
   double get materialDensity {
     switch (metal) {
@@ -94,59 +151,53 @@ abstract class Cylinder {
     return aluKgPerL;
   }
 
-  double get externalVolume => weightKg / materialDensity + volumeLiters;
-  double get buoyancyFull => buoyancyKg(workingPressure);
-  double get buoyancyEmpty => buoyancyKg(reservePressure);
+  Volume get externalVolume =>
+      VolumeLiter(weight.kg / materialDensity + waterVolume.liter);
+  Weight get buoyancyFull => buoyancy(workingPressure);
+  Weight get buoyancyEmpty => buoyancy(reservePressure);
 
-  double safeReserveL({double sac, double depth}) {
+  double airTimeMin({Pressure pressure, Volume sac, Distance depth}) =>
+      (compressedVolume(pressure).liter -
+          rockBottom(sac: sac, depth: depth).liter) /
+      sac.liter /
+      (10 + depth.m) *
+      10;
+
+  Volume rockBottom({Volume sac, Distance depth}) {
     // Four minutes at depth, two people, double SAC
-    final troubleSolvingL = troubleSolvingMin * sac * 4 * (10 + depth) / 10;
+    final troubleSolvingL =
+        troubleSolvingMin * sac.liter * 4 * (10 + depth.m) / 10;
     // Ascent at 10 m/min, double SAC
-    final ascentL = depth / 10 * sac * 4 * (10 + depth / 2) / 10;
+    final ascentL = depth.m / 10 * sac.liter * 4 * (10 + depth.m / 2) / 10;
     // Five minutes safety stop, two people, normal SAC
-    final safetyStopL = 5.0 * sac * 2 * (10 + 5) / 10;
-    return troubleSolvingL + ascentL + safetyStopL;
+    final safetyStopL = 5.0 * sac.liter * 2 * (10 + 5) / 10;
+    return VolumeLiter(troubleSolvingL + ascentL + safetyStopL);
   }
 
-  Pressure safeReservePressure({double sac, double depth}) =>
-      PressureBar(safeReserveL(sac: sac, depth: depth) / volumeLiters);
+  Pressure rockBottomPressure({Volume sac, Distance depth}) => PressureBar(
+      rockBottom(sac: sac, depth: depth).liter ~/ waterVolume.liter);
 }
 
-class MetricCylinder extends Cylinder {
-  final double volumeLiters;
-  final double weightKg;
+abstract class CylinderView extends StatelessWidget {
+  Cylinder get cylinder;
+  Pressure get pressure;
+  Volume get sac;
+  Distance get depth;
 
-  const MetricCylinder(String name, Metal metal, Pressure workingPressure,
-      this.volumeLiters, this.weightKg)
-      : super(name, metal, workingPressure);
+  const CylinderView();
 }
 
-class ImperialCylinder extends Cylinder {
-  final double compressedVolumeCuft;
-  final double weightLb;
-
-  double get volumeLiters =>
-      compressedVolumeCuft /
-      literPerCuft /
-      equivalentPressure(workingPressure).bar;
-  double get weightKg => weightLb * kgPerLbs;
-
-  const ImperialCylinder(String name, Metal metal, Pressure workingPressure,
-      this.compressedVolumeCuft, this.weightLb)
-      : super(name, metal, workingPressure);
-}
-
-class CylinderViewMetric extends StatelessWidget {
+class CylinderViewMetric extends CylinderView {
   final Cylinder cylinder;
   final Pressure pressure;
-  final double sac;
-  final double avgDepth;
+  final Volume sac;
+  final Distance depth;
 
   CylinderViewMetric(
       {@required this.cylinder,
       @required this.pressure,
       @required this.sac,
-      @required this.avgDepth});
+      @required this.depth});
 
   @override
   Widget build(BuildContext context) {
@@ -157,57 +208,106 @@ class CylinderViewMetric extends StatelessWidget {
       children: [
         TableRow(children: [
           header("Tank", context),
-          Text("%s (%.01f L %.0f bar, %.01f kg)".format([
+          Text("%s (%.01f L %d bar, %.01f kg)".format([
             cylinder.name,
-            cylinder.volumeLiters,
+            cylinder.waterVolume.liter,
             cylinder.workingPressure.bar,
-            cylinder.weightKg
+            cylinder.weight.kg
           ])),
         ]),
         TableRow(children: [
           header("Gas", context),
-          Text("%.0f L air at %.0f bar".format([
-            cylinder.compressedVolumeL(pressure),
+          Text("%.0f L air at %d bar".format([
+            cylinder.compressedVolume(pressure).liter,
             pressure.bar,
           ]))
         ]),
         TableRow(children: [
           header("Air Time", context),
-          Text("%.0f min to %.0f bar (%.0f L rock bottom)".format([
-            (cylinder.compressedVolumeL(pressure) -
-                    cylinder.safeReserveL(sac: sac, depth: avgDepth)) /
-                sac /
-                (10 + avgDepth) *
-                10,
-            cylinder.safeReservePressure(sac: sac, depth: avgDepth).bar,
-            cylinder.safeReserveL(sac: sac, depth: avgDepth)
+          Text("%.0f min to %d bar (%.0f L rock bottom)".format([
+            cylinder.airTimeMin(pressure: pressure, sac: sac, depth: depth),
+            cylinder.rockBottomPressure(sac: sac, depth: depth).bar,
+            cylinder.rockBottom(sac: sac, depth: depth).liter
           ]))
         ]),
         TableRow(children: [
           header("Buoyancy", context),
-          Text("%+.01f kg at %.0f bar (%+.01f kg at %.0f bar)".format([
-            cylinder.buoyancyKg(pressure),
+          Text("%+.01f kg at %d bar (%+.01f kg at %d bar)".format([
+            cylinder.buoyancy(pressure).kg,
             pressure.bar,
-            cylinder.buoyancyEmpty,
+            cylinder.buoyancyEmpty.kg,
             reservePressure.bar,
           ]))
         ]),
       ],
     );
   }
-
-  Widget header(String text, BuildContext context) => Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Text(
-          text,
-          textAlign: TextAlign.right,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              .copyWith(color: Colors.grey),
-        ),
-      );
 }
+
+class CylinderViewImperial extends CylinderView {
+  final Cylinder cylinder;
+  final Pressure pressure;
+  final Volume sac;
+  final Distance depth;
+
+  CylinderViewImperial(
+      {@required this.cylinder,
+      @required this.pressure,
+      @required this.sac,
+      @required this.depth});
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      columnWidths: {
+        0: IntrinsicColumnWidth(),
+      },
+      children: [
+        TableRow(children: [
+          header("Tank", context),
+          Text("%s (%.01f lb)".format([
+            cylinder.name,
+            cylinder.weight.lb,
+          ])),
+        ]),
+        TableRow(children: [
+          header("Gas", context),
+          Text("%.1f ft³ air at %d psi".format([
+            cylinder.compressedVolume(pressure).cuft,
+            pressure.psi,
+          ]))
+        ]),
+        TableRow(children: [
+          header("Air Time", context),
+          Text("%.0f min to %d psi (%.1f ft³ rock bottom)".format([
+            cylinder.airTimeMin(pressure: pressure, sac: sac, depth: depth),
+            cylinder.rockBottomPressure(sac: sac, depth: depth).psi,
+            cylinder.rockBottom(sac: sac, depth: depth).cuft
+          ]))
+        ]),
+        TableRow(children: [
+          header("Buoyancy", context),
+          Text("%+.01f lb at %d psi (%+.01f lb at %d psi)".format([
+            cylinder.buoyancy(pressure).lb,
+            pressure.psi,
+            cylinder.buoyancyEmpty.lb,
+            reservePressure.psi,
+          ]))
+        ]),
+      ],
+    );
+  }
+}
+
+Widget header(String text, BuildContext context) => Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: Text(
+        text,
+        textAlign: TextAlign.right,
+        style:
+            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey),
+      ),
+    );
 
 extension StringFormatExtension on String {
   String format(var arguments) => sprintf(this, arguments);
