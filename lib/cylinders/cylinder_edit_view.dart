@@ -38,52 +38,43 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             Divider(
               height: 32,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              alignment: WrapAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FlatButton(
-                    child: Text("Save"),
-                    textColor: Colors.greenAccent,
-                    onPressed: valid
-                        ? () async {
-                            if (cylinder.id.isEmpty) {
-                              // This is a new cylinder
-                              cylinder.id = Guid.newGuid.toString();
-                              await widget.model.addCylinder(
-                                  CylinderModel.fromData(
-                                      cylinder..selected = true));
-                            } else {
-                              // Editing an existing one
-                              await widget.model.editCylinder(
-                                  CylinderModel.fromData(cylinder));
-                            }
-                            Navigator.pop(context);
+                FlatButton(
+                  child: Text("Save"),
+                  textColor: Colors.greenAccent,
+                  onPressed: valid
+                      ? () async {
+                          if (cylinder.id.isEmpty) {
+                            // This is a new cylinder
+                            cylinder.id = Guid.newGuid.toString();
+                            await widget.model.addCylinder(
+                                CylinderModel.fromData(
+                                    cylinder..selected = true));
+                          } else {
+                            // Editing an existing one
+                            await widget.model
+                                .editCylinder(CylinderModel.fromData(cylinder));
                           }
-                        : null,
-                  ),
+                          Navigator.pop(context);
+                        }
+                      : null,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FlatButton(
-                    child: Text("Cancel"),
-                    onPressed: () async {
-                      Navigator.pop(context);
-                    },
-                  ),
+                FlatButton(
+                  child: Text("Cancel"),
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FlatButton(
-                    child: Text("Delete"),
-                    textColor: Colors.redAccent,
-                    onPressed: () async {
-                      await widget.model
-                          .deleteCylinder(CylinderModel.fromData(cylinder).id);
-                      Navigator.pop(context);
-                    },
-                  ),
+                FlatButton(
+                  child: Text("Delete"),
+                  textColor: Colors.redAccent,
+                  onPressed: () async {
+                    await widget.model
+                        .deleteCylinder(CylinderModel.fromData(cylinder).id);
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),
@@ -97,7 +88,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
     return Table(
       columnWidths: {
         0: IntrinsicColumnWidth(),
-        1: FixedColumnWidth(300),
+        // 1: FixedColumnWidth(300),
         2: IntrinsicColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
@@ -188,7 +179,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
           imperial: "ft³",
         ),
         titledUnitRow(
-          title: "Working pressure",
+          title: "Pressure",
           child: TextFormField(
             decoration: InputDecoration(
                 hintText: cylinder.measurements == MeasurementSystem.METRIC
