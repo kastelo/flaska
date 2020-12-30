@@ -4,15 +4,17 @@ import 'package:tankbuddy/cylinders/cylinderlist_viewmodel.dart';
 
 import '../services/service_locator.dart';
 import 'cylinder_model.dart';
-import 'cylinder_view.dart';
+import 'cylinder_simulation_view.dart';
 import 'units.dart';
 
-class CylinderListView extends StatefulWidget {
+class CylinderSimulationContainer extends StatefulWidget {
   @override
-  _CylinderListViewState createState() => _CylinderListViewState();
+  _CylinderSimulationContainerState createState() =>
+      _CylinderSimulationContainerState();
 }
 
-class _CylinderListViewState extends State<CylinderListView> {
+class _CylinderSimulationContainerState
+    extends State<CylinderSimulationContainer> {
   final CylinderListViewModel model = serviceLocator<CylinderListViewModel>();
 
   @override
@@ -61,7 +63,7 @@ class _CylinderListViewState extends State<CylinderListView> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CylinderViewMetric(
+            child: MetricCylinderSimulationView(
               cylinder: c,
               pressure: model.pressure,
               sac: model.sac,
@@ -80,7 +82,7 @@ class _CylinderListViewState extends State<CylinderListView> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CylinderViewImperial(
+            child: ImperialCylinderSimulationView(
               cylinder: c,
               pressure: model.pressure,
               sac: model.sac,

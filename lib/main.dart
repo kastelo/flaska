@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'cylinders/cylinderlist_view.dart';
+import 'cylinders/cylinderlist_simulation_container.dart';
 import 'services/service_locator.dart';
 
 void main() {
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text("Tank Buddy"),
         ),
-        body: CylinderListView(),
+        body: CylinderSimulationContainer(),
       ),
       debugShowCheckedModeBanner: false,
     );

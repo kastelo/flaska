@@ -4,13 +4,13 @@ import 'package:sprintf/sprintf.dart';
 import 'cylinder_model.dart';
 import 'units.dart';
 
-class CylinderViewMetric extends StatelessWidget {
+class MetricCylinderSimulationView extends StatelessWidget {
   final CylinderModel cylinder;
   final Pressure pressure;
   final Volume sac;
   final Distance depth;
 
-  CylinderViewMetric(
+  MetricCylinderSimulationView(
       {@required this.cylinder,
       @required this.pressure,
       @required this.sac,
@@ -121,13 +121,13 @@ class CylinderViewMetric extends StatelessWidget {
   }
 }
 
-class CylinderViewImperial extends StatelessWidget {
+class ImperialCylinderSimulationView extends StatelessWidget {
   final CylinderModel cylinder;
   final Pressure pressure;
   final Volume sac;
   final Distance depth;
 
-  CylinderViewImperial(
+  ImperialCylinderSimulationView(
       {@required this.cylinder,
       @required this.pressure,
       @required this.sac,
