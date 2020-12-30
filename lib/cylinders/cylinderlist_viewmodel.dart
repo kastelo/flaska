@@ -17,14 +17,14 @@ class CylinderListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Distance _depth = DistanceM(10);
+  Distance _depth = DistanceM(15);
   Distance get depth => _depth;
   set depth(Distance d) {
     _depth = d;
     notifyListeners();
   }
 
-  Volume _sac = VolumeLiter(13);
+  Volume _sac = VolumeLiter(15);
   Volume get sac => _sac;
   set sac(Volume s) {
     _sac = s;

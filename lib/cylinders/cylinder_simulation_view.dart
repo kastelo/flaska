@@ -44,12 +44,7 @@ class MetricCylinderSimulationView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(
-              "%s\n(%.01f L %d bar, %.01f kg)".format([
-                cylinder.name,
-                cylinder.waterVolume.liter,
-                cylinder.workingPressure.bar,
-                cylinder.weight.kg
-              ]),
+              "%s (%.01f kg)".format([cylinder.name, cylinder.weight.kg]),
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),

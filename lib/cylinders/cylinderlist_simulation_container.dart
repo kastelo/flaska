@@ -124,9 +124,9 @@ class _CylinderSimulationContainerState
         columnWidths: {1: IntrinsicColumnWidth()},
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
-          pressureSlider(),
           depthSlider(),
           sacSlider(),
+          pressureSlider(),
         ],
       ),
     );
