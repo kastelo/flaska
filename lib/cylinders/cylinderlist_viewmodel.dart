@@ -30,7 +30,7 @@ class CylinderListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<CylinderModel> _cylinders;
+  List<CylinderModel> _cylinders = [];
   List<CylinderModel> get cylinders => _cylinders;
   List<CylinderModel> get selectedCylinders =>
       _cylinders.where((c) => c.selected).toList();
@@ -44,6 +44,24 @@ class CylinderListViewModel extends ChangeNotifier {
 
   loadData() async {
     _cylinders = await cylinderListService.getCylinders();
+    notifyListeners();
+  }
+
+  editCylinder(CylinderModel cyl) async {
+    _cylinders = _cylinders.map((c) {
+      if (c.id == cyl.id)
+        return cyl;
+      else
+        return c;
+    }).toList();
+    await cylinderListService.saveCylinders(_cylinders);
+    notifyListeners();
+  }
+
+  addCylinder(CylinderModel cyl) async {
+    _cylinders = _cylinders.where((c) => c.id != cyl.id).toList();
+    _cylinders.add(cyl);
+    await cylinderListService.saveCylinders(_cylinders);
     notifyListeners();
   }
 }

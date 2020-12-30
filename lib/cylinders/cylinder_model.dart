@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter_guid/flutter_guid.dart';
+
 import '../proto/proto.dart';
 import 'units.dart';
 
@@ -8,22 +10,38 @@ const valveBuyoancyKg = -0.7;
 const troubleSolvingMin = 4.0;
 
 class CylinderModel {
+  final Guid id;
   final String name;
+  final MeasurementSystem measurements;
   final Metal metal;
   final Pressure workingPressure;
   final Weight weight;
+  final Volume userSetVolume;
   final Volume waterVolume;
   final bool selected;
 
-  const CylinderModel(this.name, this.metal, this.workingPressure,
-      this.waterVolume, this.weight, this.selected);
+  const CylinderModel.metric(this.id, this.name, this.metal,
+      this.workingPressure, this.waterVolume, this.weight, this.selected)
+      : measurements = MeasurementSystem.METRIC,
+        userSetVolume = waterVolume;
+
+  CylinderModel.imperial(this.id, this.name, this.metal, this.workingPressure,
+      this.userSetVolume, this.weight, this.selected)
+      : measurements = MeasurementSystem.IMPERIAL,
+        waterVolume =
+            VolumeLiter.fromPressure(userSetVolume.cuft, workingPressure.psi);
 
   CylinderModel.fromData(CylinderData d)
-      : name = d.name,
+      : id = Guid(d.id),
+        name = d.name,
+        measurements = d.measurements,
         metal = d.metal,
         workingPressure = d.measurements == MeasurementSystem.METRIC
-            ? PressureBar(d.workingPressure.toInt())
-            : PressurePsi(d.workingPressure.toInt()),
+            ? PressureBar(d.workingPressure)
+            : PressurePsi(d.workingPressure),
+        userSetVolume = d.measurements == MeasurementSystem.METRIC
+            ? VolumeLiter(d.volume)
+            : VolumeCuFt(d.volume),
         waterVolume = d.measurements == MeasurementSystem.METRIC
             ? VolumeLiter(d.volume)
             : VolumeLiter.fromPressure(d.volume, d.workingPressure.toInt()),
@@ -31,6 +49,23 @@ class CylinderModel {
             ? WeightKg(d.weight)
             : WeightLb(d.weight),
         selected = d.selected;
+
+  CylinderData toData() {
+    return CylinderData()
+      ..id = id.toString()
+      ..name = name
+      ..measurements = measurements
+      ..metal = metal
+      ..workingPressure = measurements == MeasurementSystem.METRIC
+          ? workingPressure.bar
+          : workingPressure.psi
+      ..volume = measurements == MeasurementSystem.METRIC
+          ? userSetVolume.liter
+          : userSetVolume.cuft
+      ..weight =
+          measurements == MeasurementSystem.METRIC ? weight.kg : weight.lb
+      ..selected = selected;
+  }
 
   double get materialDensity {
     switch (metal) {

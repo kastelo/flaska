@@ -48,13 +48,14 @@ class CylinderSet extends $pb.GeneratedMessage {
 
 class CylinderData extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CylinderData', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..e<Metal>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metal', $pb.PbFieldType.OE, defaultOrMaker: Metal.STEEL, valueOf: Metal.valueOf, enumValues: Metal.values)
-    ..e<MeasurementSystem>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
-    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'volume', $pb.PbFieldType.OD)
-    ..a<$core.double>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'workingPressure', $pb.PbFieldType.OD)
-    ..a<$core.double>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', $pb.PbFieldType.OD)
-    ..aOB(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selected')
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..e<Metal>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metal', $pb.PbFieldType.OE, defaultOrMaker: Metal.STEEL, valueOf: Metal.valueOf, enumValues: Metal.values)
+    ..e<MeasurementSystem>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
+    ..a<$core.double>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'volume', $pb.PbFieldType.OD)
+    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'workingPressure', $pb.PbFieldType.O3)
+    ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', $pb.PbFieldType.OD)
+    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selected')
     ..hasRequiredFields = false
   ;
 
@@ -82,66 +83,75 @@ class CylinderData extends $pb.GeneratedMessage {
   static CylinderData _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get name => $_getSZ(0);
+  $core.String get id => $_getSZ(0);
   @$pb.TagNumber(1)
-  set name($core.String v) { $_setString(0, v); }
+  set id($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasName() => $_has(0);
+  $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearName() => clearField(1);
+  void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  Metal get metal => $_getN(1);
+  $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set metal(Metal v) { setField(2, v); }
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasMetal() => $_has(1);
+  $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearMetal() => clearField(2);
+  void clearName() => clearField(2);
 
   @$pb.TagNumber(3)
-  MeasurementSystem get measurements => $_getN(2);
+  Metal get metal => $_getN(2);
   @$pb.TagNumber(3)
-  set measurements(MeasurementSystem v) { setField(3, v); }
+  set metal(Metal v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasMeasurements() => $_has(2);
+  $core.bool hasMetal() => $_has(2);
   @$pb.TagNumber(3)
-  void clearMeasurements() => clearField(3);
+  void clearMetal() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.double get volume => $_getN(3);
+  MeasurementSystem get measurements => $_getN(3);
   @$pb.TagNumber(4)
-  set volume($core.double v) { $_setDouble(3, v); }
+  set measurements(MeasurementSystem v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasVolume() => $_has(3);
+  $core.bool hasMeasurements() => $_has(3);
   @$pb.TagNumber(4)
-  void clearVolume() => clearField(4);
+  void clearMeasurements() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.double get workingPressure => $_getN(4);
+  $core.double get volume => $_getN(4);
   @$pb.TagNumber(5)
-  set workingPressure($core.double v) { $_setDouble(4, v); }
+  set volume($core.double v) { $_setDouble(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasWorkingPressure() => $_has(4);
+  $core.bool hasVolume() => $_has(4);
   @$pb.TagNumber(5)
-  void clearWorkingPressure() => clearField(5);
+  void clearVolume() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.double get weight => $_getN(5);
+  $core.int get workingPressure => $_getIZ(5);
   @$pb.TagNumber(6)
-  set weight($core.double v) { $_setDouble(5, v); }
+  set workingPressure($core.int v) { $_setSignedInt32(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasWeight() => $_has(5);
+  $core.bool hasWorkingPressure() => $_has(5);
   @$pb.TagNumber(6)
-  void clearWeight() => clearField(6);
+  void clearWorkingPressure() => clearField(6);
 
   @$pb.TagNumber(7)
-  $core.bool get selected => $_getBF(6);
+  $core.double get weight => $_getN(6);
   @$pb.TagNumber(7)
-  set selected($core.bool v) { $_setBool(6, v); }
+  set weight($core.double v) { $_setDouble(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasSelected() => $_has(6);
+  $core.bool hasWeight() => $_has(6);
   @$pb.TagNumber(7)
-  void clearSelected() => clearField(7);
+  void clearWeight() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.bool get selected => $_getBF(7);
+  @$pb.TagNumber(8)
+  set selected($core.bool v) { $_setBool(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasSelected() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearSelected() => clearField(8);
 }
 

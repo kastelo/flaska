@@ -7,7 +7,7 @@ GetIt serviceLocator = GetIt.instance;
 
 void setupServiceLocator() {
   serviceLocator.registerLazySingleton<CylinderListService>(
-      () => FakeCylinderListService());
+      () => LocalCylinderListService());
   serviceLocator
       .registerFactory<CylinderListViewModel>(() => CylinderListViewModel());
 }

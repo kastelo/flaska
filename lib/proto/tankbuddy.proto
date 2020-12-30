@@ -15,11 +15,12 @@ message CylinderSet {
 }
 
 message CylinderData {
-    string name = 1;
-    Metal metal = 2;
-    MeasurementSystem measurements = 3;
-    double volume = 4;
-    double working_pressure = 5;
-    double weight = 6;
-    bool selected = 7;
+    string id = 1;
+    string name = 2;
+    Metal metal = 3;
+    MeasurementSystem measurements = 4;
+    double volume = 5;
+    int32 working_pressure = 6;
+    double weight = 7;
+    bool selected = 8;
 }

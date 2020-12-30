@@ -31,13 +31,14 @@ const CylinderSet$json = const {
 const CylinderData$json = const {
   '1': 'CylinderData',
   '2': const [
-    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'metal', '3': 2, '4': 1, '5': 14, '6': '.Metal', '10': 'metal'},
-    const {'1': 'measurements', '3': 3, '4': 1, '5': 14, '6': '.MeasurementSystem', '10': 'measurements'},
-    const {'1': 'volume', '3': 4, '4': 1, '5': 1, '10': 'volume'},
-    const {'1': 'working_pressure', '3': 5, '4': 1, '5': 1, '10': 'workingPressure'},
-    const {'1': 'weight', '3': 6, '4': 1, '5': 1, '10': 'weight'},
-    const {'1': 'selected', '3': 7, '4': 1, '5': 8, '10': 'selected'},
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'metal', '3': 3, '4': 1, '5': 14, '6': '.Metal', '10': 'metal'},
+    const {'1': 'measurements', '3': 4, '4': 1, '5': 14, '6': '.MeasurementSystem', '10': 'measurements'},
+    const {'1': 'volume', '3': 5, '4': 1, '5': 1, '10': 'volume'},
+    const {'1': 'working_pressure', '3': 6, '4': 1, '5': 5, '10': 'workingPressure'},
+    const {'1': 'weight', '3': 7, '4': 1, '5': 1, '10': 'weight'},
+    const {'1': 'selected', '3': 8, '4': 1, '5': 8, '10': 'selected'},
   ],
 };
 
