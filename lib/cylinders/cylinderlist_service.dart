@@ -64,8 +64,13 @@ class LocalCylinderListService implements CylinderListService {
   Future<List<CylinderModel>> getCylinders() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final listFile = File('$directory/cylinders.pb');
+      final listFile = File('${directory.path}/cylinders.pb');
       final data = await listFile.readAsBytes();
+      if (data.isEmpty) {
+        return defaultCylinderData
+            .map((d) => CylinderModel.fromData(d))
+            .toList();
+      }
       final cylinderSet = CylinderSet.fromBuffer(data);
       return cylinderSet.cylinders
           .map((d) => CylinderModel.fromData(d))
@@ -83,7 +88,7 @@ class LocalCylinderListService implements CylinderListService {
     }
 
     final directory = await getApplicationDocumentsDirectory();
-    final listFile = File('$directory/cylinders.pb');
+    final listFile = File('${directory.path}/cylinders.pb');
     await listFile.writeAsBytes(cylinderSet.writeToBuffer());
   }
 }

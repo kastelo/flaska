@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(16, 16, 16, 1),
         canvasColor: Color.fromRGBO(0, 0, 0, 1),
         cardColor: Color.fromRGBO(24, 24, 24, 1),
+        dialogBackgroundColor: Color.fromRGBO(32, 32, 32, 1),
         accentColor: Colors.blueAccent,
       ),
       home: Scaffold(

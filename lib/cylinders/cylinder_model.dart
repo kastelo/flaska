@@ -10,18 +10,18 @@ const valveBuyoancyKg = -0.7;
 const troubleSolvingMin = 4.0;
 
 class CylinderModel {
-  final Guid id;
-  final String name;
-  final MeasurementSystem measurements;
-  final Metal metal;
-  final Pressure workingPressure;
-  final Weight weight;
-  final Volume userSetVolume;
-  final Volume waterVolume;
-  final bool selected;
+  Guid id;
+  String name;
+  MeasurementSystem measurements;
+  Metal metal;
+  Pressure workingPressure;
+  Weight weight;
+  Volume userSetVolume;
+  Volume waterVolume;
+  bool selected;
 
-  const CylinderModel.metric(this.id, this.name, this.metal,
-      this.workingPressure, this.waterVolume, this.weight, this.selected)
+  CylinderModel.metric(this.id, this.name, this.metal, this.workingPressure,
+      this.waterVolume, this.weight, this.selected)
       : measurements = MeasurementSystem.METRIC,
         userSetVolume = waterVolume;
 

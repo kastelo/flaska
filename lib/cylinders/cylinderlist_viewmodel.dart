@@ -42,7 +42,7 @@ class CylinderListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadData() async {
+  void loadData() async {
     _cylinders = await cylinderListService.getCylinders();
     notifyListeners();
   }

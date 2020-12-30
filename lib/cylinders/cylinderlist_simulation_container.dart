@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tankbuddy/cylinders/cylinder_edit_view.dart';
 import 'package:tankbuddy/cylinders/cylinderlist_viewmodel.dart';
 
 import '../services/service_locator.dart';
@@ -35,20 +36,39 @@ class _CylinderSimulationContainerState
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                children: model.selectedCylinders.map(cylinder).toList() +
-                    [
-                      FlatButton(
-                        onPressed: () {
-                          model.toggleMetric();
-                        },
-                        child: Text(model.metric ? "Metric" : "Imperial"),
-                      ),
-                    ],
+                children:
+                    model.selectedCylinders.map(editableCylinder).toList() +
+                        [
+                          FlatButton(
+                            onPressed: () {
+                              model.toggleMetric();
+                            },
+                            child: Text(model.metric ? "Metric" : "Imperial"),
+                          ),
+                        ],
               ),
             ),
           ]),
         ),
       ),
+    );
+  }
+
+  Widget editableCylinder(CylinderModel c) {
+    return InkWell(
+      onTap: () async {
+        await showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CylinderEditView(cylinder: c.toData(), model: model),
+            ),
+          ),
+        );
+        model.loadData();
+      },
+      child: cylinder(c),
     );
   }
 
