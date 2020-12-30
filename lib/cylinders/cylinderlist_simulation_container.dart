@@ -45,15 +45,8 @@ class _CylinderSimulationContainerState
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FlatButton(
-                            onPressed: () async => editCylinder(
-                                CylinderModel.metric(
-                                    null,
-                                    "",
-                                    Metal.STEEL,
-                                    PressureBar(232),
-                                    VolumeLiter(12),
-                                    WeightKg(14.5),
-                                    true)),
+                            onPressed: () async =>
+                                editCylinder(defaultCylinder()),
                             child: Text("Add cylinder..."),
                           ),
                           FlatButton(
@@ -220,7 +213,7 @@ class _CylinderSimulationContainerState
         Text(
           model.metric
               ? "%.0f L/min".format([model.sac.liter])
-              : "%.1f ft³/min".format([model.sac.cuft]),
+              : "%.1f cuft/min".format([model.sac.cuft]),
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.caption,
         ),
@@ -239,5 +232,13 @@ class _CylinderSimulationContainerState
       ),
     );
     model.loadData();
+  }
+
+  CylinderModel defaultCylinder() {
+    return model.metric
+        ? CylinderModel.metric(null, "", Metal.STEEL, PressureBar(232),
+            VolumeLiter(12), WeightKg(14.5), true)
+        : CylinderModel.imperial(null, "", Metal.STEEL, PressurePsi(3442),
+            VolumeCuFt(80), WeightLb(28.3), true);
   }
 }

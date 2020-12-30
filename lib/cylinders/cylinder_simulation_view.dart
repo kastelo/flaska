@@ -91,12 +91,11 @@ class MetricCylinderSimulationView extends StatelessWidget {
                     style: airTimeStyle,
                   ),
                   TextSpan(
-                    text: " to %d bar\n(%.0f L rock bottom)".format([
+                    text: " to %d bar".format([
                       cylinder
                           .rockBottomPressure(sac: sac, depth: depth)
                           .bar
                           .roundi(5),
-                      cylinder.rockBottom(sac: sac, depth: depth).liter
                     ]),
                   ),
                 ],
@@ -173,7 +172,7 @@ class ImperialCylinderSimulationView extends StatelessWidget {
             child: RichText(
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
               text: TextSpan(
-                text: "%.1f ft³ air at ".format([
+                text: "%.1f cuft air at ".format([
                   cylinder.compressedVolume(pressure).cuft,
                 ]),
                 style: Theme.of(context).textTheme.bodyText2,
@@ -203,12 +202,11 @@ class ImperialCylinderSimulationView extends StatelessWidget {
                     style: airTimeStyle,
                   ),
                   TextSpan(
-                    text: " to %d psi\n(%.1f ft³ rock bottom)".format([
+                    text: " to %d psi".format([
                       cylinder
                           .rockBottomPressure(sac: sac, depth: depth)
                           .psi
                           .roundi(100),
-                      cylinder.rockBottom(sac: sac, depth: depth).cuft
                     ]),
                   ),
                 ],

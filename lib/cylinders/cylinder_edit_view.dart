@@ -162,7 +162,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                     : "Air volume in cuft"),
             keyboardType: TextInputType.number,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             initialValue: cylinder.volume.toString(),
             onChanged: (value) {
@@ -231,7 +231,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                     : "Empty weight in lb"),
             keyboardType: TextInputType.number,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             initialValue: cylinder.weight.toString(),
             onChanged: (value) {
