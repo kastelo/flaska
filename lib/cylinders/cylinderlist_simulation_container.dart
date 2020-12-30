@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tankbuddy/cylinders/cylinder_edit_view.dart';
 import 'package:tankbuddy/cylinders/cylinderlist_viewmodel.dart';
+import 'package:tankbuddy/proto/tankbuddy.pb.dart';
 
 import '../services/service_locator.dart';
 import 'cylinder_model.dart';
@@ -36,9 +37,25 @@ class _CylinderSimulationContainerState
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                children:
-                    model.selectedCylinders.map(editableCylinder).toList() +
-                        [
+                children: model.selectedCylinders
+                        .map(editableCylinder)
+                        .toList() +
+                    [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FlatButton(
+                            onPressed: () async => editCylinder(
+                                CylinderModel.metric(
+                                    null,
+                                    "",
+                                    Metal.STEEL,
+                                    PressureBar(232),
+                                    VolumeLiter(12),
+                                    WeightKg(14.5),
+                                    true)),
+                            child: Text("Add cylinder..."),
+                          ),
                           FlatButton(
                             onPressed: () {
                               model.toggleMetric();
@@ -46,6 +63,8 @@ class _CylinderSimulationContainerState
                             child: Text(model.metric ? "Metric" : "Imperial"),
                           ),
                         ],
+                      ),
+                    ],
               ),
             ),
           ]),
@@ -56,18 +75,7 @@ class _CylinderSimulationContainerState
 
   Widget editableCylinder(CylinderModel c) {
     return InkWell(
-      onTap: () async {
-        await showDialog(
-          context: context,
-          builder: (context) => Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CylinderEditView(cylinder: c.toData(), model: model),
-            ),
-          ),
-        );
-        model.loadData();
-      },
+      onTap: () async => await editCylinder(c),
       child: cylinder(c),
     );
   }
@@ -218,5 +226,18 @@ class _CylinderSimulationContainerState
         ),
       ],
     );
+  }
+
+  Future editCylinder(CylinderModel cylinder) async {
+    await showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CylinderEditView(cylinder: cylinder.toData(), model: model),
+        ),
+      ),
+    );
+    model.loadData();
   }
 }

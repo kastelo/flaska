@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:tankbuddy/cylinders/cylinderlist_service.dart';
 
 import '../services/service_locator.dart';
@@ -61,6 +62,12 @@ class CylinderListViewModel extends ChangeNotifier {
   addCylinder(CylinderModel cyl) async {
     _cylinders = _cylinders.where((c) => c.id != cyl.id).toList();
     _cylinders.add(cyl);
+    await cylinderListService.saveCylinders(_cylinders);
+    notifyListeners();
+  }
+
+  deleteCylinder(Guid id) async {
+    _cylinders = _cylinders.where((c) => c.id != id).toList();
     await cylinderListService.saveCylinders(_cylinders);
     notifyListeners();
   }

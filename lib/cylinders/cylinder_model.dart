@@ -52,7 +52,7 @@ class CylinderModel {
 
   CylinderData toData() {
     return CylinderData()
-      ..id = id.toString()
+      ..id = id?.toString() ?? ""
       ..name = name
       ..measurements = measurements
       ..metal = metal

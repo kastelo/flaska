@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:tankbuddy/cylinders/cylinder_model.dart';
 import 'package:tankbuddy/cylinders/cylinderlist_viewmodel.dart';
 import 'package:tankbuddy/proto/tankbuddy.pb.dart';
@@ -42,17 +43,22 @@ class _CylinderEditViewState extends State<CylinderEditView> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(
-                    child: Text(
-                      "Save",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.greenAccent,
-                          ),
-                    ),
+                  child: FlatButton(
+                    child: Text("Save"),
+                    textColor: Colors.greenAccent,
                     onPressed: valid
                         ? () async {
-                            await widget.model
-                                .editCylinder(CylinderModel.fromData(cylinder));
+                            if (cylinder.id.isEmpty) {
+                              // This is a new cylinder
+                              cylinder.id = Guid.newGuid.toString();
+                              await widget.model.addCylinder(
+                                  CylinderModel.fromData(
+                                      cylinder..selected = true));
+                            } else {
+                              // Editing an existing one
+                              await widget.model.editCylinder(
+                                  CylinderModel.fromData(cylinder));
+                            }
                             Navigator.pop(context);
                           }
                         : null,
@@ -60,14 +66,21 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(
-                    child: Text(
-                      "Cancel",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.redAccent,
-                          ),
-                    ),
+                  child: FlatButton(
+                    child: Text("Cancel"),
                     onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlatButton(
+                    child: Text("Delete"),
+                    textColor: Colors.redAccent,
+                    onPressed: () async {
+                      await widget.model
+                          .deleteCylinder(CylinderModel.fromData(cylinder).id);
                       Navigator.pop(context);
                     },
                   ),
@@ -92,6 +105,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledRow(
           title: "Name",
           child: TextFormField(
+            decoration: InputDecoration(hintText: "Enter a cylinder name"),
             initialValue: cylinder.name,
             onChanged: (value) {
               setState(() {
@@ -142,6 +156,10 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Volume",
           child: TextFormField(
+            decoration: InputDecoration(
+                hintText: cylinder.measurements == MeasurementSystem.METRIC
+                    ? "Water volume in liters"
+                    : "Air volume in cuft"),
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
@@ -172,6 +190,10 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Working pressure",
           child: TextFormField(
+            decoration: InputDecoration(
+                hintText: cylinder.measurements == MeasurementSystem.METRIC
+                    ? "Working pressure in psi"
+                    : "Working pressure in bar"),
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
@@ -203,6 +225,10 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Weight",
           child: TextFormField(
+            decoration: InputDecoration(
+                hintText: cylinder.measurements == MeasurementSystem.METRIC
+                    ? "Empty weight in kg"
+                    : "Empty weight in lb"),
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
