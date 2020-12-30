@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=1.22.4-stable
+version=1.22.5-stable
 sdk=~/sdk/flutter-"$version"
 
 if [[ ! -d "$sdk" ]] ; then
