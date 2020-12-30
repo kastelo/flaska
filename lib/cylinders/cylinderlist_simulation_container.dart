@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:tankbuddy/cylinders/cylinder_edit_view.dart';
-import 'package:tankbuddy/cylinders/cylinderlist_viewmodel.dart';
-import 'package:tankbuddy/proto/tankbuddy.pb.dart';
+import 'package:flaska/cylinders/cylinder_edit_view.dart';
+import 'package:flaska/cylinders/cylinderlist_viewmodel.dart';
+import 'package:flaska/proto/flaska.pb.dart';
 
 import '../services/service_locator.dart';
 import 'cylinder_model.dart';

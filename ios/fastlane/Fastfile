@@ -1,0 +1,7 @@
+default_platform(:ios)
+
+platform :ios do
+  lane :build do
+    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
+  end
+end

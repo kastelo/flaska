@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: tankbuddy.proto
+//  source: flaska.proto
 //
 // @dart = 2.3
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
@@ -9,9 +9,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'tankbuddy.pbenum.dart';
+import 'flaska.pbenum.dart';
 
-export 'tankbuddy.pbenum.dart';
+export 'flaska.pbenum.dart';
 
 class CylinderSet extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CylinderSet', createEmptyInstance: create)

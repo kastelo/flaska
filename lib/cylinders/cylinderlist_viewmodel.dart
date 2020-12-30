@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:tankbuddy/cylinders/cylinderlist_service.dart';
+import 'package:flaska/cylinders/cylinderlist_service.dart';
 
 import '../services/service_locator.dart';
 import 'cylinder_model.dart';

@@ -1,2 +1,2 @@
-export 'tankbuddy.pb.dart';
-export 'tankbuddy.pbenum.dart';
+export 'flaska.pb.dart';
+export 'flaska.pbenum.dart';
