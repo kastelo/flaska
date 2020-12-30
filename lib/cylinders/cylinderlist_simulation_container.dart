@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:tankbuddy/cylinders/cylinder_edit_view.dart';
 import 'package:tankbuddy/cylinders/cylinderlist_viewmodel.dart';
 import 'package:tankbuddy/proto/tankbuddy.pb.dart';
@@ -37,9 +38,10 @@ class _CylinderSimulationContainerState
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                children: model.selectedCylinders
-                        .map(editableCylinder)
-                        .toList() +
+                children: [
+                      rockBottom(),
+                    ] +
+                    model.selectedCylinders.map(editableCylinder).toList() +
                     [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -219,6 +221,35 @@ class _CylinderSimulationContainerState
         ),
       ],
     );
+  }
+
+  Widget rockBottom() {
+    final vol =
+        model.cylinders.first.rockBottom(depth: model.depth, sac: model.sac);
+    final rbg = model.metric
+        ? sprintf(
+            "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at 10 m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
+            [
+                vol.liter,
+                troubleSolvingMin,
+                model.depth.m,
+                model.sac.liter * 4,
+                safetyStopDurationMin,
+                safetyStopDepth.m,
+                model.sac.liter * 2,
+              ])
+        : sprintf(
+            "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at 33 ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
+            [
+                vol.cuft,
+                troubleSolvingMin,
+                model.depth.ft,
+                model.sac.cuft * 4,
+                safetyStopDurationMin,
+                safetyStopDepth.ft,
+                model.sac.cuft * 2,
+              ]);
+    return Text(rbg);
   }
 
   Future editCylinder(CylinderModel cylinder) async {

@@ -8,6 +8,8 @@ import 'units.dart';
 const reservePressure = PressureBar(35);
 const valveBuyoancyKg = -0.7;
 const troubleSolvingMin = 4.0;
+const safetyStopDepth = DistanceM(5.0);
+const safetyStopDurationMin = 5.0;
 
 class CylinderModel {
   Guid id;
@@ -103,7 +105,8 @@ class CylinderModel {
     // Ascent at 10 m/min, double SAC
     final ascentL = depth.m / 10 * sac.liter * 4 * (10 + depth.m / 2) / 10;
     // Five minutes safety stop, two people, normal SAC
-    final safetyStopL = 5.0 * sac.liter * 2 * (10 + 5) / 10;
+    final safetyStopL =
+        safetyStopDurationMin * sac.liter * 2 * (10 + safetyStopDepth.m) / 10;
     return VolumeLiter(troubleSolvingL + ascentL + safetyStopL);
   }
 

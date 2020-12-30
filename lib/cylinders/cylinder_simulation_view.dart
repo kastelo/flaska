@@ -91,7 +91,7 @@ class MetricCylinderSimulationView extends StatelessWidget {
                     style: airTimeStyle,
                   ),
                   TextSpan(
-                    text: " to %d bar".format([
+                    text: " to %d bar (RB)".format([
                       cylinder
                           .rockBottomPressure(sac: sac, depth: depth)
                           .bar
@@ -202,7 +202,7 @@ class ImperialCylinderSimulationView extends StatelessWidget {
                     style: airTimeStyle,
                   ),
                   TextSpan(
-                    text: " to %d psi".format([
+                    text: " to %d psi (RB)".format([
                       cylinder
                           .rockBottomPressure(sac: sac, depth: depth)
                           .psi
