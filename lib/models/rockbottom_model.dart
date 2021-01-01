@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../models/cylinder_model.dart';
 import 'units.dart';
 
@@ -50,7 +52,11 @@ class RockBottomModel {
   }
 
   double airtimeUntilRB(CylinderModel cylinder, Pressure pressure) {
-    return cylinder.compressedVolume(pressure).liter / sac.liter / avgAtm;
+    return max(
+        0,
+        (cylinder.compressedVolume(pressure).liter - volume.liter) /
+            sac.liter /
+            avgAtm);
   }
 
   Pressure rockBottomPressure(CylinderModel cylinder) {

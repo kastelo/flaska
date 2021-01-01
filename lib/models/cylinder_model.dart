@@ -143,9 +143,3 @@ class CylinderViewModel {
           cylinder.buoyancy(PressurePsi(0)).lb,
         ]);
 }
-
-extension Rounding on int {
-  int roundi(int intv) {
-    return (this + intv - 1) ~/ intv * intv;
-  }
-}

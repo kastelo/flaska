@@ -58,80 +58,54 @@ class DiveCalculationView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
-        builder: (context, state) => Table(
+          builder: (context, state) {
+        final dvm = DiveCalculationViewModel(state);
+        return Table(
           columnWidths: {1: IntrinsicColumnWidth()},
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
-            depthSlider(context, state),
-            sacSlider(context, state),
-            pressureSlider(context, state),
+            depthSlider(context, dvm),
+            sacSlider(context, dvm),
+            pressureSlider(context, dvm),
           ],
-        ),
-      ),
+        );
+      }),
     );
   }
 
-  TableRow pressureSlider(BuildContext context, DiveCalculationState state) {
+  TableRow pressureSlider(BuildContext context, DiveCalculationViewModel dvm) {
     return TableRow(children: [
-      state.metric
-          ? Slider(
-              value: state.tankPressure.bar.toDouble(),
-              min: 0,
-              max: 300,
-              divisions: 60,
-              onChanged: (v) {
-                context
-                    .read<DiveCalculationBloc>()
-                    .add(SetTankPressure(PressureBar(v.toInt())));
-              })
-          : Slider(
-              value: state.tankPressure.psi.toDouble(),
-              min: 0,
-              max: 4400,
-              divisions: 44 * 2,
-              onChanged: (v) {
-                context
-                    .read<DiveCalculationBloc>()
-                    .add(SetTankPressure(PressurePsi(v.toInt())));
-              }),
+      Slider(
+          value: dvm.pressure,
+          min: 0,
+          max: dvm.maxPressure,
+          onChanged: (v) {
+            context
+                .read<DiveCalculationBloc>()
+                .add(SetTankPressure(dvm.toPressure(v)));
+          }),
       Text(
-        state.metric
-            ? sprintf("%d bar", [state.tankPressure.bar])
-            : sprintf("%d psi", [state.tankPressure.psi]),
+        dvm.pressureLabel,
         textAlign: TextAlign.right,
         style: Theme.of(context).textTheme.caption,
       ),
     ]);
   }
 
-  TableRow depthSlider(BuildContext context, DiveCalculationState state) {
+  TableRow depthSlider(BuildContext context, DiveCalculationViewModel dvm) {
     return TableRow(
       children: [
-        state.metric
-            ? Slider(
-                value: state.depth.m,
-                min: 0,
-                max: 40,
-                divisions: 40,
-                onChanged: (v) {
-                  context
-                      .read<DiveCalculationBloc>()
-                      .add(SetDepth(DistanceM(v)));
-                })
-            : Slider(
-                value: state.depth.ft,
-                min: 0,
-                max: 130,
-                divisions: 13 * 2,
-                onChanged: (v) {
-                  context
-                      .read<DiveCalculationBloc>()
-                      .add(SetDepth(DistanceFt(v)));
-                }),
+        Slider(
+            value: dvm.depth,
+            min: 0,
+            max: dvm.maxDepth,
+            onChanged: (v) {
+              context
+                  .read<DiveCalculationBloc>()
+                  .add(SetDepth(dvm.toDistance(v)));
+            }),
         Text(
-          state.metric
-              ? sprintf("%.0f m", [state.depth.m])
-              : sprintf("%.0f ft", [state.depth.ft]),
+          dvm.depthLabel,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.caption,
         ),
@@ -139,34 +113,18 @@ class DiveCalculationView extends StatelessWidget {
     );
   }
 
-  TableRow sacSlider(BuildContext context, DiveCalculationState state) {
+  TableRow sacSlider(BuildContext context, DiveCalculationViewModel dvm) {
     return TableRow(
       children: [
-        state.metric
-            ? Slider(
-                value: state.sac.liter,
-                min: 5,
-                max: 30,
-                divisions: 25,
-                onChanged: (v) {
-                  context
-                      .read<DiveCalculationBloc>()
-                      .add(SetSAC(VolumeLiter(v)));
-                })
-            : Slider(
-                value: state.sac.cuft,
-                min: 0,
-                max: 1,
-                divisions: 10,
-                onChanged: (v) {
-                  context
-                      .read<DiveCalculationBloc>()
-                      .add(SetSAC(VolumeCuFt(v)));
-                }),
+        Slider(
+            value: dvm.sac,
+            min: 5,
+            max: dvm.maxSAC,
+            onChanged: (v) {
+              context.read<DiveCalculationBloc>().add(SetSAC(dvm.toVolume(v)));
+            }),
         Text(
-          state.metric
-              ? sprintf("%.0f L/min", [state.sac.liter])
-              : sprintf("%.1f cuft/min", [state.sac.cuft]),
+          dvm.sacLabel,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.caption,
         ),
@@ -177,33 +135,66 @@ class DiveCalculationView extends StatelessWidget {
   Widget rockBottom(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
       builder: (context, state) {
-        final rbg = state.metric
-            ? sprintf(
-                "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at %.0f m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
-                [
-                    state.rockBottom.volume.liter,
-                    state.rockBottom.troubleSolvingDurationMin,
-                    state.rockBottom.depth.m,
-                    state.rockBottom.ascentRatePerMin.m,
-                    state.rockBottom.sac.liter * 4,
-                    state.rockBottom.safetyStopDurationMin,
-                    state.rockBottom.safetyStopDepth.m,
-                    state.rockBottom.sac.liter * 2,
-                  ])
-            : sprintf(
-                "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at %.0f ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
-                [
-                    state.rockBottom.volume.cuft,
-                    state.rockBottom.troubleSolvingDurationMin,
-                    state.rockBottom.depth.m,
-                    state.rockBottom.ascentRatePerMin.ft,
-                    state.rockBottom.sac.liter * 4,
-                    state.rockBottom.safetyStopDurationMin,
-                    state.rockBottom.safetyStopDepth.m,
-                    state.rockBottom.sac.liter * 2,
-                  ]);
-        return Text(rbg);
+        return Text(DiveCalculationViewModel(state).rockBottomLabel);
       },
     );
   }
+}
+
+class DiveCalculationViewModel {
+  final DiveCalculationState state;
+  const DiveCalculationViewModel(this.state);
+
+  double get depth => state.metric ? state.depth.m : state.depth.ft;
+  double get pressure =>
+      (state.metric ? state.tankPressure.bar : state.tankPressure.psi)
+          .toDouble();
+  double get sac => state.metric ? state.sac.liter : state.sac.cuft;
+
+  String get depthLabel => state.metric
+      ? sprintf("%.0f m", [state.depth.m])
+      : sprintf("%.0f ft", [state.depth.ft]);
+  String get pressureLabel => state.metric
+      ? sprintf("%d bar", [state.tankPressure.bar])
+      : sprintf("%d psi", [state.tankPressure.psi]);
+  String get sacLabel => state.metric
+      ? sprintf("%.0f L/min", [state.sac.liter])
+      : sprintf("%.1f cuft/min", [state.sac.cuft]);
+
+  String get rockBottomLabel => state.metric
+      ? sprintf(
+          "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at %.0f m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
+          [
+              state.rockBottom.volume.liter,
+              state.rockBottom.troubleSolvingDurationMin,
+              state.rockBottom.depth.m,
+              state.rockBottom.ascentRatePerMin.m,
+              state.rockBottom.sac.liter * 4,
+              state.rockBottom.safetyStopDurationMin,
+              state.rockBottom.safetyStopDepth.m,
+              state.rockBottom.sac.liter * 2,
+            ])
+      : sprintf(
+          "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at %.0f ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
+          [
+              state.rockBottom.volume.cuft,
+              state.rockBottom.troubleSolvingDurationMin,
+              state.rockBottom.depth.m,
+              state.rockBottom.ascentRatePerMin.ft,
+              state.rockBottom.sac.liter * 4,
+              state.rockBottom.safetyStopDurationMin,
+              state.rockBottom.safetyStopDepth.m,
+              state.rockBottom.sac.liter * 2,
+            ]);
+
+  double get maxDepth => state.metric ? 40 : 130;
+  double get maxPressure => state.metric ? 300 : 4000;
+  double get maxSAC => state.metric ? 30 : 1;
+
+  Distance toDistance(double value) =>
+      state.metric ? DistanceM(value) : DistanceFt(value);
+  Pressure toPressure(double value) =>
+      state.metric ? PressureBar(value.toInt()) : PressurePsi(value.toInt());
+  Volume toVolume(double value) =>
+      state.metric ? VolumeLiter(value) : VolumeCuFt(value);
 }

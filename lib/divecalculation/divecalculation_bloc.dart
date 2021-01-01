@@ -73,13 +73,23 @@ class DiveCalculationBloc
   Stream<DiveCalculationState> mapEventToState(
       DiveCalculationEvent event) async* {
     if (event is SetDepth) {
-      yield state.copyWith(
-          rockBottom: state.rockBottom.copyWith(depth: event.depth));
+      var depth = event.depth;
+      if (state.metric) {
+        depth = DistanceM(depth.m.round().toDouble());
+      } else {
+        depth = DistanceFt(depth.ft.round().roundi(10).toDouble());
+      }
+      yield state.copyWith(rockBottom: state.rockBottom.copyWith(depth: depth));
     }
 
     if (event is SetSAC) {
-      yield state.copyWith(
-          rockBottom: state.rockBottom.copyWith(sac: event.sac));
+      var sac = event.sac;
+      if (state.metric) {
+        sac = VolumeLiter(sac.liter.round().toDouble());
+      } else {
+        sac = VolumeCuFt((sac.liter * 10).round() / 10);
+      }
+      yield state.copyWith(rockBottom: state.rockBottom.copyWith(sac: sac));
     }
 
     if (event is SetMetric) {
@@ -87,7 +97,13 @@ class DiveCalculationBloc
     }
 
     if (event is SetTankPressure) {
-      yield state.copyWith(tankPressure: event.pressure);
+      var pressure = event.pressure;
+      if (state.metric) {
+        pressure = PressureBar(pressure.bar.round().roundi(5));
+      } else {
+        pressure = PressurePsi(pressure.bar.round().roundi(100));
+      }
+      yield state.copyWith(tankPressure: pressure);
     }
   }
 }

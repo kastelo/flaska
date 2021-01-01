@@ -114,3 +114,9 @@ class WeightLb extends Weight {
   double get kg => lb * kgPerLbs;
   const WeightLb(this.lb);
 }
+
+extension Rounding on int {
+  int roundi(int intv) {
+    return (this + intv - 1) ~/ intv * intv;
+  }
+}
