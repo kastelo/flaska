@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../cylinderlist/cylinderlist_view.dart';
 import '../cylinders/cylinderlist_simulation_container.dart';
@@ -25,12 +24,15 @@ class _NavigationViewState extends State<NavigationView> {
             Placeholder(),
           ],
         ),
-        bottomNavigationBar: TabBar(
-          tabs: [
-            Tab(text: "Calculator", icon: Icon(Icons.calculate)),
-            Tab(text: "Cylinders", icon: Icon(Icons.list)),
-            Tab(text: "Settings", icon: Icon(Icons.settings)),
-          ],
+        bottomNavigationBar: SafeArea(
+          top: false,
+          child: TabBar(
+            tabs: [
+              Tab(text: "Calculator", icon: Icon(Icons.calculate)),
+              Tab(text: "Cylinders", icon: Icon(Icons.list)),
+              Tab(text: "Settings", icon: Icon(Icons.settings)),
+            ],
+          ),
         ),
       ),
     );

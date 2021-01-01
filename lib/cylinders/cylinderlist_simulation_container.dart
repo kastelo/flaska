@@ -16,7 +16,8 @@ class CylinderSimulationContainer extends StatefulWidget {
 }
 
 class _CylinderSimulationContainerState
-    extends State<CylinderSimulationContainer> {
+    extends State<CylinderSimulationContainer>
+    with AutomaticKeepAliveClientMixin {
   final CylinderListViewModel model = serviceLocator<CylinderListViewModel>();
 
   @override
@@ -26,7 +27,11 @@ class _CylinderSimulationContainerState
   }
 
   @override
+  bool wantKeepAlive = true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ChangeNotifierProvider<CylinderListViewModel>(
       create: (context) => model,
       child: Padding(

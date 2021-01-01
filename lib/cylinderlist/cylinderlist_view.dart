@@ -11,8 +11,12 @@ class CylinderListView extends StatefulWidget {
   _CylinderListViewState createState() => _CylinderListViewState();
 }
 
-class _CylinderListViewState extends State<CylinderListView> {
+class _CylinderListViewState extends State<CylinderListView>
+    with AutomaticKeepAliveClientMixin {
   final CylinderListViewModel model = serviceLocator<CylinderListViewModel>();
+
+  @override
+  bool wantKeepAlive = true;
 
   @override
   initState() {
