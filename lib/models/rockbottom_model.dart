@@ -1,16 +1,15 @@
-import 'package:flaska/models/cylinder_model.dart';
-
+import '../models/cylinder_model.dart';
 import 'units.dart';
 
 class RockBottomModel {
-  Volume sac;
-  Distance depth;
-  Distance safetyStopDepth;
-  Distance ascentRatePerMin;
-  double safetyStopDurationMin;
-  double troubleSolvingDurationMin;
+  final Distance depth;
+  final Volume sac;
+  final Distance ascentRatePerMin;
+  final double troubleSolvingDurationMin;
+  final Distance safetyStopDepth;
+  final double safetyStopDurationMin;
 
-  RockBottomModel({
+  const RockBottomModel({
     this.depth,
     this.sac,
     this.ascentRatePerMin,
@@ -18,6 +17,25 @@ class RockBottomModel {
     this.safetyStopDepth,
     this.safetyStopDurationMin,
   });
+
+  RockBottomModel copyWith({
+    Distance depth,
+    Volume sac,
+    Distance ascentRatePerMin,
+    double troubleSolvingDurationMin,
+    Distance safetyStopDepth,
+    double safetyStopDurationMin,
+  }) =>
+      RockBottomModel(
+        depth: depth ?? this.depth,
+        sac: sac ?? this.sac,
+        ascentRatePerMin: ascentRatePerMin ?? this.ascentRatePerMin,
+        troubleSolvingDurationMin:
+            troubleSolvingDurationMin ?? this.troubleSolvingDurationMin,
+        safetyStopDepth: safetyStopDepth ?? this.safetyStopDepth,
+        safetyStopDurationMin:
+            safetyStopDurationMin ?? this.safetyStopDurationMin,
+      );
 
   double get avgAtm => (10 + depth.m / 2) / 10;
 
@@ -36,6 +54,6 @@ class RockBottomModel {
   }
 
   Pressure rockBottomPressure(CylinderModel cylinder) {
-    return PressureBar(volume.liter ~/ cylinder.waterVolume.liter);
+    return PressureBar(volume.liter ~/ cylinder.totalWaterVolume.liter);
   }
 }

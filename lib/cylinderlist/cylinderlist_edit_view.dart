@@ -3,16 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../proto/flaska.pb.dart';
-import '../cylinderlist/cylinderlist_viewmodel.dart';
 import '../models/cylinder_model.dart';
 
 class CylinderEditView extends StatefulWidget {
   final CylinderData cylinder;
-  final CylinderListViewModel model;
+  final Function(CylinderModel) onChange;
+  final Function(Guid) onDelete;
 
   const CylinderEditView({
     @required this.cylinder,
-    @required this.model,
+    @required this.onChange,
+    @required this.onDelete,
   });
 
   @override
@@ -54,14 +55,8 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                             if (cylinder.id.isEmpty) {
                               // This is a new cylinder
                               cylinder.id = Guid.newGuid.toString();
-                              await widget.model.addCylinder(
-                                  CylinderModel.fromData(
-                                      cylinder..selected = true));
-                            } else {
-                              // Editing an existing one
-                              await widget.model.editCylinder(
-                                  CylinderModel.fromData(cylinder));
                             }
+                            widget.onChange(CylinderModel.fromData(cylinder));
                             Navigator.pop(context);
                           }
                         : null,
@@ -76,8 +71,8 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                     child: Text("Delete"),
                     textColor: Colors.redAccent,
                     onPressed: () async {
-                      await widget.model
-                          .deleteCylinder(CylinderModel.fromData(cylinder).id);
+                      await widget
+                          .onDelete(CylinderModel.fromData(cylinder).id);
                       Navigator.pop(context);
                     },
                   ),

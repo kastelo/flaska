@@ -1,7 +1,10 @@
+import 'package:flaska/divecalculation/divecalculation_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cylinderlist/cylinderlist_bloc.dart';
 import '../cylinderlist/cylinderlist_view.dart';
-import '../cylinders/cylinderlist_simulation_container.dart';
+import '../divecalculation/divecalculation_view.dart';
 
 class NavigationView extends StatefulWidget {
   @override
@@ -17,13 +20,7 @@ class _NavigationViewState extends State<NavigationView> {
         appBar: AppBar(
           title: Text('Flaska'),
         ),
-        body: TabBarView(
-          children: [
-            CylinderSimulationContainer(),
-            CylinderListView(),
-            Placeholder(),
-          ],
-        ),
+        body: BodyWidget(),
         bottomNavigationBar: SafeArea(
           top: false,
           child: TabBar(
@@ -34,6 +31,33 @@ class _NavigationViewState extends State<NavigationView> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BodyWidget extends StatelessWidget {
+  const BodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => CylinderListBloc(),
+        ),
+        BlocProvider(
+          create: (_) => DiveCalculationBloc(),
+        ),
+      ],
+      child: TabBarView(
+        children: [
+          DiveCalculationView(),
+          CylinderListView(),
+          Placeholder(),
+        ],
       ),
     );
   }

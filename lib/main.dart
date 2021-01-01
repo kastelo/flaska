@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'cylinderlist/cylinderlist_view.dart';
-import 'cylinders/cylinderlist_simulation_container.dart';
 import 'services/service_locator.dart';
 import 'navigation/navigation_view.dart';
 

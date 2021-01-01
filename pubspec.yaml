@@ -9,10 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bloc:
   flutter_guid:
   get_it:
   path_provider:
-  provider:
   protobuf:
   sprintf:
 
