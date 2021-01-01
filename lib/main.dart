@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'cylinderlist/cylinderlist_view.dart';
 import 'cylinders/cylinderlist_simulation_container.dart';
 import 'services/service_locator.dart';
+import 'navigation/navigation_view.dart';
 
 void main() {
   setupServiceLocator();
-  runApp(MyApp());
+  runApp(FlaskaApp());
 }
 
-class MyApp extends StatelessWidget {
+class FlaskaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,13 +32,8 @@ class MyApp extends StatelessWidget {
         dialogBackgroundColor: Color.fromRGBO(32, 32, 32, 1),
         accentColor: Colors.blueAccent,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flaska'),
-        ),
-        body: CylinderSimulationContainer(),
-      ),
       debugShowCheckedModeBanner: false,
+      home: NavigationView(),
     );
   }
 }

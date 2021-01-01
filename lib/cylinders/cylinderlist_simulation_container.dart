@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:flaska/cylinders/cylinder_edit_view.dart';
-import 'package:flaska/cylinders/cylinderlist_viewmodel.dart';
-import 'package:flaska/proto/flaska.pb.dart';
 
+import '../cylinderlist/cylinderlist_viewmodel.dart';
+import '../models/cylinder_model.dart';
+import '../models/units.dart';
+import '../proto/flaska.pb.dart';
 import '../services/service_locator.dart';
-import 'cylinder_model.dart';
+import 'cylinder_edit_view.dart';
 import 'cylinder_simulation_view.dart';
-import 'units.dart';
 
 class CylinderSimulationContainer extends StatefulWidget {
   @override

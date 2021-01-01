@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 import '../proto/proto.dart';
-import 'cylinder_model.dart';
+import '../models/cylinder_model.dart';
 
 abstract class CylinderListService {
   Future<List<CylinderModel>> getCylinders();

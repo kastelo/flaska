@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-import 'cylinder_model.dart';
-import 'units.dart';
+import '../models/cylinder_model.dart';
+import '../models/units.dart';
 
 class MetricCylinderSimulationView extends StatelessWidget {
   final CylinderModel cylinder;

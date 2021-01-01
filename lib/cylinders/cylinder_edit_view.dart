@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:flaska/cylinders/cylinder_model.dart';
-import 'package:flaska/cylinders/cylinderlist_viewmodel.dart';
-import 'package:flaska/proto/flaska.pb.dart';
+
+import '../proto/flaska.pb.dart';
+import '../cylinderlist/cylinderlist_viewmodel.dart';
+import '../models/cylinder_model.dart';
 
 class CylinderEditView extends StatefulWidget {
   final CylinderData cylinder;

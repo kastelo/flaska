@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:flaska/cylinders/cylinderlist_service.dart';
 
+import '../services/cylinderlist_service.dart';
 import '../services/service_locator.dart';
-import 'cylinder_model.dart';
-import 'units.dart';
+import '../models/cylinder_model.dart';
+import '../models/units.dart';
 
 class CylinderListViewModel extends ChangeNotifier {
   final CylinderListService cylinderListService =
