@@ -7,7 +7,6 @@ import '../models/cylinder_model.dart';
 import '../models/units.dart';
 import '../proto/flaska.pb.dart';
 import '../services/service_locator.dart';
-import 'cylinder_edit_view.dart';
 import 'cylinder_simulation_view.dart';
 
 class CylinderSimulationContainer extends StatefulWidget {
@@ -41,16 +40,11 @@ class _CylinderSimulationContainerState
                 children: [
                       rockBottom(),
                     ] +
-                    model.selectedCylinders.map(editableCylinder).toList() +
+                    model.selectedCylinders.map(cylinder).toList() +
                     [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          FlatButton(
-                            onPressed: () async =>
-                                editCylinder(defaultCylinder()),
-                            child: Text("Add cylinder..."),
-                          ),
                           FlatButton(
                             onPressed: () {
                               model.toggleMetric();
@@ -65,13 +59,6 @@ class _CylinderSimulationContainerState
           ]),
         ),
       ),
-    );
-  }
-
-  Widget editableCylinder(CylinderModel c) {
-    return InkWell(
-      onTap: () async => await editCylinder(c),
-      child: cylinder(c),
     );
   }
 
@@ -250,15 +237,6 @@ class _CylinderSimulationContainerState
                 model.sac.cuft * 2,
               ]);
     return Text(rbg);
-  }
-
-  Future editCylinder(CylinderModel cylinder) async {
-    await showDialog(
-      context: context,
-      builder: (context) =>
-          CylinderEditView(cylinder: cylinder.toData(), model: model),
-    );
-    model.loadData();
   }
 
   CylinderModel defaultCylinder() {

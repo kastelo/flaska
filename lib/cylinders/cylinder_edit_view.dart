@@ -29,61 +29,61 @@ class _CylinderEditViewState extends State<CylinderEditView> {
   @override
   Widget build(BuildContext context) {
     final valid = _formKey.currentState?.validate() ?? false;
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: IntrinsicWidth(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                formTable(),
-                Divider(
-                  height: 32,
-                ),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    FlatButton(
-                      child: Text("Save"),
-                      textColor: Colors.greenAccent,
-                      onPressed: valid
-                          ? () async {
-                              if (cylinder.id.isEmpty) {
-                                // This is a new cylinder
-                                cylinder.id = Guid.newGuid.toString();
-                                await widget.model.addCylinder(
-                                    CylinderModel.fromData(
-                                        cylinder..selected = true));
-                              } else {
-                                // Editing an existing one
-                                await widget.model.editCylinder(
-                                    CylinderModel.fromData(cylinder));
-                              }
-                              Navigator.pop(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Edit Cylinder"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              formTable(),
+              Divider(
+                height: 32,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  FlatButton(
+                    child: Text("Save"),
+                    textColor: Colors.greenAccent,
+                    onPressed: valid
+                        ? () async {
+                            if (cylinder.id.isEmpty) {
+                              // This is a new cylinder
+                              cylinder.id = Guid.newGuid.toString();
+                              await widget.model.addCylinder(
+                                  CylinderModel.fromData(
+                                      cylinder..selected = true));
+                            } else {
+                              // Editing an existing one
+                              await widget.model.editCylinder(
+                                  CylinderModel.fromData(cylinder));
                             }
-                          : null,
-                    ),
-                    FlatButton(
-                      child: Text("Cancel"),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    FlatButton(
-                      child: Text("Delete"),
-                      textColor: Colors.redAccent,
-                      onPressed: () async {
-                        await widget.model.deleteCylinder(
-                            CylinderModel.fromData(cylinder).id);
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                            Navigator.pop(context);
+                          }
+                        : null,
+                  ),
+                  FlatButton(
+                    child: Text("Cancel"),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("Delete"),
+                    textColor: Colors.redAccent,
+                    onPressed: () async {
+                      await widget.model
+                          .deleteCylinder(CylinderModel.fromData(cylinder).id);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -253,6 +253,28 @@ class _CylinderEditViewState extends State<CylinderEditView> {
           metric: "kg",
           imperial: "lb",
         ),
+        titledRow(
+          title: "Twinset",
+          child: Checkbox(
+            value: cylinder.twinset,
+            onChanged: (value) {
+              setState(() {
+                cylinder.twinset = value;
+              });
+            },
+          ),
+        ),
+        titledRow(
+          title: "Selected",
+          child: Checkbox(
+            value: cylinder.selected,
+            onChanged: (value) {
+              setState(() {
+                cylinder.selected = value;
+              });
+            },
+          ),
+        )
       ],
     );
   }
