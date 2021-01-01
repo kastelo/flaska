@@ -152,7 +152,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                 hintText: cylinder.measurements == MeasurementSystem.METRIC
                     ? "Water volume in liters"
                     : "Air volume in cuft"),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
@@ -186,7 +186,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                 hintText: cylinder.measurements == MeasurementSystem.METRIC
                     ? "Working pressure in psi"
                     : "Working pressure in bar"),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
             ],
