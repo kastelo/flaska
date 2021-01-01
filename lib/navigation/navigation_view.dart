@@ -1,9 +1,9 @@
-import 'package:flaska/divecalculation/divecalculation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cylinderlist/cylinderlist_bloc.dart';
 import '../cylinderlist/cylinderlist_view.dart';
+import '../divecalculation/divecalculation_bloc.dart';
 import '../divecalculation/divecalculation_view.dart';
 
 class NavigationView extends StatefulWidget {

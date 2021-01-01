@@ -8,90 +8,65 @@ import '../models/units.dart';
 import 'divecalculation_bloc.dart';
 import 'divecalculation_cylinder_view.dart';
 
-class DiveCalculationView extends StatefulWidget {
-  @override
-  _DiveCalculationViewState createState() => _DiveCalculationViewState();
-}
-
-class _DiveCalculationViewState extends State<DiveCalculationView>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool wantKeepAlive = true;
-
+class DiveCalculationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocBuilder<CylinderListBloc, CylinderListState>(
-      builder: (_, cylinderListState) =>
-          BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
-        builder: (_, diveCalculationState) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(children: <Widget>[
-            sliders(context, diveCalculationState),
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                      rockBottom(context, diveCalculationState),
-                    ] +
-                    cylinderListState.selectedCylinders
-                        .map((c) => cylinder(c, diveCalculationState))
-                        .toList() +
-                    [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          FlatButton(
-                            onPressed: () {
-                              context
-                                  .read<DiveCalculationBloc>()
-                                  .add(SetMetric(!diveCalculationState.metric));
-                            },
-                            child: Text(diveCalculationState.metric
-                                ? "Metric"
-                                : "Imperial"),
-                          ),
-                        ],
-                      ),
-                    ],
-              ),
+      builder: (context, cylinderListState) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: <Widget>[
+          sliders(context),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                    rockBottom(context),
+                  ] +
+                  cylinderListState.selectedCylinders
+                      .map((cyl) => cylinder(context, cyl))
+                      .toList(),
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }
 
-  Widget cylinder(CylinderModel c, DiveCalculationState s) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: Theme.of(context).cardColor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DiveCalculationCylinderView(
-              cylinder: c,
-              rockBottom: s.rockBottom,
-              pressure: s.tankPressure,
-              metric: s.metric,
+  Widget cylinder(BuildContext context, CylinderModel cylinder) =>
+      BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
+        builder: (context, state) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              color: Theme.of(context).cardColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DiveCalculationCylinderView(
+                cylinder: cylinder,
+                rockBottom: state.rockBottom,
+                pressure: state.tankPressure,
+                metric: state.metric,
+              ),
             ),
           ),
         ),
       );
 
-  Widget sliders(BuildContext context, DiveCalculationState state) {
+  Widget sliders(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
-      child: Table(
-        columnWidths: {1: IntrinsicColumnWidth()},
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: [
-          depthSlider(context, state),
-          sacSlider(context, state),
-          pressureSlider(context, state),
-        ],
+      child: BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
+        builder: (context, state) => Table(
+          columnWidths: {1: IntrinsicColumnWidth()},
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            depthSlider(context, state),
+            sacSlider(context, state),
+            pressureSlider(context, state),
+          ],
+        ),
       ),
     );
   }
@@ -199,32 +174,36 @@ class _DiveCalculationViewState extends State<DiveCalculationView>
     );
   }
 
-  Widget rockBottom(BuildContext context, DiveCalculationState state) {
-    final rbg = state.metric
-        ? sprintf(
-            "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at %.0f m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
-            [
-                state.rockBottom.volume.liter,
-                state.rockBottom.troubleSolvingDurationMin,
-                state.rockBottom.depth.m,
-                state.rockBottom.ascentRatePerMin.m,
-                state.rockBottom.sac.liter * 4,
-                state.rockBottom.safetyStopDurationMin,
-                state.rockBottom.safetyStopDepth.m,
-                state.rockBottom.sac.liter * 2,
-              ])
-        : sprintf(
-            "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at %.0f ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
-            [
-                state.rockBottom.volume.cuft,
-                state.rockBottom.troubleSolvingDurationMin,
-                state.rockBottom.depth.m,
-                state.rockBottom.ascentRatePerMin.ft,
-                state.rockBottom.sac.liter * 4,
-                state.rockBottom.safetyStopDurationMin,
-                state.rockBottom.safetyStopDepth.m,
-                state.rockBottom.sac.liter * 2,
-              ]);
-    return Text(rbg);
+  Widget rockBottom(BuildContext context) {
+    return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
+      builder: (context, state) {
+        final rbg = state.metric
+            ? sprintf(
+                "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at %.0f m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
+                [
+                    state.rockBottom.volume.liter,
+                    state.rockBottom.troubleSolvingDurationMin,
+                    state.rockBottom.depth.m,
+                    state.rockBottom.ascentRatePerMin.m,
+                    state.rockBottom.sac.liter * 4,
+                    state.rockBottom.safetyStopDurationMin,
+                    state.rockBottom.safetyStopDepth.m,
+                    state.rockBottom.sac.liter * 2,
+                  ])
+            : sprintf(
+                "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at %.0f ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
+                [
+                    state.rockBottom.volume.cuft,
+                    state.rockBottom.troubleSolvingDurationMin,
+                    state.rockBottom.depth.m,
+                    state.rockBottom.ascentRatePerMin.ft,
+                    state.rockBottom.sac.liter * 4,
+                    state.rockBottom.safetyStopDurationMin,
+                    state.rockBottom.safetyStopDepth.m,
+                    state.rockBottom.sac.liter * 2,
+                  ]);
+        return Text(rbg);
+      },
+    );
   }
 }
