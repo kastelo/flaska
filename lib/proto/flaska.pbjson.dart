@@ -38,7 +38,8 @@ const CylinderData$json = const {
     const {'1': 'volume', '3': 5, '4': 1, '5': 1, '10': 'volume'},
     const {'1': 'working_pressure', '3': 6, '4': 1, '5': 5, '10': 'workingPressure'},
     const {'1': 'weight', '3': 7, '4': 1, '5': 1, '10': 'weight'},
-    const {'1': 'selected', '3': 8, '4': 1, '5': 8, '10': 'selected'},
+    const {'1': 'twinset', '3': 8, '4': 1, '5': 8, '10': 'twinset'},
+    const {'1': 'selected', '3': 9, '4': 1, '5': 8, '10': 'selected'},
   ],
 };
 

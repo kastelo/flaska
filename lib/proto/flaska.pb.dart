@@ -55,7 +55,8 @@ class CylinderData extends $pb.GeneratedMessage {
     ..a<$core.double>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'volume', $pb.PbFieldType.OD)
     ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'workingPressure', $pb.PbFieldType.O3)
     ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', $pb.PbFieldType.OD)
-    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selected')
+    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'twinset')
+    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selected')
     ..hasRequiredFields = false
   ;
 
@@ -146,12 +147,21 @@ class CylinderData extends $pb.GeneratedMessage {
   void clearWeight() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.bool get selected => $_getBF(7);
+  $core.bool get twinset => $_getBF(7);
   @$pb.TagNumber(8)
-  set selected($core.bool v) { $_setBool(7, v); }
+  set twinset($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasSelected() => $_has(7);
+  $core.bool hasTwinset() => $_has(7);
   @$pb.TagNumber(8)
-  void clearSelected() => clearField(8);
+  void clearTwinset() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get selected => $_getBF(8);
+  @$pb.TagNumber(9)
+  set selected($core.bool v) { $_setBool(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasSelected() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearSelected() => clearField(9);
 }
 

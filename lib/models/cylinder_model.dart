@@ -20,15 +20,16 @@ class CylinderModel {
   Weight weight;
   Volume userSetVolume;
   Volume waterVolume;
+  bool twinset;
   bool selected;
 
   CylinderModel.metric(this.id, this.name, this.metal, this.workingPressure,
-      this.waterVolume, this.weight, this.selected)
+      this.waterVolume, this.weight, this.twinset, this.selected)
       : measurements = MeasurementSystem.METRIC,
         userSetVolume = waterVolume;
 
   CylinderModel.imperial(this.id, this.name, this.metal, this.workingPressure,
-      this.userSetVolume, this.weight, this.selected)
+      this.userSetVolume, this.weight, this.twinset, this.selected)
       : measurements = MeasurementSystem.IMPERIAL,
         waterVolume =
             VolumeLiter.fromPressure(userSetVolume.cuft, workingPressure.psi);
@@ -50,6 +51,7 @@ class CylinderModel {
         weight = d.measurements == MeasurementSystem.METRIC
             ? WeightKg(d.weight)
             : WeightLb(d.weight),
+        twinset = d.twinset,
         selected = d.selected;
 
   CylinderData toData() {

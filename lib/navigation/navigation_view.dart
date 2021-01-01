@@ -21,7 +21,7 @@ class _NavigationViewState extends State<NavigationView> {
       child: Consumer<NavigationViewModel>(
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(
-            title: Text('Flaska ${model.index}'),
+            title: Text('Flaska · ${model.title}'),
           ),
           body: body(),
           bottomNavigationBar: BottomNavigationBar(
@@ -29,12 +29,16 @@ class _NavigationViewState extends State<NavigationView> {
             onTap: model.setIndex,
             items: [
               BottomNavigationBarItem(
-                icon: new Icon(Icons.home),
-                label: 'Home',
+                icon: new Icon(Icons.calculate),
+                label: 'Calculation',
               ),
               BottomNavigationBarItem(
-                icon: new Icon(Icons.mail),
-                label: 'Messages',
+                icon: new Icon(Icons.list),
+                label: 'Cylinders',
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.settings),
+                label: 'Settings',
               ),
             ],
           ),
@@ -49,6 +53,9 @@ class _NavigationViewState extends State<NavigationView> {
         return CylinderListView();
       case NavigationPage.DiveCalculationPage:
         return CylinderSimulationContainer();
+      case NavigationPage.SettingsPage:
+      default:
+        return Placeholder();
     }
   }
 }

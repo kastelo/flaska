@@ -255,12 +255,8 @@ class _CylinderSimulationContainerState
   Future editCylinder(CylinderModel cylinder) async {
     await showDialog(
       context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: CylinderEditView(cylinder: cylinder.toData(), model: model),
-        ),
-      ),
+      builder: (context) =>
+          CylinderEditView(cylinder: cylinder.toData(), model: model),
     );
     model.loadData();
   }
@@ -268,8 +264,8 @@ class _CylinderSimulationContainerState
   CylinderModel defaultCylinder() {
     return model.metric
         ? CylinderModel.metric(null, "", Metal.STEEL, PressureBar(232),
-            VolumeLiter(12), WeightKg(14.5), true)
+            VolumeLiter(12), WeightKg(14.5), false, true)
         : CylinderModel.imperial(null, "", Metal.STEEL, PressurePsi(3442),
-            VolumeCuFt(80), WeightLb(28.3), true);
+            VolumeCuFt(80), WeightLb(28.3), false, true);
   }
 }

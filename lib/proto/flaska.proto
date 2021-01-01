@@ -22,5 +22,6 @@ message CylinderData {
     double volume = 5;
     int32 working_pressure = 6;
     double weight = 7;
-    bool selected = 8;
+    bool twinset = 8;
+    bool selected = 9;
 }
