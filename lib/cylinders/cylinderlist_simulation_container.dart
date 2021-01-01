@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
 
-import '../cylinderlist/cylinderlist_viewmodel.dart';
 import '../models/cylinder_model.dart';
 import '../models/units.dart';
-import '../proto/flaska.pb.dart';
 import '../services/service_locator.dart';
 import 'cylinder_simulation_view.dart';
+import 'cylinder_simulation_viewmodel.dart';
 
 class CylinderSimulationContainer extends StatefulWidget {
   @override
@@ -18,7 +17,8 @@ class CylinderSimulationContainer extends StatefulWidget {
 class _CylinderSimulationContainerState
     extends State<CylinderSimulationContainer>
     with AutomaticKeepAliveClientMixin {
-  final CylinderListViewModel model = serviceLocator<CylinderListViewModel>();
+  final CylinderSimulationViewModel model =
+      serviceLocator<CylinderSimulationViewModel>();
 
   @override
   initState() {
@@ -32,11 +32,11 @@ class _CylinderSimulationContainerState
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ChangeNotifierProvider<CylinderListViewModel>(
+    return ChangeNotifierProvider<CylinderSimulationViewModel>(
       create: (context) => model,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<CylinderListViewModel>(
+        child: Consumer<CylinderSimulationViewModel>(
           builder: (context, model, child) => Column(children: <Widget>[
             sliders(),
             Expanded(
@@ -80,9 +80,8 @@ class _CylinderSimulationContainerState
             padding: const EdgeInsets.all(8.0),
             child: MetricCylinderSimulationView(
               cylinder: c,
+              rockBottom: model.rockBottom,
               pressure: model.pressure,
-              sac: model.sac,
-              depth: model.depth,
             ),
           ),
         ),
@@ -99,9 +98,8 @@ class _CylinderSimulationContainerState
             padding: const EdgeInsets.all(8.0),
             child: ImperialCylinderSimulationView(
               cylinder: c,
+              rockBottom: model.rockBottom,
               pressure: model.pressure,
-              sac: model.sac,
-              depth: model.depth,
             ),
           ),
         ),
@@ -216,39 +214,31 @@ class _CylinderSimulationContainerState
   }
 
   Widget rockBottom() {
-    final vol =
-        model.cylinders.first.rockBottom(depth: model.depth, sac: model.sac);
     final rbg = model.metric
         ? sprintf(
-            "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at 10 m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
+            "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at %.0f m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
             [
-                vol.liter,
-                troubleSolvingMin,
-                model.depth.m,
-                model.sac.liter * 4,
-                safetyStopDurationMin,
-                safetyStopDepth.m,
-                model.sac.liter * 2,
+                model.rockBottom.volume.liter,
+                model.rockBottom.troubleSolvingDurationMin,
+                model.rockBottom.depth.m,
+                model.rockBottom.ascentRatePerMin.m,
+                model.rockBottom.sac.liter * 4,
+                model.rockBottom.safetyStopDurationMin,
+                model.rockBottom.safetyStopDepth.m,
+                model.rockBottom.sac.liter * 2,
               ])
         : sprintf(
-            "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at 33 ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
+            "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at %.0f ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
             [
-                vol.cuft,
-                troubleSolvingMin,
-                model.depth.ft,
-                model.sac.cuft * 4,
-                safetyStopDurationMin,
-                safetyStopDepth.ft,
-                model.sac.cuft * 2,
+                model.rockBottom.volume.cuft,
+                model.rockBottom.troubleSolvingDurationMin,
+                model.rockBottom.depth.m,
+                model.rockBottom.ascentRatePerMin.ft,
+                model.rockBottom.sac.liter * 4,
+                model.rockBottom.safetyStopDurationMin,
+                model.rockBottom.safetyStopDepth.m,
+                model.rockBottom.sac.liter * 2,
               ]);
     return Text(rbg);
-  }
-
-  CylinderModel defaultCylinder() {
-    return model.metric
-        ? CylinderModel.metric(null, "", Metal.STEEL, PressureBar(232),
-            VolumeLiter(12), WeightKg(14.5), false, true)
-        : CylinderModel.imperial(null, "", Metal.STEEL, PressurePsi(3442),
-            VolumeCuFt(80), WeightLb(28.3), false, true);
   }
 }

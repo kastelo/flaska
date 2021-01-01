@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 
 import '../cylinderlist/cylinderlist_viewmodel.dart';
+import '../cylinders/cylinder_simulation_viewmodel.dart';
 import 'cylinderlist_service.dart';
 
 GetIt serviceLocator = GetIt.instance;
@@ -10,4 +11,5 @@ void setupServiceLocator() {
       () => LocalCylinderListService());
 
   serviceLocator.registerFactory(() => CylinderListViewModel());
+  serviceLocator.registerFactory(() => CylinderSimulationViewModel());
 }

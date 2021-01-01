@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
 import '../models/cylinder_model.dart';
+import '../models/rockbottom_model.dart';
 import '../models/units.dart';
 
 class MetricCylinderSimulationView extends StatelessWidget {
   final CylinderModel cylinder;
+  final RockBottomModel rockBottom;
   final Pressure pressure;
-  final Volume sac;
-  final Distance depth;
 
-  MetricCylinderSimulationView(
-      {@required this.cylinder,
-      @required this.pressure,
-      @required this.sac,
-      @required this.depth});
+  MetricCylinderSimulationView({
+    @required this.cylinder,
+    @required this.rockBottom,
+    @required this.pressure,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,7 @@ class MetricCylinderSimulationView extends StatelessWidget {
       pressureStyle = warningStyle(context);
     }
 
-    final airTimeMin =
-        cylinder.airTimeMin(pressure: pressure, sac: sac, depth: depth);
+    final airTimeMin = rockBottom.airtimeUntilRB(cylinder, pressure);
     TextStyle airTimeStyle;
     if (airTimeMin <= 5) {
       airTimeStyle = errorStyle(context);
@@ -87,10 +86,7 @@ class MetricCylinderSimulationView extends StatelessWidget {
                   ),
                   TextSpan(
                     text: " to %d bar (RB)".format([
-                      cylinder
-                          .rockBottomPressure(sac: sac, depth: depth)
-                          .bar
-                          .roundi(5),
+                      rockBottom.rockBottomPressure(cylinder).bar.roundi(5),
                     ]),
                   ),
                 ],
@@ -117,15 +113,14 @@ class MetricCylinderSimulationView extends StatelessWidget {
 
 class ImperialCylinderSimulationView extends StatelessWidget {
   final CylinderModel cylinder;
+  final RockBottomModel rockBottom;
   final Pressure pressure;
-  final Volume sac;
-  final Distance depth;
 
-  ImperialCylinderSimulationView(
-      {@required this.cylinder,
-      @required this.pressure,
-      @required this.sac,
-      @required this.depth});
+  ImperialCylinderSimulationView({
+    @required this.cylinder,
+    @required this.rockBottom,
+    @required this.pressure,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +131,7 @@ class ImperialCylinderSimulationView extends StatelessWidget {
       pressureStyle = warningStyle(context);
     }
 
-    final airTimeMin =
-        cylinder.airTimeMin(pressure: pressure, sac: sac, depth: depth);
+    final airTimeMin = rockBottom.airtimeUntilRB(cylinder, pressure);
     TextStyle airTimeStyle;
     if (airTimeMin <= 5) {
       airTimeStyle = errorStyle(context);
@@ -198,10 +192,7 @@ class ImperialCylinderSimulationView extends StatelessWidget {
                   ),
                   TextSpan(
                     text: " to %d psi (RB)".format([
-                      cylinder
-                          .rockBottomPressure(sac: sac, depth: depth)
-                          .psi
-                          .roundi(100),
+                      rockBottom.rockBottomPressure(cylinder).psi.roundi(100),
                     ]),
                   ),
                 ],

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_guid/flutter_guid.dart';
 
 import '../proto/proto.dart';
@@ -91,27 +89,4 @@ class CylinderModel {
 
   Volume get externalVolume =>
       VolumeLiter(weight.kg / materialDensity + waterVolume.liter);
-
-  double airTimeMin({Pressure pressure, Volume sac, Distance depth}) => max(
-      0,
-      (compressedVolume(pressure).liter -
-              rockBottom(sac: sac, depth: depth).liter) /
-          sac.liter /
-          (10 + depth.m) *
-          10);
-
-  Volume rockBottom({Volume sac, Distance depth}) {
-    // Four minutes at depth, two people, double SAC
-    final troubleSolvingL =
-        troubleSolvingMin * sac.liter * 4 * (10 + depth.m) / 10;
-    // Ascent at 10 m/min, double SAC
-    final ascentL = depth.m / 10 * sac.liter * 4 * (10 + depth.m / 2) / 10;
-    // Five minutes safety stop, two people, normal SAC
-    final safetyStopL =
-        safetyStopDurationMin * sac.liter * 2 * (10 + safetyStopDepth.m) / 10;
-    return VolumeLiter(troubleSolvingL + ascentL + safetyStopL);
-  }
-
-  Pressure rockBottomPressure({Volume sac, Distance depth}) => PressureBar(
-      rockBottom(sac: sac, depth: depth).liter ~/ waterVolume.liter);
 }
