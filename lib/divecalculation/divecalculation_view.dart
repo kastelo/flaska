@@ -65,7 +65,6 @@ class DiveCalculationView extends StatelessWidget {
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
             depthSlider(context, dvm),
-            sacSlider(context, dvm),
             pressureSlider(context, dvm),
           ],
         );
@@ -113,25 +112,6 @@ class DiveCalculationView extends StatelessWidget {
     );
   }
 
-  TableRow sacSlider(BuildContext context, DiveCalculationViewModel dvm) {
-    return TableRow(
-      children: [
-        Slider(
-            value: dvm.sac,
-            min: 5,
-            max: dvm.maxSAC,
-            onChanged: (v) {
-              context.read<DiveCalculationBloc>().add(SetSAC(dvm.toVolume(v)));
-            }),
-        Text(
-          dvm.sacLabel,
-          textAlign: TextAlign.right,
-          style: Theme.of(context).textTheme.caption,
-        ),
-      ],
-    );
-  }
-
   Widget rockBottom(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
       builder: (context, state) {
@@ -163,28 +143,34 @@ class DiveCalculationViewModel {
 
   String get rockBottomLabel => state.metric
       ? sprintf(
-          "Rock bottom gas is %.0f L, based on %.0f min at %.0f m followed by ascent at %.0f m/min (both at %.0f L/min SAC) and %.0f min safety stop at %.0f m (at %.0f L/min SAC).",
+          "Rock bottom gas is %.0f L, based on %.0f min at %.0f m (SAC: %.0f L/min) followed by ascent at %.0f m/min (SAC: %.0f L/min) and %.0f min safety stop at %.0f m (SAC: %.0f L/min).",
           [
               state.rockBottom.volume.liter,
               state.rockBottom.troubleSolvingDurationMin,
               state.rockBottom.depth.m,
+              state.rockBottom.sac.liter *
+                  state.rockBottom.troubleSolvingSacMultiplier,
               state.rockBottom.ascentRatePerMin.m,
-              state.rockBottom.sac.liter * 4,
+              state.rockBottom.sac.liter * state.rockBottom.ascentSacMultiplier,
               state.rockBottom.safetyStopDurationMin,
               state.rockBottom.safetyStopDepth.m,
-              state.rockBottom.sac.liter * 2,
+              state.rockBottom.sac.liter *
+                  state.rockBottom.safetyStopSacMultiplier,
             ])
       : sprintf(
-          "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft followed by ascent at %.0f ft/min (both at %.1f cuft/min SAC) and %.0f min safety stop at %.0f ft (at %.1f cuft/min SAC).",
+          "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft (SAC: %.1f cuft/minC) followed by ascent at %.0f ft/min (SAC: %.1f cuft/min) and %.0f min safety stop at %.0f ft (SAC: %.1f cuft/min).",
           [
               state.rockBottom.volume.cuft,
               state.rockBottom.troubleSolvingDurationMin,
               state.rockBottom.depth.m,
+              state.rockBottom.sac.cuft *
+                  state.rockBottom.troubleSolvingSacMultiplier,
               state.rockBottom.ascentRatePerMin.ft,
-              state.rockBottom.sac.liter * 4,
+              state.rockBottom.sac.cuft * state.rockBottom.ascentSacMultiplier,
               state.rockBottom.safetyStopDurationMin,
               state.rockBottom.safetyStopDepth.m,
-              state.rockBottom.sac.liter * 2,
+              state.rockBottom.sac.cuft *
+                  state.rockBottom.safetyStopSacMultiplier,
             ]);
 
   double get maxDepth => state.metric ? 40 : 130;

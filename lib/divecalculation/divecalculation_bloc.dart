@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:flaska/proto/flaska.pbserver.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../settings/settings_bloc.dart';
 import '../models/units.dart';
 import '../models/rockbottom_model.dart';
 
@@ -53,25 +57,64 @@ class SetTankPressure extends DiveCalculationEvent {
   const SetTankPressure(this.pressure);
 }
 
+class _NewSettings extends DiveCalculationEvent {
+  final SettingsData settings;
+  const _NewSettings(this.settings);
+}
+
 class DiveCalculationBloc
     extends Bloc<DiveCalculationEvent, DiveCalculationState> {
-  DiveCalculationBloc()
+  StreamSubscription settingsSub;
+
+  DiveCalculationBloc(SettingsBloc settingsBloc)
       : super(DiveCalculationState(
           rockBottom: RockBottomModel(
             depth: DistanceM(15),
             sac: VolumeLiter(15),
             ascentRatePerMin: DistanceM(10),
+            ascentSacMultiplier: 4,
             troubleSolvingDurationMin: 4,
+            troubleSolvingSacMultiplier: 4,
             safetyStopDepth: DistanceM(5),
             safetyStopDurationMin: 5,
+            safetyStopSacMultiplier: 2,
           ),
           tankPressure: PressureBar(200),
           metric: true,
-        ));
+        )) {
+    settingsSub = settingsBloc.listen((settingsState) {
+      this.add(_NewSettings(settingsState.settings));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    settingsSub.cancel();
+    return super.close();
+  }
 
   @override
   Stream<DiveCalculationState> mapEventToState(
       DiveCalculationEvent event) async* {
+    if (event is _NewSettings) {
+      final newState = state.copyWith(
+        metric: event.settings.isMetric,
+        rockBottom: RockBottomModel(
+          depth: state.rockBottom.depth,
+          sac: event.settings.sacRate,
+          ascentRatePerMin: event.settings.ascentRate,
+          ascentSacMultiplier: event.settings.ascentSacMultiplier,
+          troubleSolvingDurationMin: event.settings.troubleSolvingDuration,
+          troubleSolvingSacMultiplier:
+              event.settings.troubleSolvingSacMultiplier,
+          safetyStopDepth: event.settings.safetyStopDepth,
+          safetyStopDurationMin: event.settings.safetyStopDuration,
+          safetyStopSacMultiplier: event.settings.safetyStopSacMultiplier,
+        ),
+      );
+      yield newState;
+    }
+
     if (event is SetDepth) {
       var depth = event.depth;
       if (state.metric) {

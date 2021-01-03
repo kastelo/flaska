@@ -45,16 +45,17 @@ class BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsBloc = SettingsBloc();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (_) => CylinderListBloc(),
         ),
         BlocProvider(
-          create: (_) => DiveCalculationBloc(),
+          create: (_) => DiveCalculationBloc(settingsBloc),
         ),
         BlocProvider(
-          create: (_) => SettingsBloc(),
+          create: (_) => settingsBloc,
         ),
       ],
       child: TabBarView(
