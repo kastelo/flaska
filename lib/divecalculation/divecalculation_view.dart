@@ -115,7 +115,10 @@ class DiveCalculationView extends StatelessWidget {
   Widget rockBottom(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
       builder: (context, state) {
-        return Text(DiveCalculationViewModel(state).rockBottomLabel);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(DiveCalculationViewModel(state).rockBottomLabel),
+        );
       },
     );
   }

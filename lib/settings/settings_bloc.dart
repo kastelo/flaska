@@ -1,6 +1,7 @@
 import 'package:flaska/services/service_locator.dart';
 import 'package:flaska/services/settings_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:protobuf/protobuf.dart';
 
 import '../models/units.dart';
 import '../proto/proto.dart';
@@ -44,15 +45,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   @override
   Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
     if (event is _NewSettingsEvent) {
-      yield SettingsState(event.settings);
+      yield SettingsState(event.settings.deepCopy());
     }
     if (event is SetMeasurementSystem) {
-      final newSettings = state.settings..measurements = event.measurements;
+      final newSettings = state.settings.deepCopy()
+        ..measurements = event.measurements;
       await settingsService.saveSettings(newSettings);
       yield SettingsState(newSettings);
     }
     if (event is UpdateSettings) {
-      final newSettings = event.fn(state.settings);
+      final newSettings = event.fn(state.settings.deepCopy());
       await settingsService.saveSettings(newSettings);
       yield SettingsState(newSettings);
     }

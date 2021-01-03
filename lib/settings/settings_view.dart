@@ -26,6 +26,7 @@ class _SettingsViewState extends State<SettingsView> {
   final _safetyStopDurationController = TextEditingController();
   final _safetyStopDepthController = TextEditingController();
   final _safetyStopSacMultiplierController = TextEditingController();
+  SettingsData prevSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -62,27 +63,32 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Widget formTable(BuildContext context, SettingsData settings) {
-    _sacRateController.text = settings.isMetric
-        ? settings.sacRate.liter.toString()
-        : settings.sacRate.cuft.toString();
+    if (settings != prevSettings) {
+      prevSettings = settings;
 
-    _troubleSolvingDurationController.text =
-        settings.troubleSolvingDuration.toString();
-    _troubleSolvingSacMultiplierController.text =
-        settings.troubleSolvingSacMultiplier.toString();
+      _sacRateController.text = settings.isMetric
+          ? settings.sacRate.liter.toString()
+          : settings.sacRate.cuft.toString();
 
-    _ascentRateController.text = settings.isMetric
-        ? settings.ascentRate.m.toString()
-        : settings.ascentRate.ft.toString();
-    _ascentSacMultiplierController.text =
-        settings.ascentSacMultiplier.toString();
+      _troubleSolvingDurationController.text =
+          settings.troubleSolvingDuration.toString();
+      _troubleSolvingSacMultiplierController.text =
+          settings.troubleSolvingSacMultiplier.toString();
 
-    _safetyStopDurationController.text = settings.safetyStopDuration.toString();
-    _safetyStopDepthController.text = settings.isMetric
-        ? settings.safetyStopDepth.m.toString()
-        : settings.safetyStopDepth.ft.toString();
-    _safetyStopSacMultiplierController.text =
-        settings.safetyStopSacMultiplier.toString();
+      _ascentRateController.text = settings.isMetric
+          ? settings.ascentRate.m.toString()
+          : settings.ascentRate.ft.toString();
+      _ascentSacMultiplierController.text =
+          settings.ascentSacMultiplier.toString();
+
+      _safetyStopDurationController.text =
+          settings.safetyStopDuration.toString();
+      _safetyStopDepthController.text = settings.isMetric
+          ? settings.safetyStopDepth.m.toString()
+          : settings.safetyStopDepth.ft.toString();
+      _safetyStopSacMultiplierController.text =
+          settings.safetyStopSacMultiplier.toString();
+    }
 
     return Table(
       columnWidths: {
@@ -109,19 +115,22 @@ class _SettingsViewState extends State<SettingsView> {
         ),
         titledUnitRow(
           title: "SAC Rate",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _sacRateController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d = double.parse(_sacRateController.text, (_) => 0);
               final vol = settings.isMetric ? VolumeLiter(d) : VolumeCuFt(d);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..sacRate = vol));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _sacRateController,
+            ),
           ),
           metric: "L/min",
           imperial: "ft³/min",
@@ -130,53 +139,64 @@ class _SettingsViewState extends State<SettingsView> {
         headerRow(context: context, title: "Trouble solving"),
         titledRow(
           title: "Duration",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _troubleSolvingDurationController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d = double.parse(
+                  _troubleSolvingDurationController.text, (_) => 0);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..troubleSolvingDuration = d));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _troubleSolvingDurationController,
+            ),
           ),
           trailer: "min",
         ),
         titledRow(
           title: "SAC multiplier",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _troubleSolvingSacMultiplierController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d = double.parse(
+                  _troubleSolvingSacMultiplierController.text, (_) => 0);
               context.read<SettingsBloc>().add(
                   UpdateSettings((s) => s..troubleSolvingSacMultiplier = d));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _troubleSolvingSacMultiplierController,
+            ),
           ),
           trailer: "×",
         ),
         headerRow(context: context, title: "Ascent"),
         titledUnitRow(
           title: "Ascent rate",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _ascentRateController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d = double.parse(_ascentRateController.text, (_) => 0);
               final rate = settings.isMetric ? DistanceM(d) : DistanceFt(d);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..ascentRate = rate));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _ascentRateController,
+            ),
           ),
           metric: "m/min",
           imperial: "ft/min",
@@ -184,54 +204,65 @@ class _SettingsViewState extends State<SettingsView> {
         ),
         titledRow(
           title: "SAC multiplier",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _ascentSacMultiplierController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d =
+                  double.parse(_ascentSacMultiplierController.text, (_) => 0);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..ascentSacMultiplier = d));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _ascentSacMultiplierController,
+            ),
           ),
           trailer: "×",
         ),
         headerRow(context: context, title: "Safety stop"),
         titledRow(
           title: "Duration",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _safetyStopDurationController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d =
+                  double.parse(_safetyStopDurationController.text, (_) => 0);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..safetyStopDuration = d));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _safetyStopDurationController,
+            ),
           ),
           trailer: "min",
         ),
         titledUnitRow(
           title: "Depth",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _safetyStopDepthController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d = double.parse(_safetyStopDepthController.text, (_) => 0);
               final dep = settings.isMetric ? DistanceM(d) : DistanceFt(d);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..safetyStopDepth = dep));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _safetyStopDepthController,
+            ),
           ),
           metric: "m",
           imperial: "ft",
@@ -239,18 +270,22 @@ class _SettingsViewState extends State<SettingsView> {
         ),
         titledRow(
           title: "SAC multiplier",
-          child: TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
-            controller: _safetyStopSacMultiplierController,
-            onSubmitted: (value) {
-              final d = double.parse(value, (_) => 0);
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d = double.parse(
+                  _safetyStopSacMultiplierController.text, (_) => 0);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..safetyStopSacMultiplier = d));
             },
+            child: TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              controller: _safetyStopSacMultiplierController,
+            ),
           ),
           trailer: "×",
         ),
