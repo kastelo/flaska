@@ -17,13 +17,16 @@ class FlaskaApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.15),
+        canvasColor: Colors.white,
+        cardColor: Colors.grey.shade200,
+        tabBarTheme: TabBarTheme(
+            labelColor: Colors.blue,
+            unselectedLabelColor: Colors.grey.shade800),
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.dark,
-        textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.15),
         primaryColor: Color.fromRGBO(16, 16, 16, 1),
         canvasColor: Color.fromRGBO(0, 0, 0, 1),
         cardColor: Color.fromRGBO(24, 24, 24, 1),

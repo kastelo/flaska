@@ -42,7 +42,7 @@ class DiveCalculationView extends StatelessWidget {
               color: Theme.of(context).cardColor,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: DiveCalculationCylinderView(
                 cylinder: cylinder,
                 rockBottom: state.rockBottom,

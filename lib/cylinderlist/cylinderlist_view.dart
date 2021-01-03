@@ -17,7 +17,7 @@ class CylinderListView extends StatelessWidget {
               .map(
                 (c) => ListTile(
                   title: Text(c.name),
-                  trailing: Checkbox(
+                  trailing: Switch(
                     value: c.selected,
                     onChanged: (selected) => context
                         .read<CylinderListBloc>()
