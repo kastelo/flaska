@@ -11,39 +11,52 @@ class SettingsView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<SettingsBloc, SettingsState>(
-        builder: (context, state) => formTable(state.settings),
+        builder: (context, state) => GestureDetector(
+          onTap: () {
+            var currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                formTable(context, state.settings),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Widget formTable(SettingsData settings) {
-    return Table(
-      columnWidths: {
-        0: IntrinsicColumnWidth(),
-        2: IntrinsicColumnWidth(),
-      },
-      defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
-      children: <TableRow>[
-        titledRow(
-          title: "System",
-          child: DropdownButtonFormField<MeasurementSystem>(
-            value: settings.measurements,
-            items: [
-              DropdownMenuItem(
-                  value: MeasurementSystem.METRIC, child: Text("Metric")),
-              DropdownMenuItem(
-                  value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
-            ],
-            onChanged: (value) {},
+  Widget formTable(BuildContext context, SettingsData settings) {
+    return Form(
+      child: Table(
+        columnWidths: {
+          0: IntrinsicColumnWidth(),
+          2: IntrinsicColumnWidth(),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+        children: <TableRow>[
+          headerRow(context: context, title: "General"),
+          titledRow(
+            title: "System",
+            child: DropdownButtonFormField<MeasurementSystem>(
+              value: settings.measurements,
+              items: [
+                DropdownMenuItem(
+                    value: MeasurementSystem.METRIC, child: Text("Metric")),
+                DropdownMenuItem(
+                    value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
+              ],
+              onChanged: (value) {},
+            ),
           ),
-        ),
-        titledUnitRow(
+          titledUnitRow(
             title: "SAC Rate",
             child: TextFormField(
-              decoration: InputDecoration(
-                  hintText: settings.measurements == MeasurementSystem.METRIC
-                      ? "SAC rate in liters per minute"
-                      : "SAC rate in cuft per minute"),
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
@@ -52,7 +65,7 @@ class SettingsView extends StatelessWidget {
               onChanged: (value) {},
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'The cylinder needs a volume';
+                  return 'Must enter a SAC rate';
                 }
                 try {
                   if (double.parse(value) <= 0) {
@@ -64,14 +77,229 @@ class SettingsView extends StatelessWidget {
                 return null;
               },
             ),
-            metric: "L",
-            imperial: "ft³",
-            settings: settings),
-      ],
+            metric: "L/min",
+            imperial: "ft³/min",
+            settings: settings,
+          ),
+          headerRow(context: context, title: "Trouble solving"),
+          titledRow(
+            title: "Duration",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.troubleSolvingDuration.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving duration';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            trailer: "min",
+          ),
+          titledRow(
+            title: "SAC multiplier",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.troubleSolvingDuration.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving SAC multiplier';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            trailer: "×",
+          ),
+          headerRow(context: context, title: "Ascent"),
+          titledUnitRow(
+            title: "Ascent rate",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.ascentRate.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving duration';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            metric: "m/min",
+            imperial: "ft/min",
+            settings: settings,
+          ),
+          titledRow(
+            title: "SAC multiplier",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.ascentSacMultiplier.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving SAC multiplier';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            trailer: "×",
+          ),
+          headerRow(context: context, title: "Safety stop"),
+          titledRow(
+            title: "Duration",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.safetystopDuration.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving duration';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            trailer: "min",
+          ),
+          titledUnitRow(
+            title: "Depth",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.safetystopDepth.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving duration';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            metric: "m",
+            imperial: "ft",
+            settings: settings,
+          ),
+          titledRow(
+            title: "SAC multiplier",
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+              ],
+              initialValue: settings.safetystopSacMultiplier.toString(),
+              onChanged: (value) {},
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Must enter a trouble solving SAC multiplier';
+                }
+                try {
+                  if (double.parse(value) <= 0) {
+                    return 'Must be a positive number';
+                  }
+                } catch (e) {
+                  return 'Must be a valid number';
+                }
+                return null;
+              },
+            ),
+            trailer: "×",
+          ),
+        ],
+      ),
     );
   }
 
-  TableRow titledRow({String title, Widget child}) {
+  Widget troubleSolvingTable(SettingsData settings) {
+    return Form(
+      child: Table(
+        columnWidths: {
+          0: IntrinsicColumnWidth(),
+          2: IntrinsicColumnWidth(),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+        children: <TableRow>[],
+      ),
+    );
+  }
+
+  TableRow headerRow({
+    BuildContext context,
+    String title,
+  }) {
+    return TableRow(children: [
+      Container(),
+      Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Text(title,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                .copyWith(color: Colors.grey)),
+      ),
+      Container(),
+    ]);
+  }
+
+  TableRow titledRow({String title, Widget child, String trailer}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -81,7 +309,10 @@ class SettingsView extends StatelessWidget {
         ),
       ),
       child,
-      Container(),
+      trailer == null || trailer.isEmpty
+          ? Container()
+          : Padding(
+              padding: const EdgeInsets.only(left: 16.0), child: Text(trailer)),
     ]);
   }
 
