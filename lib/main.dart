@@ -22,6 +22,7 @@ class FlaskaApp extends StatelessWidget {
         tabBarTheme: TabBarTheme(
             labelColor: Colors.blue,
             unselectedLabelColor: Colors.grey.shade800),
+        toggleableActiveColor: Colors.blueAccent,
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.blue,
@@ -33,6 +34,10 @@ class FlaskaApp extends StatelessWidget {
         dialogBackgroundColor: Color.fromRGBO(32, 32, 32, 1),
         accentColor: Colors.blueAccent,
         dividerColor: Color.fromRGBO(64, 64, 64, 1),
+        toggleableActiveColor: Colors.blueAccent,
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(primary: Colors.white),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: NavigationView(),

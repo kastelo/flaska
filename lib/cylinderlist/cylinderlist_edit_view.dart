@@ -43,18 +43,19 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               formTable(),
               Divider(
                 height: 32,
               ),
               Wrap(
-                alignment: WrapAlignment.center,
+                alignment: WrapAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
+                  OutlinedButton(
                     child: Text("Save"),
-                    textColor: Colors.greenAccent,
+                    style:
+                        OutlinedButton.styleFrom(primary: Colors.greenAccent),
                     onPressed: valid
                         ? () async {
                             if (cylinder.id.isEmpty) {
@@ -66,21 +67,23 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                           }
                         : null,
                   ),
-                  FlatButton(
+                  OutlinedButton(
                     child: Text("Cancel"),
                     onPressed: () async {
                       Navigator.pop(context);
                     },
                   ),
-                  FlatButton(
-                    child: Text("Delete"),
-                    textColor: Colors.redAccent,
-                    onPressed: () async {
-                      await widget
-                          .onDelete(CylinderModel.fromData(cylinder).id);
-                      Navigator.pop(context);
-                    },
-                  ),
+                  if (cylinder.id.isNotEmpty)
+                    OutlinedButton(
+                      child: Text("Delete"),
+                      style:
+                          OutlinedButton.styleFrom(primary: Colors.redAccent),
+                      onPressed: () async {
+                        await widget
+                            .onDelete(CylinderModel.fromData(cylinder).id);
+                        Navigator.pop(context);
+                      },
+                    ),
                 ],
               ),
             ],
@@ -167,7 +170,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             },
           ),
           metric: "L",
-          imperial: "ft³",
+          imperial: "cuft",
         ),
         titledUnitRow(
           title: "Pressure",
