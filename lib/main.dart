@@ -29,6 +29,7 @@ class FlaskaApp extends StatelessWidget {
         cardColor: Color.fromRGBO(24, 24, 24, 1),
         dialogBackgroundColor: Color.fromRGBO(32, 32, 32, 1),
         accentColor: Colors.blueAccent,
+        dividerColor: Color.fromRGBO(64, 64, 64, 1),
       ),
       debugShowCheckedModeBanner: false,
       home: NavigationView(),

@@ -5,6 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../proto/flaska.pb.dart';
 import 'settings_bloc.dart';
 
+const _appBuild = int.fromEnvironment("BUILD", defaultValue: 0);
+const _marketingVer =
+    String.fromEnvironment("MARKETINGVERSION", defaultValue: "0.0.0");
+const _gitVer =
+    String.fromEnvironment("GITVERSION", defaultValue: "unknown-dev");
+
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,9 +26,18 @@ class SettingsView extends StatelessWidget {
           },
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 formTable(context, state.settings),
+                Divider(
+                  height: 32,
+                  indent: 32,
+                  endIndent: 32,
+                ),
+                Text(
+                  "Version $_marketingVer ($_appBuild)\n[$_gitVer]",
+                  style: Theme.of(context).textTheme.caption,
+                  textAlign: TextAlign.center,
+                )
               ],
             ),
           ),
