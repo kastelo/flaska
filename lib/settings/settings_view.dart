@@ -12,6 +12,11 @@ const _marketingVer =
 const _gitVer =
     String.fromEnvironment("GITVERSION", defaultValue: "unknown-dev");
 
+final _decimalExp = RegExp(r'[0-9\.,]');
+double parseDouble(String s) {
+  return double.parse(s.trim().replaceAll(",", "."), (_) => 0.0);
+}
+
 class SettingsView extends StatefulWidget {
   @override
   _SettingsViewState createState() => _SettingsViewState();
@@ -118,7 +123,7 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d = double.parse(_sacRateController.text, (_) => 0);
+              final d = parseDouble(_sacRateController.text);
               final vol = settings.isMetric ? VolumeLiter(d) : VolumeCuFt(d);
               context
                   .read<SettingsBloc>()
@@ -126,9 +131,7 @@ class _SettingsViewState extends State<SettingsView> {
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _sacRateController,
             ),
           ),
@@ -142,17 +145,14 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d = double.parse(
-                  _troubleSolvingDurationController.text, (_) => 0);
+              final d = parseDouble(_troubleSolvingDurationController.text);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..troubleSolvingDuration = d));
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _troubleSolvingDurationController,
             ),
           ),
@@ -163,16 +163,14 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d = double.parse(
-                  _troubleSolvingSacMultiplierController.text, (_) => 0);
+              final d =
+                  parseDouble(_troubleSolvingSacMultiplierController.text);
               context.read<SettingsBloc>().add(
                   UpdateSettings((s) => s..troubleSolvingSacMultiplier = d));
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _troubleSolvingSacMultiplierController,
             ),
           ),
@@ -184,7 +182,7 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d = double.parse(_ascentRateController.text, (_) => 0);
+              final d = parseDouble(_ascentRateController.text);
               final rate = settings.isMetric ? DistanceM(d) : DistanceFt(d);
               context
                   .read<SettingsBloc>()
@@ -192,9 +190,7 @@ class _SettingsViewState extends State<SettingsView> {
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _ascentRateController,
             ),
           ),
@@ -207,17 +203,14 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d =
-                  double.parse(_ascentSacMultiplierController.text, (_) => 0);
+              final d = parseDouble(_ascentSacMultiplierController.text);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..ascentSacMultiplier = d));
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _ascentSacMultiplierController,
             ),
           ),
@@ -229,17 +222,14 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d =
-                  double.parse(_safetyStopDurationController.text, (_) => 0);
+              final d = parseDouble(_safetyStopDurationController.text);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..safetyStopDuration = d));
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _safetyStopDurationController,
             ),
           ),
@@ -250,7 +240,7 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d = double.parse(_safetyStopDepthController.text, (_) => 0);
+              final d = parseDouble(_safetyStopDepthController.text);
               final dep = settings.isMetric ? DistanceM(d) : DistanceFt(d);
               context
                   .read<SettingsBloc>()
@@ -258,9 +248,7 @@ class _SettingsViewState extends State<SettingsView> {
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _safetyStopDepthController,
             ),
           ),
@@ -273,17 +261,14 @@ class _SettingsViewState extends State<SettingsView> {
           child: FocusScope(
             onFocusChange: (focus) {
               if (focus) return;
-              final d = double.parse(
-                  _safetyStopSacMultiplierController.text, (_) => 0);
+              final d = parseDouble(_safetyStopSacMultiplierController.text);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..safetyStopSacMultiplier = d));
             },
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
               controller: _safetyStopSacMultiplierController,
             ),
           ),
