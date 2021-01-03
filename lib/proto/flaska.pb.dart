@@ -165,3 +165,122 @@ class CylinderData extends $pb.GeneratedMessage {
   void clearSelected() => clearField(9);
 }
 
+class SettingsData extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SettingsData', createEmptyInstance: create)
+    ..e<MeasurementSystem>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sacRate', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'troubleSolvingDuration', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'troubleSolvingSacMultiplier', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentRate', $pb.PbFieldType.OD)
+    ..a<$core.double>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentSacMultiplier', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetystopDepth', $pb.PbFieldType.OD)
+    ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetystopDuration', $pb.PbFieldType.OD)
+    ..a<$core.double>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetystopSacMultiplier', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  SettingsData._() : super();
+  factory SettingsData() => create();
+  factory SettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SettingsData clone() => SettingsData()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SettingsData copyWith(void Function(SettingsData) updates) => super.copyWith((message) => updates(message as SettingsData)); // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SettingsData create() => SettingsData._();
+  SettingsData createEmptyInstance() => create();
+  static $pb.PbList<SettingsData> createRepeated() => $pb.PbList<SettingsData>();
+  @$core.pragma('dart2js:noInline')
+  static SettingsData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SettingsData>(create);
+  static SettingsData _defaultInstance;
+
+  @$pb.TagNumber(1)
+  MeasurementSystem get measurements => $_getN(0);
+  @$pb.TagNumber(1)
+  set measurements(MeasurementSystem v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMeasurements() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMeasurements() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get sacRate => $_getN(1);
+  @$pb.TagNumber(2)
+  set sacRate($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSacRate() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSacRate() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get troubleSolvingDuration => $_getN(2);
+  @$pb.TagNumber(3)
+  set troubleSolvingDuration($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasTroubleSolvingDuration() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTroubleSolvingDuration() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.double get troubleSolvingSacMultiplier => $_getN(3);
+  @$pb.TagNumber(4)
+  set troubleSolvingSacMultiplier($core.double v) { $_setDouble(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasTroubleSolvingSacMultiplier() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTroubleSolvingSacMultiplier() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.double get ascentRate => $_getN(4);
+  @$pb.TagNumber(5)
+  set ascentRate($core.double v) { $_setDouble(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasAscentRate() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAscentRate() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.double get ascentSacMultiplier => $_getN(5);
+  @$pb.TagNumber(6)
+  set ascentSacMultiplier($core.double v) { $_setDouble(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasAscentSacMultiplier() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearAscentSacMultiplier() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.double get safetystopDepth => $_getN(6);
+  @$pb.TagNumber(7)
+  set safetystopDepth($core.double v) { $_setDouble(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasSafetystopDepth() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearSafetystopDepth() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.double get safetystopDuration => $_getN(7);
+  @$pb.TagNumber(8)
+  set safetystopDuration($core.double v) { $_setDouble(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasSafetystopDuration() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearSafetystopDuration() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.double get safetystopSacMultiplier => $_getN(8);
+  @$pb.TagNumber(9)
+  set safetystopSacMultiplier($core.double v) { $_setDouble(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasSafetystopSacMultiplier() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearSafetystopSacMultiplier() => clearField(9);
+}
+

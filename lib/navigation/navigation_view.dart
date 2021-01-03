@@ -5,6 +5,8 @@ import '../cylinderlist/cylinderlist_bloc.dart';
 import '../cylinderlist/cylinderlist_view.dart';
 import '../divecalculation/divecalculation_bloc.dart';
 import '../divecalculation/divecalculation_view.dart';
+import '../settings/settings_bloc.dart';
+import '../settings/settings_view.dart';
 
 class NavigationView extends StatefulWidget {
   @override
@@ -51,12 +53,15 @@ class BodyWidget extends StatelessWidget {
         BlocProvider(
           create: (_) => DiveCalculationBloc(),
         ),
+        BlocProvider(
+          create: (_) => SettingsBloc(),
+        ),
       ],
       child: TabBarView(
         children: [
           DiveCalculationView(),
           CylinderListView(),
-          Placeholder(),
+          SettingsView(),
         ],
       ),
     );
