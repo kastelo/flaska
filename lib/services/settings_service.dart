@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flaska/proto/flaska.pbjson.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../proto/proto.dart';
@@ -11,14 +12,19 @@ abstract class SettingsService {
 
 final defaultSettings = SettingsData()
   ..measurements = MeasurementSystem.METRIC
-  ..sacRate = 15
-  ..ascentRate = 10
   ..ascentSacMultiplier = 4
-  ..safetystopDepth = 5
-  ..safetystopDuration = 3
-  ..safetystopSacMultiplier = 2
+  ..safetyStopDuration = 3
+  ..safetyStopSacMultiplier = 2
   ..troubleSolvingDuration = 4
-  ..troubleSolvingSacMultiplier = 4;
+  ..troubleSolvingSacMultiplier = 4
+  ..metric = (MeasurementDependentSettingsData()
+    ..sacRate = 15
+    ..ascentRate = 10
+    ..safetyStopDepth = 5)
+  ..imperial = (MeasurementDependentSettingsData()
+    ..sacRate = 0.5
+    ..ascentRate = 30
+    ..safetyStopDepth = 15);
 
 class FakeSettingsListService implements SettingsService {
   var settings = SettingsData();

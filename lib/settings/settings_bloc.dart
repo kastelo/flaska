@@ -19,6 +19,11 @@ class _NewSettingsEvent extends SettingsEvent {
   const _NewSettingsEvent(this.settings);
 }
 
+class SetMeasurementSystem extends SettingsEvent {
+  final MeasurementSystem measurements;
+  const SetMeasurementSystem(this.measurements);
+}
+
 class SetSAC extends SettingsEvent {
   final Volume sac;
   const SetSAC(this.sac);
@@ -40,6 +45,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
     if (event is _NewSettingsEvent) {
       yield SettingsState(event.settings);
+    }
+    if (event is SetMeasurementSystem) {
+      yield SettingsState(state.settings..measurements = event.measurements);
     }
   }
 }

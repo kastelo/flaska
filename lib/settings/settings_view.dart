@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../proto/flaska.pb.dart';
+import '../proto/proto.dart';
 import 'settings_bloc.dart';
 
 const _appBuild = int.fromEnvironment("BUILD", defaultValue: 0);
@@ -11,7 +11,21 @@ const _marketingVer =
 const _gitVer =
     String.fromEnvironment("GITVERSION", defaultValue: "unknown-dev");
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
+  @override
+  _SettingsViewState createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  final _sacRateController = TextEditingController();
+  final _troubleSolvingDurationController = TextEditingController();
+  final _troubleSolvingSacMultiplierController = TextEditingController();
+  final _ascentRateController = TextEditingController();
+  final _ascentSacMultiplierController = TextEditingController();
+  final _safetyStopDurationController = TextEditingController();
+  final _safetyStopDepthController = TextEditingController();
+  final _safetyStopSacMultiplierController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,239 +61,151 @@ class SettingsView extends StatelessWidget {
   }
 
   Widget formTable(BuildContext context, SettingsData settings) {
-    return Form(
-      child: Table(
-        columnWidths: {
-          0: IntrinsicColumnWidth(),
-          2: IntrinsicColumnWidth(),
-        },
-        defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
-        children: <TableRow>[
-          headerRow(context: context, title: "General"),
-          titledRow(
-            title: "System",
-            child: DropdownButtonFormField<MeasurementSystem>(
-              value: settings.measurements,
-              items: [
-                DropdownMenuItem(
-                    value: MeasurementSystem.METRIC, child: Text("Metric")),
-                DropdownMenuItem(
-                    value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
-              ],
-              onChanged: (value) {},
-            ),
+    _sacRateController.text = settings.sacRate.toString();
+
+    _troubleSolvingDurationController.text =
+        settings.troubleSolvingDuration.toString();
+    _troubleSolvingSacMultiplierController.text =
+        settings.troubleSolvingSacMultiplier.toString();
+
+    _ascentRateController.text = settings.ascentRate.toString();
+    _ascentSacMultiplierController.text =
+        settings.ascentSacMultiplier.toString();
+
+    _safetyStopDurationController.text = settings.safetyStopDuration.toString();
+    _safetyStopDepthController.text = settings.safetyStopDepth.toString();
+    _safetyStopSacMultiplierController.text =
+        settings.safetyStopSacMultiplier.toString();
+
+    return Table(
+      columnWidths: {
+        0: IntrinsicColumnWidth(),
+        2: IntrinsicColumnWidth(),
+      },
+      defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+      children: <TableRow>[
+        headerRow(context: context, title: "General"),
+        titledRow(
+          title: "System",
+          child: DropdownButton<MeasurementSystem>(
+            value: settings.measurements,
+            items: [
+              DropdownMenuItem(
+                  value: MeasurementSystem.METRIC, child: Text("Metric")),
+              DropdownMenuItem(
+                  value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
+            ],
+            onChanged: (value) {
+              context.read<SettingsBloc>().add(SetMeasurementSystem(value));
+            },
           ),
-          titledUnitRow(
-            title: "SAC Rate",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.sacRate.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a SAC rate';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            metric: "L/min",
-            imperial: "ft³/min",
-            settings: settings,
+        ),
+        titledUnitRow(
+          title: "SAC Rate",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _sacRateController,
+            onChanged: (value) {},
           ),
-          headerRow(context: context, title: "Trouble solving"),
-          titledRow(
-            title: "Duration",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.troubleSolvingDuration.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving duration';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            trailer: "min",
+          metric: "L/min",
+          imperial: "ft³/min",
+          settings: settings,
+        ),
+        headerRow(context: context, title: "Trouble solving"),
+        titledRow(
+          title: "Duration",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _troubleSolvingDurationController,
+            onChanged: (value) {},
           ),
-          titledRow(
-            title: "SAC multiplier",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.troubleSolvingDuration.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving SAC multiplier';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            trailer: "×",
+          trailer: "min",
+        ),
+        titledRow(
+          title: "SAC multiplier",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _troubleSolvingSacMultiplierController,
+            onChanged: (value) {},
           ),
-          headerRow(context: context, title: "Ascent"),
-          titledUnitRow(
-            title: "Ascent rate",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.ascentRate.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving duration';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            metric: "m/min",
-            imperial: "ft/min",
-            settings: settings,
+          trailer: "×",
+        ),
+        headerRow(context: context, title: "Ascent"),
+        titledUnitRow(
+          title: "Ascent rate",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _ascentRateController,
+            onChanged: (value) {},
           ),
-          titledRow(
-            title: "SAC multiplier",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.ascentSacMultiplier.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving SAC multiplier';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            trailer: "×",
+          metric: "m/min",
+          imperial: "ft/min",
+          settings: settings,
+        ),
+        titledRow(
+          title: "SAC multiplier",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _ascentSacMultiplierController,
+            onChanged: (value) {},
           ),
-          headerRow(context: context, title: "Safety stop"),
-          titledRow(
-            title: "Duration",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.safetystopDuration.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving duration';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            trailer: "min",
+          trailer: "×",
+        ),
+        headerRow(context: context, title: "Safety stop"),
+        titledRow(
+          title: "Duration",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _safetyStopDurationController,
+            onChanged: (value) {},
           ),
-          titledUnitRow(
-            title: "Depth",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.safetystopDepth.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving duration';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            metric: "m",
-            imperial: "ft",
-            settings: settings,
+          trailer: "min",
+        ),
+        titledUnitRow(
+          title: "Depth",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _safetyStopDepthController,
+            onChanged: (value) {},
           ),
-          titledRow(
-            title: "SAC multiplier",
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-              ],
-              initialValue: settings.safetystopSacMultiplier.toString(),
-              onChanged: (value) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Must enter a trouble solving SAC multiplier';
-                }
-                try {
-                  if (double.parse(value) <= 0) {
-                    return 'Must be a positive number';
-                  }
-                } catch (e) {
-                  return 'Must be a valid number';
-                }
-                return null;
-              },
-            ),
-            trailer: "×",
+          metric: "m",
+          imperial: "ft",
+          settings: settings,
+        ),
+        titledRow(
+          title: "SAC multiplier",
+          child: TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
+            ],
+            controller: _safetyStopSacMultiplierController,
+            onChanged: (value) {},
           ),
-        ],
-      ),
+          trailer: "×",
+        ),
+      ],
     );
   }
 

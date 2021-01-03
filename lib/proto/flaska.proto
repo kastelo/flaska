@@ -28,12 +28,17 @@ message CylinderData {
 
 message SettingsData {
     MeasurementSystem measurements = 1;
-    double sac_rate = 2; // volume units per min
-    double trouble_solving_duration = 3; // minutes
-    double trouble_solving_sac_multiplier = 4;
-    double ascent_rate = 5; // distance units per min
+    MeasurementDependentSettingsData metric = 2;
+    MeasurementDependentSettingsData imperial = 3;
+    double trouble_solving_duration = 4; // minutes
+    double trouble_solving_sac_multiplier = 5;
     double ascent_sac_multiplier = 6;
-    double safetystop_depth = 7; // distance units
-    double safetystop_duration = 8; // minutes
-    double safetystop_sac_multiplier = 9;
+    double safety_stop_duration = 7; // minutes
+    double safety_stop_sac_multiplier = 8;
+}
+
+message MeasurementDependentSettingsData {
+    double sac_rate = 1; // volume units per min
+    double ascent_rate = 2; // distance units per min
+    double safety_stop_depth = 3; // distance units
 }

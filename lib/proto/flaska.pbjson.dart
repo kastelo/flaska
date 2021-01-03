@@ -47,14 +47,22 @@ const SettingsData$json = const {
   '1': 'SettingsData',
   '2': const [
     const {'1': 'measurements', '3': 1, '4': 1, '5': 14, '6': '.MeasurementSystem', '10': 'measurements'},
-    const {'1': 'sac_rate', '3': 2, '4': 1, '5': 1, '10': 'sacRate'},
-    const {'1': 'trouble_solving_duration', '3': 3, '4': 1, '5': 1, '10': 'troubleSolvingDuration'},
-    const {'1': 'trouble_solving_sac_multiplier', '3': 4, '4': 1, '5': 1, '10': 'troubleSolvingSacMultiplier'},
-    const {'1': 'ascent_rate', '3': 5, '4': 1, '5': 1, '10': 'ascentRate'},
+    const {'1': 'metric', '3': 2, '4': 1, '5': 11, '6': '.MeasurementDependentSettingsData', '10': 'metric'},
+    const {'1': 'imperial', '3': 3, '4': 1, '5': 11, '6': '.MeasurementDependentSettingsData', '10': 'imperial'},
+    const {'1': 'trouble_solving_duration', '3': 4, '4': 1, '5': 1, '10': 'troubleSolvingDuration'},
+    const {'1': 'trouble_solving_sac_multiplier', '3': 5, '4': 1, '5': 1, '10': 'troubleSolvingSacMultiplier'},
     const {'1': 'ascent_sac_multiplier', '3': 6, '4': 1, '5': 1, '10': 'ascentSacMultiplier'},
-    const {'1': 'safetystop_depth', '3': 7, '4': 1, '5': 1, '10': 'safetystopDepth'},
-    const {'1': 'safetystop_duration', '3': 8, '4': 1, '5': 1, '10': 'safetystopDuration'},
-    const {'1': 'safetystop_sac_multiplier', '3': 9, '4': 1, '5': 1, '10': 'safetystopSacMultiplier'},
+    const {'1': 'safety_stop_duration', '3': 7, '4': 1, '5': 1, '10': 'safetyStopDuration'},
+    const {'1': 'safety_stop_sac_multiplier', '3': 8, '4': 1, '5': 1, '10': 'safetyStopSacMultiplier'},
+  ],
+};
+
+const MeasurementDependentSettingsData$json = const {
+  '1': 'MeasurementDependentSettingsData',
+  '2': const [
+    const {'1': 'sac_rate', '3': 1, '4': 1, '5': 1, '10': 'sacRate'},
+    const {'1': 'ascent_rate', '3': 2, '4': 1, '5': 1, '10': 'ascentRate'},
+    const {'1': 'safety_stop_depth', '3': 3, '4': 1, '5': 1, '10': 'safetyStopDepth'},
   ],
 };
 
