@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
-import '../proto/flaska.pb.dart';
+import '../proto/proto.dart';
 import '../models/cylinder_model.dart';
+
+final _decimalExp = RegExp(r'[0-9\.,]');
+double parseDouble(String s) {
+  return double.parse(s.trim().replaceAll(",", "."), (_) => 0.0);
+}
 
 class CylinderEditView extends StatefulWidget {
   final CylinderData cylinder;
@@ -89,7 +94,6 @@ class _CylinderEditViewState extends State<CylinderEditView> {
     return Table(
       columnWidths: {
         0: IntrinsicColumnWidth(),
-        // 1: FixedColumnWidth(300),
         2: IntrinsicColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
@@ -100,9 +104,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             decoration: InputDecoration(hintText: "Enter a cylinder name"),
             initialValue: cylinder.name,
             onChanged: (value) {
-              setState(() {
-                cylinder.name = value;
-              });
+              setState(() => cylinder.name = value);
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -123,9 +125,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                   value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
             ],
             onChanged: (value) {
-              setState(() {
-                cylinder.measurements = value;
-              });
+              setState(() => cylinder.measurements = value);
             },
           ),
         ),
@@ -139,9 +139,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                   value: Metal.ALUMINIUM, child: Text("Aluminium")),
             ],
             onChanged: (value) {
-              setState(() {
-                cylinder.metal = value;
-              });
+              setState(() => cylinder.metal = value);
             },
           ),
         ),
@@ -153,25 +151,17 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                     ? "Water volume in liters"
                     : "Air volume in cuft"),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
+            inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
             initialValue: cylinder.volume.toString(),
             onChanged: (value) {
-              setState(() {
-                cylinder.volume = double.parse(value);
-              });
+              setState(() => cylinder.volume = parseDouble(value));
             },
             validator: (value) {
               if (value.isEmpty) {
                 return 'The cylinder needs a volume';
               }
-              try {
-                if (double.parse(value) <= 0) {
-                  return 'Must be a positive number';
-                }
-              } catch (e) {
-                return 'Must be a valid number';
+              if (parseDouble(value) <= 0) {
+                return 'Must be a positive number';
               }
               return null;
             },
@@ -186,15 +176,13 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                 hintText: cylinder.measurements == MeasurementSystem.METRIC
                     ? "Working pressure in psi"
                     : "Working pressure in bar"),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
             ],
             initialValue: cylinder.workingPressure.toString(),
             onChanged: (value) {
-              setState(() {
-                cylinder.workingPressure = int.parse(value);
-              });
+              setState(() => cylinder.workingPressure = int.parse(value));
             },
             autovalidateMode: AutovalidateMode.always,
             validator: (value) {
@@ -218,29 +206,22 @@ class _CylinderEditViewState extends State<CylinderEditView> {
           title: "Weight",
           child: TextFormField(
             decoration: InputDecoration(
+                border: InputBorder.none,
                 hintText: cylinder.measurements == MeasurementSystem.METRIC
                     ? "Empty weight in kg"
                     : "Empty weight in lb"),
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
-            ],
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
             initialValue: cylinder.weight.toString(),
             onChanged: (value) {
-              setState(() {
-                cylinder.weight = double.parse(value);
-              });
+              setState(() => cylinder.weight = parseDouble(value));
             },
             validator: (value) {
               if (value.isEmpty) {
                 return 'The cylinder needs a weight';
               }
-              try {
-                if (double.parse(value) <= 0) {
-                  return 'Must be a positive number';
-                }
-              } catch (e) {
-                return 'Must be a valid number';
+              if (parseDouble(value) <= 0) {
+                return 'Must be a positive number';
               }
               return null;
             },
@@ -248,28 +229,31 @@ class _CylinderEditViewState extends State<CylinderEditView> {
           metric: "kg",
           imperial: "lb",
         ),
-        titledRow(
-          title: "Twinset",
-          child: Checkbox(
-            value: cylinder.twinset,
-            onChanged: (value) {
-              setState(() {
-                cylinder.twinset = value;
-              });
-            },
-          ),
+        TableRow(
+          children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: Text(
+                  "Twinset:",
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Switch(
+                  value: cylinder.twinset,
+                  onChanged: (value) {
+                    setState(() => cylinder.twinset = value);
+                  },
+                ),
+              ],
+            ),
+            Container(),
+          ],
         ),
-        titledRow(
-          title: "Selected",
-          child: Checkbox(
-            value: cylinder.selected,
-            onChanged: (value) {
-              setState(() {
-                cylinder.selected = value;
-              });
-            },
-          ),
-        )
       ],
     );
   }

@@ -136,7 +136,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
           metric: "L/min",
-          imperial: "ft³/min",
+          imperial: "cuft/min",
           settings: settings,
         ),
         headerRow(context: context, title: "Trouble solving"),

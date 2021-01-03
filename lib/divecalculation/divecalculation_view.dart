@@ -161,7 +161,7 @@ class DiveCalculationViewModel {
                   state.rockBottom.safetyStopSacMultiplier,
             ])
       : sprintf(
-          "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft (SAC: %.1f cuft/minC) followed by ascent at %.0f ft/min (SAC: %.1f cuft/min) and %.0f min safety stop at %.0f ft (SAC: %.1f cuft/min).",
+          "Rock bottom gas is %.0f cuft, based on %.0f min at %.0f ft (SAC: %.1f cuft/min) followed by ascent at %.0f ft/min (SAC: %.1f cuft/min) and %.0f min safety stop at %.0f ft (SAC: %.1f cuft/min).",
           [
               state.rockBottom.volume.cuft,
               state.rockBottom.troubleSolvingDurationMin,

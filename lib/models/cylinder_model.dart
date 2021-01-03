@@ -79,18 +79,18 @@ class CylinderModel {
     return aluKgPerL;
   }
 
-  double get _twinFactor => twinset ? 2 : 1;
+  double get twinFactor => twinset ? 2 : 1;
 
-  Volume get totalWaterVolume => VolumeLiter(_twinFactor * waterVolume.liter);
+  Volume get totalWaterVolume => VolumeLiter(twinFactor * waterVolume.liter);
 
   Volume compressedVolume(Pressure p) =>
-      VolumeLiter(_twinFactor * waterVolume.liter * equivalentPressure(p).bar);
+      VolumeLiter(twinFactor * waterVolume.liter * equivalentPressure(p).bar);
 
   Weight buoyancy(Pressure p) => WeightKg(externalVolume.liter * waterPerL -
       weight.kg +
       valveBuyoancyKg +
-      twinBuyoancyKg * (_twinFactor - 1) -
-      equivalentPressure(p).bar * waterVolume.liter * airKgPerL);
+      twinBuyoancyKg * (twinFactor - 1) -
+      equivalentPressure(p).bar * twinFactor * waterVolume.liter * airKgPerL);
 
   Volume get externalVolume =>
       VolumeLiter(weight.kg / materialDensity + waterVolume.liter);
@@ -105,10 +105,11 @@ class CylinderViewModel {
       {this.cylinder, this.pressure, this.rockBottom, this.metric});
 
   String get description => metric
-      ? sprintf("%s (%.01f kg)", [cylinder.name, cylinder.weight.kg])
+      ? sprintf("%s (%.01f kg)",
+          [cylinder.name, cylinder.twinFactor * cylinder.weight.kg])
       : sprintf("%s (%.01f lb)", [
           cylinder.name,
-          cylinder.weight.lb,
+          cylinder.twinFactor * cylinder.weight.lb,
         ]);
 
   String get gas => metric
