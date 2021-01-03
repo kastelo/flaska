@@ -24,9 +24,9 @@ class SetMeasurementSystem extends SettingsEvent {
   const SetMeasurementSystem(this.measurements);
 }
 
-class SetSAC extends SettingsEvent {
-  final Volume sac;
-  const SetSAC(this.sac);
+class UpdateSettings extends SettingsEvent {
+  final SettingsData Function(SettingsData) fn;
+  const UpdateSettings(this.fn);
 }
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
@@ -47,7 +47,46 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       yield SettingsState(event.settings);
     }
     if (event is SetMeasurementSystem) {
-      yield SettingsState(state.settings..measurements = event.measurements);
+      final newSettings = state.settings..measurements = event.measurements;
+      await settingsService.saveSettings(newSettings);
+      yield SettingsState(newSettings);
     }
+    if (event is UpdateSettings) {
+      final newSettings = event.fn(state.settings);
+      await settingsService.saveSettings(newSettings);
+      yield SettingsState(newSettings);
+    }
+  }
+}
+
+extension SettingsModel on SettingsData {
+  bool get isMetric => measurements == MeasurementSystem.METRIC;
+
+  Volume get sacRate =>
+      isMetric ? VolumeLiter(metric.sacRate) : VolumeCuFt(imperial.sacRate);
+  set sacRate(Volume v) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.sacRate = v.liter;
+    else
+      imperial.sacRate = v.cuft;
+  }
+
+  Distance get ascentRate =>
+      isMetric ? DistanceM(metric.ascentRate) : DistanceFt(imperial.ascentRate);
+  set ascentRate(Distance v) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.ascentRate = v.m;
+    else
+      imperial.ascentRate = v.ft;
+  }
+
+  Distance get safetyStopDepth => isMetric
+      ? DistanceM(metric.safetyStopDepth)
+      : DistanceFt(imperial.safetyStopDepth);
+  set safetyStopDepth(Distance v) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.safetyStopDepth = v.m;
+    else
+      imperial.safetyStopDepth = v.ft;
   }
 }

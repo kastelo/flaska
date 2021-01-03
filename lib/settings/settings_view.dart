@@ -1,3 +1,4 @@
+import 'package:flaska/models/units.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,19 +62,25 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Widget formTable(BuildContext context, SettingsData settings) {
-    _sacRateController.text = settings.sacRate.toString();
+    _sacRateController.text = settings.isMetric
+        ? settings.sacRate.liter.toString()
+        : settings.sacRate.cuft.toString();
 
     _troubleSolvingDurationController.text =
         settings.troubleSolvingDuration.toString();
     _troubleSolvingSacMultiplierController.text =
         settings.troubleSolvingSacMultiplier.toString();
 
-    _ascentRateController.text = settings.ascentRate.toString();
+    _ascentRateController.text = settings.isMetric
+        ? settings.ascentRate.m.toString()
+        : settings.ascentRate.ft.toString();
     _ascentSacMultiplierController.text =
         settings.ascentSacMultiplier.toString();
 
     _safetyStopDurationController.text = settings.safetyStopDuration.toString();
-    _safetyStopDepthController.text = settings.safetyStopDepth.toString();
+    _safetyStopDepthController.text = settings.isMetric
+        ? settings.safetyStopDepth.m.toString()
+        : settings.safetyStopDepth.ft.toString();
     _safetyStopSacMultiplierController.text =
         settings.safetyStopSacMultiplier.toString();
 
@@ -108,7 +115,13 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _sacRateController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              final vol = settings.isMetric ? VolumeLiter(d) : VolumeCuFt(d);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..sacRate = vol));
+            },
           ),
           metric: "L/min",
           imperial: "ft³/min",
@@ -123,7 +136,12 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _troubleSolvingDurationController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..troubleSolvingDuration = d));
+            },
           ),
           trailer: "min",
         ),
@@ -135,7 +153,11 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _troubleSolvingSacMultiplierController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              context.read<SettingsBloc>().add(
+                  UpdateSettings((s) => s..troubleSolvingSacMultiplier = d));
+            },
           ),
           trailer: "×",
         ),
@@ -148,7 +170,13 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _ascentRateController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              final rate = settings.isMetric ? DistanceM(d) : DistanceFt(d);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..ascentRate = rate));
+            },
           ),
           metric: "m/min",
           imperial: "ft/min",
@@ -162,7 +190,12 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _ascentSacMultiplierController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..ascentSacMultiplier = d));
+            },
           ),
           trailer: "×",
         ),
@@ -175,7 +208,12 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _safetyStopDurationController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..safetyStopDuration = d));
+            },
           ),
           trailer: "min",
         ),
@@ -187,7 +225,13 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _safetyStopDepthController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              final dep = settings.isMetric ? DistanceM(d) : DistanceFt(d);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..safetyStopDepth = dep));
+            },
           ),
           metric: "m",
           imperial: "ft",
@@ -201,7 +245,12 @@ class _SettingsViewState extends State<SettingsView> {
               FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))
             ],
             controller: _safetyStopSacMultiplierController,
-            onChanged: (value) {},
+            onSubmitted: (value) {
+              final d = double.parse(value, (_) => 0);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..safetyStopSacMultiplier = d));
+            },
           ),
           trailer: "×",
         ),
