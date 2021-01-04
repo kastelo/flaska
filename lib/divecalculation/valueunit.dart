@@ -21,35 +21,41 @@ class ValueUnit extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Text(
                 title,
                 style: titleStyle,
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.right,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            // Expanded(
-            //   flex: 1,
-            //   child: Container(),
-            // ),
+            Expanded(
+              flex: 1,
+              child: Container(),
+            ),
           ],
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Text(
                 value,
                 style: valueStyle,
                 textAlign: TextAlign.right,
               ),
             ),
-            // Expanded(
-            //   flex: 1,
-            //   child:
-            Text(" " + unit, style: unitStyle),
-            // ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                " " + unit,
+                style: unitStyle,
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+              ),
+            ),
           ],
         ),
       ],

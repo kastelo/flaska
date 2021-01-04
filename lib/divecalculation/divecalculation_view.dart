@@ -128,12 +128,12 @@ class DiveCalculationView extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: ValueUnit(
-                            title: "DEPTH",
-                            value: cvm.depthLabel,
-                            unit: cvm.distanceUnit),
-                      ),
+                      // Expanded(
+                      //   child: ValueUnit(
+                      //       title: "DEPTH",
+                      //       value: cvm.depthLabel,
+                      //       unit: cvm.distanceUnit),
+                      // ),
                       Expanded(
                         child: ValueUnit(
                             title: "TIME",
@@ -164,12 +164,12 @@ class DiveCalculationView extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: ValueUnit(
-                            title: "AVG DEPTH",
-                            value: cvm.ascentAverageDepthLabel,
-                            unit: cvm.distanceUnit),
-                      ),
+                      // Expanded(
+                      //   child: ValueUnit(
+                      //       title: "AVG DEPTH",
+                      //       value: cvm.ascentAverageDepthLabel,
+                      //       unit: cvm.distanceUnit),
+                      // ),
                       Expanded(
                         child: ValueUnit(
                             title: "TIME",
@@ -201,12 +201,12 @@ class DiveCalculationView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Row(
                       children: [
-                        Expanded(
-                          child: ValueUnit(
-                              title: "DEPTH",
-                              value: cvm.safetyStopDepthLabel,
-                              unit: cvm.distanceUnit),
-                        ),
+                        // Expanded(
+                        //   child: ValueUnit(
+                        //       title: "DEPTH",
+                        //       value: cvm.safetyStopDepthLabel,
+                        //       unit: cvm.distanceUnit),
+                        // ),
                         Expanded(
                           child: ValueUnit(
                               title: "TIME",
@@ -236,7 +236,6 @@ class DiveCalculationView extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
                     children: [
-                      Expanded(child: Container()),
                       Expanded(
                         child: ValueUnit(
                             title: "TIME",
