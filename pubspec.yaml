@@ -15,6 +15,7 @@ dependencies:
   path_provider:
   protobuf:
   reorderables:
+  shared_preferences:
   sprintf:
 
   # The following adds the Cupertino Icons font to your application.

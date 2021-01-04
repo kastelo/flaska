@@ -13,6 +13,9 @@ class RockBottomView extends StatelessWidget {
     final h1 = t.textTheme.subtitle2.copyWith(color: t.disabledColor);
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
       builder: (context, state) {
+        if (!state.valid) {
+          return Container();
+        }
         final dcvm = DiveCalculationViewModel(state);
         return Container(
           decoration: BoxDecoration(

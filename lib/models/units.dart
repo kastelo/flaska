@@ -117,6 +117,6 @@ class WeightLb extends Weight {
 
 extension Rounding on int {
   int roundi(int intv) {
-    return (this + intv - 1) ~/ intv * intv;
+    return (this + intv / 2) ~/ intv * intv;
   }
 }

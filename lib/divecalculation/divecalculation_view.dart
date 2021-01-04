@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,15 +46,17 @@ class DiveCalculationView extends StatelessWidget {
 
   Widget cylinder(BuildContext context, CylinderModel cylinder) =>
       BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
-        builder: (context, state) => Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: DiveCalculationCylinderView(
-            cylinder: cylinder,
-            rockBottom: state.rockBottom,
-            pressure: state.tankPressure,
-            metric: state.metric,
-          ),
-        ),
+        builder: (context, state) => state.valid
+            ? Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: DiveCalculationCylinderView(
+                  cylinder: cylinder,
+                  rockBottom: state.rockBottom,
+                  pressure: state.tankPressure,
+                  metric: state.metric,
+                ),
+              )
+            : Container(),
       );
 }
 
@@ -61,14 +65,18 @@ class _PressureSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
         builder: (context, state) {
+      if (!state.valid) {
+        return Container();
+      }
       final dcvm = DiveCalculationViewModel(state);
       return Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Row(children: [
           Expanded(
             child: Slider(
-                value: dcvm.pressure,
-                min: 0,
+                value:
+                    max(dcvm.minPressure, min(dcvm.pressure, dcvm.maxPressure)),
+                min: dcvm.minPressure,
                 max: dcvm.maxPressure,
                 onChanged: (v) {
                   context
@@ -92,6 +100,9 @@ class _DepthSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
         builder: (context, state) {
+      if (!state.valid) {
+        return Container();
+      }
       final dcvm = DiveCalculationViewModel(state);
       return Padding(
         padding: const EdgeInsets.only(right: 8.0),
@@ -99,7 +110,7 @@ class _DepthSlider extends StatelessWidget {
           children: [
             Expanded(
               child: Slider(
-                  value: dcvm.depth,
+                  value: min(dcvm.depth, dcvm.maxDepth),
                   min: 0,
                   max: dcvm.maxDepth,
                   onChanged: (v) {

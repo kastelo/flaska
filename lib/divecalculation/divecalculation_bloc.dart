@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/rockbottom_model.dart';
 import '../models/units.dart';
@@ -12,6 +13,9 @@ class DiveCalculationState {
   final Pressure tankPressure;
   final bool metric;
 
+  bool get valid =>
+      rockBottom != null && tankPressure != null && metric != null;
+
   Distance get depth => rockBottom.depth;
   Volume get sac => rockBottom.sac;
 
@@ -20,6 +24,11 @@ class DiveCalculationState {
     this.tankPressure,
     this.metric,
   });
+
+  const DiveCalculationState.empty()
+      : rockBottom = null,
+        tankPressure = null,
+        metric = null;
 
   DiveCalculationState copyWith({
     RockBottomModel rockBottom,
@@ -42,16 +51,6 @@ class SetDepth extends DiveCalculationEvent {
   const SetDepth(this.depth);
 }
 
-class SetSAC extends DiveCalculationEvent {
-  final Volume sac;
-  const SetSAC(this.sac);
-}
-
-class SetMetric extends DiveCalculationEvent {
-  final bool metric;
-  const SetMetric(this.metric);
-}
-
 class SetTankPressure extends DiveCalculationEvent {
   final Pressure pressure;
   const SetTankPressure(this.pressure);
@@ -65,23 +64,10 @@ class _NewSettings extends DiveCalculationEvent {
 class DiveCalculationBloc
     extends Bloc<DiveCalculationEvent, DiveCalculationState> {
   StreamSubscription settingsSub;
+  SharedPreferences preferences;
 
   DiveCalculationBloc(SettingsBloc settingsBloc)
-      : super(DiveCalculationState(
-          rockBottom: RockBottomModel(
-            depth: DistanceM(15),
-            sac: VolumeLiter(15),
-            ascentRatePerMin: DistanceM(10),
-            ascentSacMultiplier: 4,
-            troubleSolvingDurationMin: 4,
-            troubleSolvingSacMultiplier: 4,
-            safetyStopDepth: DistanceM(5),
-            safetyStopDurationMin: 5,
-            safetyStopSacMultiplier: 2,
-          ),
-          tankPressure: PressureBar(200),
-          metric: true,
-        )) {
+      : super(DiveCalculationState.empty()) {
     settingsSub = settingsBloc.listen((settingsState) {
       this.add(_NewSettings(settingsState.settings));
     });
@@ -100,7 +86,7 @@ class DiveCalculationBloc
       final newState = state.copyWith(
         metric: event.settings.isMetric,
         rockBottom: RockBottomModel(
-          depth: state.rockBottom.depth,
+          depth: state.rockBottom?.depth ?? DistanceM(15),
           sac: event.settings.sacRate,
           ascentRatePerMin: event.settings.ascentRate,
           ascentSacMultiplier: event.settings.ascentSacMultiplier,
@@ -112,6 +98,16 @@ class DiveCalculationBloc
           safetyStopSacMultiplier: event.settings.safetyStopSacMultiplier,
         ),
       );
+      if (preferences == null) {
+        await loadPreferences(event.settings.isMetric);
+      } else {
+        if (newState.metric != state.metric) {
+          add(SetTankPressure(newState.tankPressure));
+          add(SetDepth(
+            newState.rockBottom?.depth ?? DistanceM(15),
+          ));
+        }
+      }
       yield newState;
     }
 
@@ -119,34 +115,32 @@ class DiveCalculationBloc
       var depth = event.depth;
       if (state.metric) {
         depth = DistanceM(depth.m.round().toDouble());
+        if (preferences != null) preferences.setDouble('depth', depth.m);
       } else {
         depth = DistanceFt(depth.ft.round().roundi(10).toDouble());
+        if (preferences != null) preferences.setDouble('depth', depth.ft);
       }
       yield state.copyWith(rockBottom: state.rockBottom.copyWith(depth: depth));
-    }
-
-    if (event is SetSAC) {
-      var sac = event.sac;
-      if (state.metric) {
-        sac = VolumeLiter(sac.liter.round().toDouble());
-      } else {
-        sac = VolumeCuFt((sac.liter * 10).round() / 10);
-      }
-      yield state.copyWith(rockBottom: state.rockBottom.copyWith(sac: sac));
-    }
-
-    if (event is SetMetric) {
-      yield state.copyWith(metric: event.metric);
     }
 
     if (event is SetTankPressure) {
       var pressure = event.pressure;
       if (state.metric) {
         pressure = PressureBar(pressure.bar.round().roundi(5));
+        if (preferences != null) preferences.setInt('pressure', pressure.bar);
       } else {
         pressure = PressurePsi(pressure.psi.round().roundi(100));
+        if (preferences != null) preferences.setInt('pressure', pressure.psi);
       }
       yield state.copyWith(tankPressure: pressure);
     }
+  }
+
+  Future loadPreferences(bool metric) async {
+    preferences = await SharedPreferences.getInstance();
+    final pres = preferences.getInt('pressure') ?? 200;
+    add(SetTankPressure(metric ? PressureBar(pres) : PressurePsi(pres)));
+    final dep = preferences.getDouble('depth') ?? 15;
+    add(SetDepth(metric ? DistanceM(dep) : DistanceFt(dep)));
   }
 }
