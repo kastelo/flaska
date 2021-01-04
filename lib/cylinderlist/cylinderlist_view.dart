@@ -26,7 +26,6 @@ class CylinderListView extends StatelessWidget {
               floating: true,
               actions: [
                 FlatButton.icon(
-                  key: ValueKey("AddButton"),
                   icon: Icon(Icons.add),
                   label: Text("Add..."),
                   onPressed: () => editCylinder(context, _defaultNewCylinder),

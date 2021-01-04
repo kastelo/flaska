@@ -37,7 +37,9 @@ class _CylinderEditViewState extends State<CylinderEditView> {
     final valid = _formKey.currentState?.validate() ?? false;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Cylinder"),
+        title: Text(
+          cylinder.id.isEmpty ? "Add Cylinder" : "Edit Cylinder",
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

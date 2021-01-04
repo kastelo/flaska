@@ -45,11 +45,12 @@ class DiveCalculationCylinderView extends StatelessWidget {
               children: [
                 Expanded(child: Text(cvm.cylinder.name, style: h0)),
                 Expanded(
-                    child: Text(
-                  cvm.weight,
-                  style: h1,
-                  textAlign: TextAlign.right,
-                )),
+                  child: Text(
+                    cvm.weight,
+                    style: h1,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
               ],
             ),
             Divider(),
@@ -59,17 +60,24 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ValueUnit(
-                        title: "GAS", value: cvm.gas, unit: cvm.volumeUnit),
+                      title: "GAS",
+                      value: cvm.gas,
+                      unit: cvm.volumeUnit,
+                    ),
                   ),
                   Expanded(
                     child: ValueUnit(
-                        title: "GAS TIME", value: cvm.airtime, unit: "min"),
+                      title: "GAS TIME",
+                      value: cvm.airtime,
+                      unit: "min",
+                    ),
                   ),
                   Expanded(
                     child: ValueUnit(
-                        title: "RB",
-                        value: cvm.rbPressure,
-                        unit: cvm.pressureUnit),
+                      title: "RB",
+                      value: cvm.rbPressure,
+                      unit: cvm.pressureUnit,
+                    ),
                   ),
                 ],
               ),
@@ -80,21 +88,24 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ValueUnit(
-                        title: "START",
-                        value: cvm.buoyancyAtPressure,
-                        unit: cvm.weightUnit),
+                      title: "START",
+                      value: cvm.buoyancyAtPressure,
+                      unit: cvm.weightUnit,
+                    ),
                   ),
                   Expanded(
                     child: ValueUnit(
-                        title: "EMPTY",
-                        value: cvm.buoyancyEmpty,
-                        unit: cvm.weightUnit),
+                      title: "EMPTY",
+                      value: cvm.buoyancyEmpty,
+                      unit: cvm.weightUnit,
+                    ),
                   ),
                   Expanded(
                     child: ValueUnit(
-                        title: "@RB",
-                        value: cvm.buoyancyAtReserve,
-                        unit: cvm.weightUnit),
+                      title: "@RB",
+                      value: cvm.buoyancyAtReserve,
+                      unit: cvm.weightUnit,
+                    ),
                   ),
                 ],
               ),
