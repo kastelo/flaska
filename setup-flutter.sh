@@ -13,6 +13,6 @@ fi
 
 export PATH="$sdk/flutter/bin:$PATH"
 echo "export PATH=\"$sdk/flutter/bin:\$PATH\""
-export FLUTTER_ROOT="$sdk"
-echo "export FLUTTER_ROOT=\"$sdk\""
+export FLUTTER_ROOT="$sdk/flutter"
+echo "export FLUTTER_ROOT=\"$sdk/flutter\""
 

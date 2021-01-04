@@ -36,20 +36,11 @@ class DiveCalculationView extends StatelessWidget {
       BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
         builder: (context, state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: DiveCalculationCylinderView(
-                cylinder: cylinder,
-                rockBottom: state.rockBottom,
-                pressure: state.tankPressure,
-                metric: state.metric,
-              ),
-            ),
+          child: DiveCalculationCylinderView(
+            cylinder: cylinder,
+            rockBottom: state.rockBottom,
+            pressure: state.tankPressure,
+            metric: state.metric,
           ),
         ),
       );
