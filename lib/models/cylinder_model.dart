@@ -112,35 +112,55 @@ class CylinderViewModel {
           cylinder.twinFactor * cylinder.weight.lb,
         ]);
 
+  String get weight => metric
+      ? sprintf("%.01f kg", [cylinder.twinFactor * cylinder.weight.kg])
+      : sprintf("%.01f lb", [
+          cylinder.twinFactor * cylinder.weight.lb,
+        ]);
+
   String get gas => metric
-      ? sprintf("%.0f L air at %d bar", [
+      ? sprintf("%.0f", [
           cylinder.compressedVolume(pressure).liter,
-          pressure.bar,
         ])
-      : sprintf("%.1f cuft air at %d psi", [
+      : sprintf("%.1f", [
           cylinder.compressedVolume(pressure).cuft,
-          pressure.psi,
         ]);
 
-  String get airtime => metric
-      ? sprintf("%.0f min to %d bar (RB)", [
-          rockBottom.airtimeUntilRB(cylinder, pressure),
-          rockBottom.rockBottomPressure(cylinder).bar.roundi(5)
-        ])
-      : sprintf("%.0f min to %d psi (RB)", [
-          rockBottom.airtimeUntilRB(cylinder, pressure),
-          rockBottom.rockBottomPressure(cylinder).psi.roundi(100)
-        ]);
+  String get volumeUnit => metric ? "L" : "cuft";
+  String get pressureUnit => metric ? "bar" : "psi";
+  String get weightUnit => metric ? "kg" : "lb";
 
-  String get buoyancy => metric
-      ? sprintf("%+.01f kg at %d bar\n(%+.01f kg empty)", [
+  String get airtime => sprintf("%.0f", [
+        rockBottom.airtimeUntilRB(cylinder, pressure),
+      ]);
+
+  String get rbPressure => sprintf("%d", [
+        metric
+            ? rockBottom.rockBottomPressure(cylinder).bar.roundi(5)
+            : rockBottom.rockBottomPressure(cylinder).psi.roundi(100)
+      ]);
+
+  String get buoyancyAtPressure => metric
+      ? sprintf("%+.01f", [
           cylinder.buoyancy(pressure).kg,
-          pressure.bar,
+        ])
+      : sprintf("%+.01f", [
+          cylinder.buoyancy(pressure).lb,
+        ]);
+
+  String get buoyancyAtReserve => metric
+      ? sprintf("%+.01f", [
+          cylinder.buoyancy(rockBottom.rockBottomPressure(cylinder)).kg,
+        ])
+      : sprintf("%+.01f", [
+          cylinder.buoyancy(rockBottom.rockBottomPressure(cylinder)).lb,
+        ]);
+
+  String get buoyancyEmpty => metric
+      ? sprintf("%+.01f", [
           cylinder.buoyancy(PressureBar(0)).kg,
         ])
-      : sprintf("%+.01f lb at %d psi\n(%+.01f lb empty)", [
-          cylinder.buoyancy(pressure).lb,
-          pressure.psi,
+      : sprintf("%+.01f", [
           cylinder.buoyancy(PressurePsi(0)).lb,
         ]);
 }

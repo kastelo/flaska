@@ -144,7 +144,7 @@ class DiveCalculationBloc
       if (state.metric) {
         pressure = PressureBar(pressure.bar.round().roundi(5));
       } else {
-        pressure = PressurePsi(pressure.bar.round().roundi(100));
+        pressure = PressurePsi(pressure.psi.round().roundi(100));
       }
       yield state.copyWith(tankPressure: pressure);
     }
