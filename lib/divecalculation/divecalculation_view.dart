@@ -93,25 +93,28 @@ class _DepthSlider extends StatelessWidget {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
         builder: (context, state) {
       final dcvm = DiveCalculationViewModel(state);
-      return Row(
-        children: [
-          Expanded(
-            child: Slider(
-                value: dcvm.depth,
-                min: 0,
-                max: dcvm.maxDepth,
-                onChanged: (v) {
-                  context
-                      .read<DiveCalculationBloc>()
-                      .add(SetDepth(dcvm.toDistance(v)));
-                }),
-          ),
-          Text(
-            "${dcvm.depthLabel} ${dcvm.distanceUnit}",
-            textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ],
+      return Padding(
+        padding: const EdgeInsets.only(right: 8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Slider(
+                  value: dcvm.depth,
+                  min: 0,
+                  max: dcvm.maxDepth,
+                  onChanged: (v) {
+                    context
+                        .read<DiveCalculationBloc>()
+                        .add(SetDepth(dcvm.toDistance(v)));
+                  }),
+            ),
+            Text(
+              "${dcvm.depthLabel} ${dcvm.distanceUnit}",
+              textAlign: TextAlign.right,
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ],
+        ),
       );
     });
   }
