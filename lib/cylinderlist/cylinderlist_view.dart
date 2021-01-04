@@ -15,6 +15,7 @@ final _defaultNewCylinder = CylinderModel.imperial(null, "", Metal.ALUMINIUM,
 class CylinderListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final t = Theme.of(context);
     return BlocBuilder<CylinderListBloc, CylinderListState>(
       builder: (context, state) => Padding(
         padding: const EdgeInsets.all(8.0),
@@ -38,16 +39,25 @@ class CylinderListView extends StatelessWidget {
               },
               delegate: ReorderableSliverChildListDelegate(state.cylinders
                   .map(
-                    (c) => ListTile(
-                      key: ValueKey(c.id),
-                      title: Text(c.name),
-                      trailing: Switch(
-                        value: c.selected,
-                        onChanged: (selected) => context
-                            .read<CylinderListBloc>()
-                            .add(UpdateCylinder(c..selected = selected)),
+                    (c) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: ListTile(
+                        key: ValueKey(c.id),
+                        tileColor: t.cardColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        leading: c.twinset
+                            ? Icon(Icons.looks_two, color: t.accentColor)
+                            : Icon(Icons.looks_one),
+                        title: Text(c.name),
+                        trailing: Switch(
+                          value: c.selected,
+                          onChanged: (selected) => context
+                              .read<CylinderListBloc>()
+                              .add(UpdateCylinder(c..selected = selected)),
+                        ),
+                        onTap: () async => await editCylinder(context, c),
                       ),
-                      onTap: () async => await editCylinder(context, c),
                     ),
                   )
                   .toList()),

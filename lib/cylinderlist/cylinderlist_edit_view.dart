@@ -213,7 +213,6 @@ class _CylinderEditViewState extends State<CylinderEditView> {
           title: "Weight",
           child: TextFormField(
             decoration: InputDecoration(
-                border: InputBorder.none,
                 hintText: cylinder.measurements == MeasurementSystem.METRIC
                     ? "Empty weight in kg"
                     : "Empty weight in lb"),
