@@ -145,13 +145,3 @@ class ValueUnit extends StatelessWidget {
     );
   }
 }
-
-Widget header(String text, BuildContext context) => Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Text(
-        text,
-        textAlign: TextAlign.right,
-        style:
-            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey),
-      ),
-    );
