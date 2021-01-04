@@ -120,6 +120,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledRow(
           title: "System",
           child: DropdownButtonFormField<MeasurementSystem>(
+            dropdownColor: Theme.of(context).cardColor,
             value: cylinder.measurements,
             items: [
               DropdownMenuItem(
@@ -135,6 +136,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledRow(
           title: "Material",
           child: DropdownButtonFormField<Metal>(
+            dropdownColor: Theme.of(context).cardColor,
             value: cylinder.metal,
             items: [
               DropdownMenuItem(value: Metal.STEEL, child: Text("Steel")),

@@ -106,6 +106,7 @@ class _SettingsViewState extends State<SettingsView> {
         titledRow(
           title: "System",
           child: DropdownButton<MeasurementSystem>(
+            dropdownColor: Theme.of(context).cardColor,
             value: settings.measurements,
             items: [
               DropdownMenuItem(
