@@ -32,3 +32,4 @@ Runner/GeneratedPluginRegistrant.*
 !default.perspectivev3
 Runner.ipa
 Runner.app.dSYM.zip
+fastlane/report.xml
