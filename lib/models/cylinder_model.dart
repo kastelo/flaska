@@ -1,7 +1,7 @@
-import 'package:flaska/models/rockbottom_model.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:sprintf/sprintf.dart';
 
+import '../models/rockbottom_model.dart';
 import '../proto/proto.dart';
 import 'units.dart';
 

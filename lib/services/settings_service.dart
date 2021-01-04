@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flaska/proto/flaska.pbjson.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../proto/proto.dart';

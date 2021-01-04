@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:flaska/proto/flaska.pbserver.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../settings/settings_bloc.dart';
-import '../models/units.dart';
 import '../models/rockbottom_model.dart';
+import '../models/units.dart';
+import '../proto/proto.dart';
+import '../settings/settings_bloc.dart';
 
 class DiveCalculationState {
   final RockBottomModel rockBottom;

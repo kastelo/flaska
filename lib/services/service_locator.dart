@@ -1,6 +1,6 @@
-import 'package:flaska/services/settings_service.dart';
 import 'package:get_it/get_it.dart';
 
+import '../services/settings_service.dart';
 import 'cylinderlist_service.dart';
 import 'settings_service.dart';
 

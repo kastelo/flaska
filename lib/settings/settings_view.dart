@@ -1,8 +1,8 @@
-import 'package:flaska/models/units.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../models/units.dart';
 import '../proto/proto.dart';
 import 'settings_bloc.dart';
 
@@ -53,7 +53,10 @@ class _SettingsViewState extends State<SettingsView> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  formTable(context, state.settings),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: formTable(context, state.settings),
+                  ),
                   Divider(
                     height: 32,
                     indent: 32,

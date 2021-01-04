@@ -1,10 +1,10 @@
-import 'package:flaska/services/service_locator.dart';
-import 'package:flaska/services/settings_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../models/units.dart';
 import '../proto/proto.dart';
+import '../services/service_locator.dart';
+import '../services/settings_service.dart';
 
 class SettingsState {
   final SettingsData settings;
