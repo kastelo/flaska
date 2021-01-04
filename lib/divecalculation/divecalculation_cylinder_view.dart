@@ -28,7 +28,8 @@ class DiveCalculationCylinderView extends StatelessWidget {
     );
 
     final t = Theme.of(context);
-    final h0 = t.textTheme.subtitle2;
+    final h0 = t.textTheme.subtitle1;
+    final h1 = t.textTheme.subtitle2.copyWith(color: t.disabledColor);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -46,51 +47,57 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 Expanded(
                     child: Text(
                   cvm.weight,
-                  style: h0.copyWith(color: t.disabledColor),
+                  style: h1,
                   textAlign: TextAlign.right,
                 )),
               ],
             ),
             Divider(),
-            Row(
-              children: [
-                Expanded(
-                  child: ValueUnit(
-                      title: "GAS", value: cvm.gas, unit: cvm.volumeUnit),
-                ),
-                Expanded(
-                  child: ValueUnit(
-                      title: "GAS TIME", value: cvm.airtime, unit: "min"),
-                ),
-                Expanded(
-                  child: ValueUnit(
-                      title: "RB",
-                      value: cvm.rbPressure,
-                      unit: cvm.pressureUnit),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ValueUnit(
+                        title: "GAS", value: cvm.gas, unit: cvm.volumeUnit),
+                  ),
+                  Expanded(
+                    child: ValueUnit(
+                        title: "GAS TIME", value: cvm.airtime, unit: "min"),
+                  ),
+                  Expanded(
+                    child: ValueUnit(
+                        title: "RB",
+                        value: cvm.rbPressure,
+                        unit: cvm.pressureUnit),
+                  ),
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: ValueUnit(
-                      title: "START",
-                      value: cvm.buoyancyAtPressure,
-                      unit: cvm.weightUnit),
-                ),
-                Expanded(
-                  child: ValueUnit(
-                      title: "EMPTY",
-                      value: cvm.buoyancyEmpty,
-                      unit: cvm.weightUnit),
-                ),
-                Expanded(
-                  child: ValueUnit(
-                      title: "@RB",
-                      value: cvm.buoyancyAtReserve,
-                      unit: cvm.weightUnit),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ValueUnit(
+                        title: "START",
+                        value: cvm.buoyancyAtPressure,
+                        unit: cvm.weightUnit),
+                  ),
+                  Expanded(
+                    child: ValueUnit(
+                        title: "EMPTY",
+                        value: cvm.buoyancyEmpty,
+                        unit: cvm.weightUnit),
+                  ),
+                  Expanded(
+                    child: ValueUnit(
+                        title: "@RB",
+                        value: cvm.buoyancyAtReserve,
+                        unit: cvm.weightUnit),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
