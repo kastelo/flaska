@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:reorderables/reorderables.dart';
 
 import '../models/cylinder_model.dart';
 import '../models/units.dart';
@@ -17,35 +18,40 @@ class CylinderListView extends StatelessWidget {
     return BlocBuilder<CylinderListBloc, CylinderListState>(
       builder: (context, state) => Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ReorderableListView(
-                  onReorder: (a, b) {
-                    context
-                        .read<CylinderListBloc>()
-                        .add(Reordercylinders(a, b));
-                  },
-                  children: state.cylinders
-                      .map(
-                        (c) => ListTile(
-                          key: ValueKey(c.id),
-                          title: Text(c.name),
-                          trailing: Switch(
-                            value: c.selected,
-                            onChanged: (selected) => context
-                                .read<CylinderListBloc>()
-                                .add(UpdateCylinder(c..selected = selected)),
-                          ),
-                          onTap: () async => await editCylinder(context, c),
-                        ),
-                      )
-                      .toList()),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Text("Cylinders"),
+              pinned: true,
+              floating: true,
+              actions: [
+                FlatButton.icon(
+                  key: ValueKey("AddButton"),
+                  icon: Icon(Icons.add),
+                  label: Text("Add..."),
+                  onPressed: () => editCylinder(context, _defaultNewCylinder),
+                ),
+              ],
             ),
-            OutlinedButton(
-              key: ValueKey("AddButton"),
-              child: Text("Add cylinder..."),
-              onPressed: () => editCylinder(context, _defaultNewCylinder),
+            ReorderableSliverList(
+              onReorder: (a, b) {
+                context.read<CylinderListBloc>().add(Reordercylinders(a, b));
+              },
+              delegate: ReorderableSliverChildListDelegate(state.cylinders
+                  .map(
+                    (c) => ListTile(
+                      key: ValueKey(c.id),
+                      title: Text(c.name),
+                      trailing: Switch(
+                        value: c.selected,
+                        onChanged: (selected) => context
+                            .read<CylinderListBloc>()
+                            .add(UpdateCylinder(c..selected = selected)),
+                      ),
+                      onTap: () async => await editCylinder(context, c),
+                    ),
+                  )
+                  .toList()),
             ),
           ],
         ),

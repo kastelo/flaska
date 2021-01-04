@@ -15,20 +15,37 @@ class DiveCalculationView extends StatelessWidget {
     return BlocBuilder<CylinderListBloc, CylinderListState>(
       builder: (context, cylinderListState) => Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(children: <Widget>[
-          sliders(context),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                    rockBottom(context),
-                  ] +
-                  cylinderListState.selectedCylinders
-                      .map((cyl) => cylinder(context, cyl))
-                      .toList(),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+                title: Text("Dive Calculator"),
+                pinned: true,
+                floating: true,
+                bottom: PreferredSize(
+                  child: pressureSlider(context),
+                  preferredSize: Size.fromHeight(48),
+                )),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                sliders(context),
+                rockBottom(context),
+              ]),
             ),
-          ),
-        ]),
+            SliverList(
+              delegate: SliverChildListDelegate(cylinderListState
+                  .selectedCylinders
+                  .map((cyl) => cylinder(context, cyl))
+                  .toList()),
+            ),
+          ],
+          //   slivers: [
+          //   ,
+          // ]
+          //     //  +
+          // cylinderListState.selectedCylinders
+          //     .map((cyl) => cylinder(context, cyl))
+          //     .toList(),
+        ),
       ),
     );
   }
@@ -57,30 +74,38 @@ class DiveCalculationView extends StatelessWidget {
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
             depthSlider(context, dvm),
-            pressureSlider(context, dvm),
           ],
         );
       }),
     );
   }
 
-  TableRow pressureSlider(BuildContext context, DiveCalculationViewModel dvm) {
-    return TableRow(children: [
-      Slider(
-          value: dvm.pressure,
-          min: 0,
-          max: dvm.maxPressure,
-          onChanged: (v) {
-            context
-                .read<DiveCalculationBloc>()
-                .add(SetTankPressure(dvm.toPressure(v)));
-          }),
-      Text(
-        "${dvm.pressureLabel} ${dvm.pressureUnit}",
-        textAlign: TextAlign.right,
-        style: Theme.of(context).textTheme.caption,
-      ),
-    ]);
+  Widget pressureSlider(BuildContext context) {
+    return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
+        builder: (context, state) {
+      final dvm = DiveCalculationViewModel(state);
+      return Padding(
+        padding: const EdgeInsets.only(right: 8.0),
+        child: Row(children: [
+          Expanded(
+            child: Slider(
+                value: dvm.pressure,
+                min: 0,
+                max: dvm.maxPressure,
+                onChanged: (v) {
+                  context
+                      .read<DiveCalculationBloc>()
+                      .add(SetTankPressure(dvm.toPressure(v)));
+                }),
+          ),
+          Text(
+            "${dvm.pressureLabel} ${dvm.pressureUnit}",
+            textAlign: TextAlign.right,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ]),
+      );
+    });
   }
 
   TableRow depthSlider(BuildContext context, DiveCalculationViewModel dvm) {
@@ -128,12 +153,6 @@ class DiveCalculationView extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
                     children: [
-                      // Expanded(
-                      //   child: ValueUnit(
-                      //       title: "DEPTH",
-                      //       value: cvm.depthLabel,
-                      //       unit: cvm.distanceUnit),
-                      // ),
                       Expanded(
                         child: ValueUnit(
                             title: "TIME",
@@ -164,12 +183,6 @@ class DiveCalculationView extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
                     children: [
-                      // Expanded(
-                      //   child: ValueUnit(
-                      //       title: "AVG DEPTH",
-                      //       value: cvm.ascentAverageDepthLabel,
-                      //       unit: cvm.distanceUnit),
-                      // ),
                       Expanded(
                         child: ValueUnit(
                             title: "TIME",
@@ -201,12 +214,6 @@ class DiveCalculationView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Row(
                       children: [
-                        // Expanded(
-                        //   child: ValueUnit(
-                        //       title: "DEPTH",
-                        //       value: cvm.safetyStopDepthLabel,
-                        //       unit: cvm.distanceUnit),
-                        // ),
                         Expanded(
                           child: ValueUnit(
                               title: "TIME",
@@ -290,7 +297,7 @@ class DiveCalculationViewModel {
           10);
   String get troubleSolvingVolumeLabel => state.metric
       ? sprintf("%.0f", [troubleSolvingVolume.liter])
-      : sprintf("%.1f", [troubleSolvingVolume..cuft]);
+      : sprintf("%.1f", [troubleSolvingVolume.cuft]);
 
   String get depthLabel => state.metric
       ? sprintf("%.0f", [state.depth.m])

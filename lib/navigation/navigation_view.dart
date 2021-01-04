@@ -19,9 +19,6 @@ class _NavigationViewState extends State<NavigationView> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Flaska'),
-        ),
         body: BodyWidget(),
         bottomNavigationBar: SafeArea(
           top: false,

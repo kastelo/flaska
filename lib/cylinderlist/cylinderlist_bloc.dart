@@ -79,11 +79,6 @@ class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
 
     if (event is Reordercylinders) {
       var b = event.b;
-      if (b > event.a) {
-        // If we're moving it ahead, take into account the index will
-        // decrease by one when we remove it from its current position.
-        b--;
-      }
       state.cylinders.insert(b, state.cylinders.removeAt(event.a));
       await cylinderListService.saveCylinders(state.cylinders);
       yield CylinderListState(state.cylinders);

@@ -35,33 +35,39 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return GestureDetector(
+      onTap: () {
+        var currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
       child: BlocBuilder<SettingsBloc, SettingsState>(
-        builder: (context, state) => GestureDetector(
-          onTap: () {
-            var currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                formTable(context, state.settings),
-                Divider(
-                  height: 32,
-                  indent: 32,
-                  endIndent: 32,
-                ),
-                Text(
-                  "Version $_marketingVer ($_appBuild)\n[$_gitVer]",
-                  style: Theme.of(context).textTheme.caption,
-                  textAlign: TextAlign.center,
-                )
-              ],
+        builder: (context, state) => CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Text("Settings"),
+              pinned: true,
+              floating: true,
             ),
-          ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  formTable(context, state.settings),
+                  Divider(
+                    height: 32,
+                    indent: 32,
+                    endIndent: 32,
+                  ),
+                  Text(
+                    "Version $_marketingVer ($_appBuild)\n[$_gitVer]",
+                    style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
