@@ -41,7 +41,7 @@ class CylinderListView extends StatelessWidget {
                   .map(
                     (c) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Ink(
+                      child: Container(
                         decoration: BoxDecoration(
                           color: t.cardColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
