@@ -4,6 +4,7 @@ import 'package:sprintf/sprintf.dart';
 import '../models/rockbottom_model.dart';
 import '../proto/proto.dart';
 import 'units.dart';
+import 'compressibility.dart';
 
 const valveBuyoancyKg = -0.7;
 const twinBuyoancyKg = -0.5;

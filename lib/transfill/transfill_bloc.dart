@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:flaska/transfill/transfill_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../cylinderlist/cylinderlist_bloc.dart';
+import '../models/compressibility.dart';
 import '../models/cylinder_model.dart';
-import '../models/rockbottom_model.dart';
 import '../models/units.dart';
 import '../proto/proto.dart';
 import '../settings/settings_bloc.dart';
@@ -153,4 +152,10 @@ class TransfillCylinderModel {
   final bool metric;
 
   const TransfillCylinderModel({this.cylinder, this.pressure, this.metric});
+
+  Volume get gas => VolumeLiter(cylinder.waterVolume.liter *
+      equivalentPressure(pressure).bar *
+      cylinder.twinFactor);
+  Volume get totalVolume =>
+      VolumeLiter(cylinder.waterVolume.liter * cylinder.twinFactor);
 }

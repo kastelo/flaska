@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flaska/divecalculation/valueunit.dart';
+import 'package:flaska/transfill/transfill_result_viewmodel.dart';
+
 import '../models/units.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +35,7 @@ class _TransfillViewState extends State<TransfillView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: TransfillCylinderEditView(
-                        title: "FROM",
+                        title: "From",
                         cylinders: state.cylinders,
                         selected: state.from,
                         onChanged: (m) =>
@@ -42,11 +45,15 @@ class _TransfillViewState extends State<TransfillView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: TransfillCylinderEditView(
-                        title: "TO",
+                        title: "To",
                         cylinders: state.cylinders,
                         selected: state.to,
                         onChanged: (m) =>
                             context.read<TransfillBloc>().add(NewTo(m)),
+                        child: TransfillResultView(
+                          result: TransfillResultViewModel(
+                              from: state.from, to: state.to),
+                        ),
                       ),
                     ),
                   ]),
@@ -64,16 +71,19 @@ class TransfillCylinderEditView extends StatelessWidget {
   final List<CylinderModel> cylinders;
   final TransfillCylinderModel selected;
   final Function(TransfillCylinderModel) onChanged;
+  final Widget child;
 
   const TransfillCylinderEditView({
     @required this.title,
     @required this.cylinders,
     @required this.selected,
     @required this.onChanged,
+    this.child,
   });
 
   @override
   Widget build(BuildContext context) {
+    final t = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -84,20 +94,33 @@ class TransfillCylinderEditView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(title),
-              Divider(),
-              DropdownButton(
-                value: selected.cylinder,
-                items: cylinders
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
-                    .toList(),
-                onChanged: (cyl) {
-                  onChanged(TransfillCylinderModel(
-                    cylinder: cyl,
-                    pressure: selected.pressure,
-                    metric: selected.metric,
-                  ));
-                },
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Text(
+                      title,
+                      style: t.textTheme.subtitle1
+                          .copyWith(color: t.disabledColor),
+                    ),
+                  ),
+                  Expanded(
+                    child: DropdownButton(
+                      value: selected.cylinder,
+                      items: cylinders
+                          .map((c) =>
+                              DropdownMenuItem(value: c, child: Text(c.name)))
+                          .toList(),
+                      onChanged: (cyl) {
+                        onChanged(TransfillCylinderModel(
+                          cylinder: cyl,
+                          pressure: selected.pressure,
+                          metric: selected.metric,
+                        ));
+                      },
+                    ),
+                  ),
+                ],
               ),
               _PressureSlider(
                 value: selected.pressure,
@@ -110,8 +133,58 @@ class TransfillCylinderEditView extends StatelessWidget {
                   ));
                 },
               ),
+              if (child != null) child,
             ],
           )),
+    );
+  }
+}
+
+class TransfillResultView extends StatelessWidget {
+  final TransfillResultViewModel result;
+
+  const TransfillResultView({@required this.result});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Divider(),
+        if (!result.to.cylinder.twinset)
+          Row(
+            children: [
+              Expanded(
+                child: ValueUnit(
+                    title: "PRESSURE",
+                    value: result.resultingPressure.bar.toString(),
+                    unit: "bar"),
+              )
+            ],
+          ),
+        if (result.to.cylinder.twinset)
+          Row(
+            children: [
+              Expanded(
+                child: ValueUnit(
+                    title: "T1",
+                    value: result.T1Pressure.bar.toString(),
+                    unit: "bar"),
+              ),
+              Expanded(
+                child: ValueUnit(
+                    title: "T2",
+                    value: result.T2Pressure.bar.toString(),
+                    unit: "bar"),
+              ),
+              Expanded(
+                child: ValueUnit(
+                    title: "TWINSET",
+                    value: result.resultingPressure.bar.toString(),
+                    unit: "bar"),
+              )
+            ],
+          ),
+      ],
     );
   }
 }
@@ -138,8 +211,9 @@ class _PressureSlider extends StatelessWidget {
               min: 0,
               max: _max,
               onChanged: (v) {
-                final pressure =
-                    metric ? PressureBar(v.toInt()) : PressurePsi(v.toInt());
+                final pressure = metric
+                    ? PressureBar(v.toInt().roundi(5))
+                    : PressurePsi(v.toInt().roundi(100));
                 onChanged(pressure);
               }),
         ),
