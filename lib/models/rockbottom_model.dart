@@ -37,30 +37,30 @@ class RockBottomModel {
     final depthAtm = (10 + depth.m) / 10;
     final safetyStopAtm = (10 + settings.safetyStopDepth.m) / 10;
     final troubleSolvingL = settings.troubleSolvingDuration *
-        settings.sacRate.liter *
+        settings.sacRate.l *
         settings.troubleSolvingSacMultiplier *
         depthAtm;
     final ascentL = depth.m /
         settings.ascentRate.m *
-        settings.sacRate.liter *
+        settings.sacRate.l *
         settings.ascentSacMultiplier *
         avgAtm;
     final safetyStopL = settings.safetyStopDuration *
-        settings.sacRate.liter *
+        settings.sacRate.l *
         settings.safetyStopSacMultiplier *
         safetyStopAtm;
-    return VolumeLiter(troubleSolvingL + ascentL + safetyStopL);
+    return VolumeL(troubleSolvingL + ascentL + safetyStopL);
   }
 
   double airtimeUntilRB(CylinderModel cylinder, Pressure pressure) {
     return max(
         0,
-        (cylinder.compressedVolume(pressure).liter - volume.liter) /
-            settings.sacRate.liter /
+        (cylinder.compressedVolume(pressure).l - volume.l) /
+            settings.sacRate.l /
             avgAtm);
   }
 
   Pressure rockBottomPressure(CylinderModel cylinder) {
-    return PressureBar(volume.liter ~/ cylinder.totalWaterVolume.liter);
+    return PressureBar(volume.l ~/ cylinder.totalWaterVolume.l);
   }
 }

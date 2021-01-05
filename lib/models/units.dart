@@ -47,12 +47,12 @@ class PressurePsi extends Pressure {
 }
 
 abstract class Volume {
-  double get liter;
+  double get l;
   double get cuft;
   const Volume();
 
   Volume operator +(Volume other) {
-    if (this is VolumeLiter) {
+    if (this is VolumeL) {
       return this + other;
     }
     if (this is VolumeCuFt) {
@@ -62,22 +62,21 @@ abstract class Volume {
   }
 }
 
-class VolumeLiter extends Volume {
-  final double liter;
-  double get cuft => liter * literPerCuft;
-  const VolumeLiter(this.liter);
-  VolumeLiter.fromPressure(double cuft, int psi)
-      : liter =
-            VolumeCuFt(cuft).liter / equivalentPressure(PressurePsi(psi)).bar;
+class VolumeL extends Volume {
+  final double l;
+  double get cuft => l * literPerCuft;
+  const VolumeL(this.l);
+  VolumeL.fromPressure(double cuft, int psi)
+      : l = VolumeCuFt(cuft).l / equivalentPressure(PressurePsi(psi)).bar;
 
-  VolumeLiter operator +(Volume other) {
-    return VolumeLiter(liter + other.liter);
+  VolumeL operator +(Volume other) {
+    return VolumeL(l + other.l);
   }
 }
 
 class VolumeCuFt extends Volume {
   final double cuft;
-  double get liter => cuft / literPerCuft;
+  double get l => cuft / literPerCuft;
   const VolumeCuFt(this.cuft);
 
   VolumeCuFt operator +(Volume other) {
@@ -132,10 +131,10 @@ extension SettingsModel on SettingsData {
   bool get isMetric => measurements == MeasurementSystem.METRIC;
 
   Volume get sacRate =>
-      isMetric ? VolumeLiter(metric.sacRate) : VolumeCuFt(imperial.sacRate);
+      isMetric ? VolumeL(metric.sacRate) : VolumeCuFt(imperial.sacRate);
   set sacRate(Volume v) {
     if (measurements == MeasurementSystem.METRIC)
-      metric.sacRate = v.liter;
+      metric.sacRate = v.l;
     else
       imperial.sacRate = v.cuft;
   }

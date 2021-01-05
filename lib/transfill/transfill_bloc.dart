@@ -194,9 +194,9 @@ class TransfillCylinderModel {
 
   const TransfillCylinderModel({this.cylinder, this.pressure});
 
-  Volume get gas => VolumeLiter(cylinder.waterVolume.liter *
+  Volume get gas => VolumeL(cylinder.waterVolume.l *
       equivalentPressure(pressure).bar *
       cylinder.twinFactor);
   Volume get totalVolume =>
-      VolumeLiter(cylinder.waterVolume.liter * cylinder.twinFactor);
+      VolumeL(cylinder.waterVolume.l * cylinder.twinFactor);
 }

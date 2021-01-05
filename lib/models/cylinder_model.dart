@@ -30,7 +30,7 @@ class CylinderModel {
       this.userSetVolume, this.weight, this.twinset, this.selected)
       : measurements = MeasurementSystem.IMPERIAL,
         waterVolume =
-            VolumeLiter.fromPressure(userSetVolume.cuft, workingPressure.psi);
+            VolumeL.fromPressure(userSetVolume.cuft, workingPressure.psi);
 
   CylinderModel.fromData(CylinderData d)
       : id = Guid(d.id),
@@ -41,11 +41,11 @@ class CylinderModel {
             ? PressureBar(d.workingPressure)
             : PressurePsi(d.workingPressure),
         userSetVolume = d.measurements == MeasurementSystem.METRIC
-            ? VolumeLiter(d.volume)
+            ? VolumeL(d.volume)
             : VolumeCuFt(d.volume),
         waterVolume = d.measurements == MeasurementSystem.METRIC
-            ? VolumeLiter(d.volume)
-            : VolumeLiter.fromPressure(d.volume, d.workingPressure.toInt()),
+            ? VolumeL(d.volume)
+            : VolumeL.fromPressure(d.volume, d.workingPressure.toInt()),
         weight = d.measurements == MeasurementSystem.METRIC
             ? WeightKg(d.weight)
             : WeightLb(d.weight),
@@ -62,7 +62,7 @@ class CylinderModel {
           ? workingPressure.bar
           : workingPressure.psi
       ..volume = measurements == MeasurementSystem.METRIC
-          ? userSetVolume.liter
+          ? userSetVolume.l
           : userSetVolume.cuft
       ..weight =
           measurements == MeasurementSystem.METRIC ? weight.kg : weight.lb
@@ -82,19 +82,19 @@ class CylinderModel {
 
   double get twinFactor => twinset ? 2 : 1;
 
-  Volume get totalWaterVolume => VolumeLiter(twinFactor * waterVolume.liter);
+  Volume get totalWaterVolume => VolumeL(twinFactor * waterVolume.l);
 
   Volume compressedVolume(Pressure p) =>
-      VolumeLiter(twinFactor * waterVolume.liter * equivalentPressure(p).bar);
+      VolumeL(twinFactor * waterVolume.l * equivalentPressure(p).bar);
 
-  Weight buoyancy(Pressure p) => WeightKg(externalVolume.liter * waterPerL -
+  Weight buoyancy(Pressure p) => WeightKg(externalVolume.l * waterPerL -
       weight.kg +
       valveBuyoancyKg +
       twinBuyoancyKg * (twinFactor - 1) -
-      equivalentPressure(p).bar * twinFactor * waterVolume.liter * airKgPerL);
+      equivalentPressure(p).bar * twinFactor * waterVolume.l * airKgPerL);
 
   Volume get externalVolume =>
-      VolumeLiter(weight.kg / materialDensity + waterVolume.liter);
+      VolumeL(weight.kg / materialDensity + waterVolume.l);
 }
 
 class CylinderViewModel {
@@ -121,7 +121,7 @@ class CylinderViewModel {
 
   String get gas => metric
       ? sprintf("%.0f", [
-          cylinder.compressedVolume(pressure).liter,
+          cylinder.compressedVolume(pressure).l,
         ])
       : sprintf("%.1f", [
           cylinder.compressedVolume(pressure).cuft,

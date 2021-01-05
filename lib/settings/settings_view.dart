@@ -86,7 +86,7 @@ class _SettingsViewState extends State<SettingsView> {
       prevSettings = settings;
 
       _sacRateController.text = settings.isMetric
-          ? settings.sacRate.liter.toString()
+          ? settings.sacRate.l.toString()
           : settings.sacRate.cuft.toString();
 
       _troubleSolvingDurationController.text =
@@ -107,6 +107,16 @@ class _SettingsViewState extends State<SettingsView> {
           : settings.safetyStopDepth.ft.toString();
       _safetyStopSacMultiplierController.text =
           settings.safetyStopSacMultiplier.toString();
+
+      _minPressureController.text = settings.isMetric
+          ? settings.minPressure.bar.toString()
+          : settings.minPressure.psi.toString();
+      _maxPressureController.text = settings.isMetric
+          ? settings.maxPressure.bar.toString()
+          : settings.maxPressure.psi.toString();
+      _pressureStepController.text = settings.isMetric
+          ? settings.pressureStep.bar.toString()
+          : settings.pressureStep.psi.toString();
     }
 
     return Table(
@@ -139,7 +149,7 @@ class _SettingsViewState extends State<SettingsView> {
             onFocusChange: (focus) {
               if (focus) return;
               final d = parseDouble(_sacRateController.text);
-              final vol = settings.isMetric ? VolumeLiter(d) : VolumeCuFt(d);
+              final vol = settings.isMetric ? VolumeL(d) : VolumeCuFt(d);
               context
                   .read<SettingsBloc>()
                   .add(UpdateSettings((s) => s..sacRate = vol));

@@ -196,13 +196,13 @@ class TransfillResultView extends StatelessWidget {
               Expanded(
                 child: ValueUnit(
                     title: "T1",
-                    value: _pressure(result.T1Pressure),
+                    value: _pressure(result.t1Pressure),
                     unit: _unit),
               ),
               Expanded(
                 child: ValueUnit(
                     title: "T2",
-                    value: _pressure(result.T2Pressure),
+                    value: _pressure(result.t2Pressure),
                     unit: _unit),
               ),
               Expanded(

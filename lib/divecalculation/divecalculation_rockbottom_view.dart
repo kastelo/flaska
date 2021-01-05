@@ -85,12 +85,12 @@ class RockBottomView extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (dcvm.safetyStopVolume.liter > 0)
+                if (dcvm.safetyStopVolume.l > 0)
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Text("SAFETY STOP", style: h1),
                   ),
-                if (dcvm.safetyStopVolume.liter > 0)
+                if (dcvm.safetyStopVolume.l > 0)
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Row(
