@@ -55,6 +55,13 @@ class RockBottomModel {
             safetyStopSacMultiplier ?? this.safetyStopSacMultiplier,
       );
 
+  bool get valid =>
+      this.depth != null &&
+      this.sac != null &&
+      this.ascentRatePerMin != null &&
+      this.sac.liter > 0 &&
+      this.ascentRatePerMin.m > 0;
+
   double get avgAtm => (10 + depth.m / 2) / 10;
 
   Volume get volume {

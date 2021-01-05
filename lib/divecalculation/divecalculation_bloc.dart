@@ -14,7 +14,11 @@ class DiveCalculationState {
   final bool metric;
 
   bool get valid =>
-      rockBottom != null && tankPressure != null && metric != null;
+      rockBottom != null &&
+      rockBottom.valid &&
+      tankPressure != null &&
+      tankPressure.bar > 0 &&
+      metric != null;
 
   Distance get depth => rockBottom.depth;
   Volume get sac => rockBottom.sac;
@@ -68,6 +72,7 @@ class DiveCalculationBloc
 
   DiveCalculationBloc(SettingsBloc settingsBloc)
       : super(DiveCalculationState.empty()) {
+    this.add(_NewSettings(settingsBloc.state.settings));
     settingsSub = settingsBloc.listen((settingsState) {
       this.add(_NewSettings(settingsState.settings));
     });
