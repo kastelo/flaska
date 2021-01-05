@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flaska/divecalculation/pressureslider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -68,28 +69,12 @@ class _PressureSlider extends StatelessWidget {
       if (!state.valid) {
         return Container();
       }
-      final dcvm = DiveCalculationViewModel(state);
-      return Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Row(children: [
-          Expanded(
-            child: Slider(
-                value:
-                    max(dcvm.minPressure, min(dcvm.pressure, dcvm.maxPressure)),
-                min: dcvm.minPressure,
-                max: dcvm.maxPressure,
-                onChanged: (v) {
-                  context
-                      .read<DiveCalculationBloc>()
-                      .add(SetTankPressure(dcvm.toPressure(v)));
-                }),
-          ),
-          Text(
-            "${dcvm.pressureLabel} ${dcvm.pressureUnit}",
-            textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ]),
+      return PressureSlider(
+        value: state.tankPressure,
+        withMin: true,
+        metric: state.metric,
+        onChanged: (pressure) =>
+            context.read<DiveCalculationBloc>().add(SetTankPressure(pressure)),
       );
     });
   }

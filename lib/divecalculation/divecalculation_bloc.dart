@@ -133,12 +133,14 @@ class DiveCalculationBloc
     if (event is SetTankPressure) {
       var pressure = event.pressure;
       if (state.metric) {
+        if (pressure.bar <= 0) pressure = PressureBar(35);
         pressure = PressureBar(pressure.bar.round().roundi(5));
         if (preferences != null) {
           preferences.setInt('pressure', pressure.bar);
           preferences.setBool('metric', true);
         }
       } else {
+        if (pressure.psi <= 0) pressure = PressurePsi(500);
         pressure = PressurePsi(pressure.psi.round().roundi(100));
         if (preferences != null) {
           preferences.setInt('pressure', pressure.psi);

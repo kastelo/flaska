@@ -1,14 +1,12 @@
-import 'dart:math';
-
-import 'package:flaska/divecalculation/valueunit.dart';
-import 'package:flaska/transfill/transfill_result_viewmodel.dart';
-
-import '../models/units.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../divecalculation/pressureslider.dart';
+import '../divecalculation/valueunit.dart';
 import '../models/cylinder_model.dart';
-import '../transfill/transfill_bloc.dart';
+import '../models/units.dart';
+import 'transfill_bloc.dart';
+import 'transfill_result_viewmodel.dart';
 
 class TransfillView extends StatefulWidget {
   @override
@@ -138,7 +136,7 @@ class TransfillCylinderEditView extends StatelessWidget {
                       style:
                           t.textTheme.caption.copyWith(color: t.disabledColor)),
                   Expanded(
-                    child: _PressureSlider(
+                    child: PressureSlider(
                       value: selected.pressure,
                       metric: metric,
                       onChanged: (pres) {
@@ -209,44 +207,6 @@ class TransfillResultView extends StatelessWidget {
               )
             ],
           ),
-      ],
-    );
-  }
-}
-
-class _PressureSlider extends StatelessWidget {
-  final Pressure value;
-  final bool metric;
-  final Function(Pressure) onChanged;
-
-  double get _current => metric ? value.bar.toDouble() : value.psi.toDouble();
-  double get _max => metric ? 300 : 4000;
-  String get _unit => metric ? "bar" : "psi";
-
-  const _PressureSlider(
-      {@required this.value, @required this.metric, @required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Slider(
-              value: min(_current, _max),
-              min: 0,
-              max: _max,
-              onChanged: (v) {
-                final pressure = metric
-                    ? PressureBar(v.toInt().roundi(5))
-                    : PressurePsi(v.toInt().roundi(100));
-                onChanged(pressure);
-              }),
-        ),
-        Text(
-          "${_current.toInt()} $_unit",
-          textAlign: TextAlign.right,
-          style: Theme.of(context).textTheme.caption,
-        ),
       ],
     );
   }
