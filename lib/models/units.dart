@@ -67,7 +67,8 @@ class VolumeL extends Volume {
   double get cuft => l * literPerCuft;
   const VolumeL(this.l);
   VolumeL.fromPressure(double cuft, int psi)
-      : l = VolumeCuFt(cuft).l / equivalentPressure(PressurePsi(psi)).bar;
+      : l = VolumeCuFt(cuft).l /
+            gasVolumeAtPressure(PressurePsi(psi), VolumeL(1)).l;
 
   VolumeL operator +(Volume other) {
     return VolumeL(l + other.l);

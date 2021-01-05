@@ -14,33 +14,30 @@ class TransfillResultViewModel {
   Pressure get resultingPressure {
     // Single stage filling to single tank.
     if (!to.cylinder.twinset)
-      return apparentPressure(PressureBar(totalGas.l ~/ totalVolume.l));
+      return pressureForGasVolume(totalGas, totalVolume);
 
     // Two stage filling to twinset. waterVolume is per tank.
-    return apparentPressure(
-        PressureBar((_stage1Pressure.bar + _stage2Pressure.bar) ~/ 2));
+    return pressureForGasVolume(
+        gasVolumeAtPressure(t1Pressure, to.cylinder.waterVolume) +
+            gasVolumeAtPressure(t2Pressure, to.cylinder.waterVolume),
+        to.cylinder.totalWaterVolume);
   }
 
-  Pressure get t1Pressure => apparentPressure(_stage1Pressure);
-  Pressure get t2Pressure => apparentPressure(_stage2Pressure);
+  // Total gas volume when connecting source with T1
+  Volume get _t1Volume =>
+      gasVolumeAtPressure(from.pressure, from.cylinder.totalWaterVolume) +
+      gasVolumeAtPressure(to.pressure, to.cylinder.waterVolume);
 
-  Pressure get _stage1Pressure {
-    final t1gasL = from.cylinder.waterVolume.l *
-            from.cylinder.twinFactor *
-            from.pressure.bar +
-        to.cylinder.waterVolume.l * to.pressure.bar;
-    return PressureBar(t1gasL ~/
-        (from.cylinder.waterVolume.l * from.cylinder.twinFactor +
-            to.cylinder.waterVolume.l));
-  }
+  // Resulting pressire when connecting source with T1
+  Pressure get t1Pressure => pressureForGasVolume(
+      _t1Volume, from.cylinder.totalWaterVolume + to.cylinder.waterVolume);
 
-  Pressure get _stage2Pressure {
-    final t2gasL = from.cylinder.waterVolume.l *
-            from.cylinder.twinFactor *
-            _stage1Pressure.bar +
-        to.cylinder.waterVolume.l * to.pressure.bar;
-    return PressureBar(t2gasL ~/
-        (from.cylinder.waterVolume.l * from.cylinder.twinFactor +
-            to.cylinder.waterVolume.l));
-  }
+  // Total gas volume when connecting source with T2, with source now at T1 pressure
+  Volume get _t2Volume =>
+      gasVolumeAtPressure(t1Pressure, from.cylinder.totalWaterVolume) +
+      gasVolumeAtPressure(to.pressure, to.cylinder.waterVolume);
+
+  // Resulting pressire when connecting source with T2
+  Pressure get t2Pressure => pressureForGasVolume(
+      _t2Volume, from.cylinder.totalWaterVolume + to.cylinder.waterVolume);
 }

@@ -18,32 +18,33 @@ final airZ = [
   [400, 1.3163],
 ];
 
-Pressure equivalentPressure(Pressure p) {
+Volume gasVolumeAtPressure(Pressure pressure, Volume cylinderWaterVolume) {
   for (var pair in airZ.asMap().entries) {
-    if (pair.value[0] > p.bar) {
-      final x = p.bar;
+    if (pair.value[0] > pressure.bar) {
+      final x = pressure.bar;
       final x0 = airZ[pair.key - 1][0];
       final x1 = pair.value[0];
       final y0 = airZ[pair.key - 1][1];
       final y1 = pair.value[1];
       final y = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
-      return PressureBar(p.bar ~/ y);
+      return VolumeL(pressure.bar * cylinderWaterVolume.l / y);
     }
   }
-  return PressureBar(p.bar ~/ airZ.last[1]);
+  return VolumeL(pressure.bar * cylinderWaterVolume.l / airZ.last[1]);
 }
 
-Pressure apparentPressure(Pressure p) {
+Pressure pressureForGasVolume(Volume gasVolume, Volume cylinderWaterVolume) {
+  final p = gasVolume.l / cylinderWaterVolume.l;
   for (var pair in airZ.asMap().entries) {
-    if (pair.value[0] > p.bar) {
-      final x = p.bar;
+    if (pair.value[0] > p) {
+      final x = p;
       final x0 = airZ[pair.key - 1][0];
       final x1 = pair.value[0];
       final y0 = airZ[pair.key - 1][1];
       final y1 = pair.value[1];
       final y = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
-      return PressureBar((p.bar * y).toInt());
+      return PressureBar(p ~/ y);
     }
   }
-  return PressureBar((p.bar * airZ.last[1]).toInt());
+  return PressureBar(p ~/ airZ.last[1]);
 }
