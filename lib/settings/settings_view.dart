@@ -58,10 +58,11 @@ class _SettingsViewState extends State<SettingsView> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: formTable(context, state.settings),
-                  ),
+                  generalTable(context, state.settings),
+                  troubleSolvingTable(context, state.settings),
+                  ascentTable(context, state.settings),
+                  safetyStopTable(context, state.settings),
+                  slidersTable(context, state.settings),
                   Divider(
                     height: 32,
                     indent: 32,
@@ -81,24 +82,269 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  Widget formTable(BuildContext context, SettingsData settings) {
-    if (settings != prevSettings) {
-      prevSettings = settings;
+  SettingsData _generalSettings;
+  Widget generalTable(BuildContext context, SettingsData settings) {
+    if (settings != _generalSettings) {
+      _generalSettings = settings;
 
       _sacRateController.text = settings.isMetric
           ? settings.sacRate.l.toString()
           : settings.sacRate.cuft.toString();
+    }
+
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "GENERAL",
+              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+            ),
+            Table(
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                2: IntrinsicColumnWidth(),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              children: <TableRow>[
+                titledRow(
+                  title: "System",
+                  child: DropdownButton<MeasurementSystem>(
+                    dropdownColor: Theme.of(context).cardColor,
+                    value: settings.measurements,
+                    items: [
+                      DropdownMenuItem(
+                          value: MeasurementSystem.METRIC,
+                          child: Text("Metric")),
+                      DropdownMenuItem(
+                          value: MeasurementSystem.IMPERIAL,
+                          child: Text("Imperial")),
+                    ],
+                    onChanged: (value) {
+                      context
+                          .read<SettingsBloc>()
+                          .add(SetMeasurementSystem(value));
+                    },
+                  ),
+                ),
+                titledUnitRow(
+                  title: "SAC Rate",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(_sacRateController.text);
+                      final vol =
+                          settings.isMetric ? VolumeL(d) : VolumeCuFt(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..sacRate = vol));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _sacRateController,
+                    ),
+                  ),
+                  metric: "L/min",
+                  imperial: "cuft/min",
+                  settings: settings,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SettingsData _troubleSolvingSettings;
+  Widget troubleSolvingTable(BuildContext context, SettingsData settings) {
+    if (settings != _troubleSolvingSettings) {
+      _troubleSolvingSettings = settings;
 
       _troubleSolvingDurationController.text =
           settings.troubleSolvingDuration.toString();
       _troubleSolvingSacMultiplierController.text =
           settings.troubleSolvingSacMultiplier.toString();
+    }
+
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "TROUBLE SOLVING",
+              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+            ),
+            Table(
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                2: IntrinsicColumnWidth(),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              children: <TableRow>[
+                titledRow(
+                  title: "Duration",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d =
+                          parseDouble(_troubleSolvingDurationController.text);
+                      context.read<SettingsBloc>().add(
+                          UpdateSettings((s) => s..troubleSolvingDuration = d));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _troubleSolvingDurationController,
+                    ),
+                  ),
+                  trailer: "min",
+                ),
+                titledRow(
+                  title: "SAC multiplier",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(
+                          _troubleSolvingSacMultiplierController.text);
+                      context.read<SettingsBloc>().add(UpdateSettings(
+                          (s) => s..troubleSolvingSacMultiplier = d));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _troubleSolvingSacMultiplierController,
+                    ),
+                  ),
+                  trailer: "×",
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SettingsData _ascentSettings;
+  Widget ascentTable(BuildContext context, SettingsData settings) {
+    if (settings != _ascentSettings) {
+      _ascentSettings = settings;
 
       _ascentRateController.text = settings.isMetric
           ? settings.ascentRate.m.toString()
           : settings.ascentRate.ft.toString();
       _ascentSacMultiplierController.text =
           settings.ascentSacMultiplier.toString();
+    }
+
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "ASCENT",
+              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+            ),
+            Table(
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                2: IntrinsicColumnWidth(),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              children: <TableRow>[
+                titledUnitRow(
+                  title: "Ascent rate",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(_ascentRateController.text);
+                      final rate =
+                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..ascentRate = rate));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _ascentRateController,
+                    ),
+                  ),
+                  metric: "m/min",
+                  imperial: "ft/min",
+                  settings: settings,
+                ),
+                titledRow(
+                  title: "SAC multiplier",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d =
+                          parseDouble(_ascentSacMultiplierController.text);
+                      context.read<SettingsBloc>().add(
+                          UpdateSettings((s) => s..ascentSacMultiplier = d));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _ascentSacMultiplierController,
+                    ),
+                  ),
+                  trailer: "×",
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SettingsData _safetyStopSettings;
+  Widget safetyStopTable(BuildContext context, SettingsData settings) {
+    if (settings != _safetyStopSettings) {
+      _safetyStopSettings = settings;
 
       _safetyStopDurationController.text =
           settings.safetyStopDuration.toString();
@@ -107,6 +353,109 @@ class _SettingsViewState extends State<SettingsView> {
           : settings.safetyStopDepth.ft.toString();
       _safetyStopSacMultiplierController.text =
           settings.safetyStopSacMultiplier.toString();
+    }
+
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "SAFETY STOP",
+              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+            ),
+            Table(
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                2: IntrinsicColumnWidth(),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              children: <TableRow>[
+                titledRow(
+                  title: "Duration",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(_safetyStopDurationController.text);
+                      context.read<SettingsBloc>().add(
+                          UpdateSettings((s) => s..safetyStopDuration = d));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _safetyStopDurationController,
+                    ),
+                  ),
+                  trailer: "min",
+                ),
+                titledUnitRow(
+                  title: "Depth",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(_safetyStopDepthController.text);
+                      final dep =
+                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..safetyStopDepth = dep));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _safetyStopDepthController,
+                    ),
+                  ),
+                  metric: "m",
+                  imperial: "ft",
+                  settings: settings,
+                ),
+                titledRow(
+                  title: "SAC multiplier",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d =
+                          parseDouble(_safetyStopSacMultiplierController.text);
+                      context.read<SettingsBloc>().add(UpdateSettings(
+                          (s) => s..safetyStopSacMultiplier = d));
+                    },
+                    child: TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_decimalExp)
+                      ],
+                      controller: _safetyStopSacMultiplierController,
+                    ),
+                  ),
+                  trailer: "×",
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SettingsData _slidersSettings;
+  Widget slidersTable(BuildContext context, SettingsData settings) {
+    if (settings != _slidersSettings) {
+      _slidersSettings = settings;
 
       _minPressureController.text = settings.isMetric
           ? settings.minPressure.bar.toString()
@@ -119,254 +468,109 @@ class _SettingsViewState extends State<SettingsView> {
           : settings.pressureStep.psi.toString();
     }
 
-    return Table(
-      columnWidths: {
-        0: IntrinsicColumnWidth(),
-        2: IntrinsicColumnWidth(),
-      },
-      defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
-      children: <TableRow>[
-        headerRow(context: context, title: "General"),
-        titledRow(
-          title: "System",
-          child: DropdownButton<MeasurementSystem>(
-            dropdownColor: Theme.of(context).cardColor,
-            value: settings.measurements,
-            items: [
-              DropdownMenuItem(
-                  value: MeasurementSystem.METRIC, child: Text("Metric")),
-              DropdownMenuItem(
-                  value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
-            ],
-            onChanged: (value) {
-              context.read<SettingsBloc>().add(SetMeasurementSystem(value));
-            },
-          ),
-        ),
-        titledUnitRow(
-          title: "SAC Rate",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_sacRateController.text);
-              final vol = settings.isMetric ? VolumeL(d) : VolumeCuFt(d);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..sacRate = vol));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _sacRateController,
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "PRESSURE SLIDERS",
+              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
             ),
-          ),
-          metric: "L/min",
-          imperial: "cuft/min",
-          settings: settings,
-        ),
-        headerRow(context: context, title: "Trouble solving"),
-        titledRow(
-          title: "Duration",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_troubleSolvingDurationController.text);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..troubleSolvingDuration = d));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _troubleSolvingDurationController,
+            Table(
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                2: IntrinsicColumnWidth(),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              children: <TableRow>[
+                titledUnitRow(
+                  title: "Min Pressure",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = int.parse(_minPressureController.text,
+                          onError: (_) => 0);
+                      final pres =
+                          settings.isMetric ? PressureBar(d) : PressurePsi(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..minPressure = pres));
+                    },
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_integerExp)
+                      ],
+                      controller: _minPressureController,
+                    ),
+                  ),
+                  metric: "bar",
+                  imperial: "psi",
+                  settings: settings,
+                ),
+                titledUnitRow(
+                  title: "Max Pressure",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = int.parse(_maxPressureController.text,
+                          onError: (_) => 0);
+                      final pres =
+                          settings.isMetric ? PressureBar(d) : PressurePsi(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..maxPressure = pres));
+                    },
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_integerExp)
+                      ],
+                      controller: _maxPressureController,
+                    ),
+                  ),
+                  metric: "bar",
+                  imperial: "psi",
+                  settings: settings,
+                ),
+                titledUnitRow(
+                  title: "Pressure Step",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = int.parse(_pressureStepController.text,
+                          onError: (_) => 0);
+                      final pres =
+                          settings.isMetric ? PressureBar(d) : PressurePsi(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..pressureStep = pres));
+                    },
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_integerExp)
+                      ],
+                      controller: _pressureStepController,
+                    ),
+                  ),
+                  metric: "bar",
+                  imperial: "psi",
+                  settings: settings,
+                ),
+              ],
             ),
-          ),
-          trailer: "min",
+          ],
         ),
-        titledRow(
-          title: "SAC multiplier",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d =
-                  parseDouble(_troubleSolvingSacMultiplierController.text);
-              context.read<SettingsBloc>().add(
-                  UpdateSettings((s) => s..troubleSolvingSacMultiplier = d));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _troubleSolvingSacMultiplierController,
-            ),
-          ),
-          trailer: "×",
-        ),
-        headerRow(context: context, title: "Ascent"),
-        titledUnitRow(
-          title: "Ascent rate",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_ascentRateController.text);
-              final rate = settings.isMetric ? DistanceM(d) : DistanceFt(d);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..ascentRate = rate));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _ascentRateController,
-            ),
-          ),
-          metric: "m/min",
-          imperial: "ft/min",
-          settings: settings,
-        ),
-        titledRow(
-          title: "SAC multiplier",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_ascentSacMultiplierController.text);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..ascentSacMultiplier = d));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _ascentSacMultiplierController,
-            ),
-          ),
-          trailer: "×",
-        ),
-        headerRow(context: context, title: "Safety stop"),
-        titledRow(
-          title: "Duration",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_safetyStopDurationController.text);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..safetyStopDuration = d));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _safetyStopDurationController,
-            ),
-          ),
-          trailer: "min",
-        ),
-        titledUnitRow(
-          title: "Depth",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_safetyStopDepthController.text);
-              final dep = settings.isMetric ? DistanceM(d) : DistanceFt(d);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..safetyStopDepth = dep));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _safetyStopDepthController,
-            ),
-          ),
-          metric: "m",
-          imperial: "ft",
-          settings: settings,
-        ),
-        titledRow(
-          title: "SAC multiplier",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d = parseDouble(_safetyStopSacMultiplierController.text);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..safetyStopSacMultiplier = d));
-            },
-            child: TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-              controller: _safetyStopSacMultiplierController,
-            ),
-          ),
-          trailer: "×",
-        ),
-        headerRow(context: context, title: "Slider settings"),
-        titledUnitRow(
-          title: "Min Pressure",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d =
-                  int.parse(_minPressureController.text, onError: (_) => 0);
-              final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..minPressure = pres));
-            },
-            child: TextField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
-              controller: _minPressureController,
-            ),
-          ),
-          metric: "bar",
-          imperial: "psi",
-          settings: settings,
-        ),
-        titledUnitRow(
-          title: "Max Pressure",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d =
-                  int.parse(_maxPressureController.text, onError: (_) => 0);
-              final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..maxPressure = pres));
-            },
-            child: TextField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
-              controller: _maxPressureController,
-            ),
-          ),
-          metric: "bar",
-          imperial: "psi",
-          settings: settings,
-        ),
-        titledUnitRow(
-          title: "Pressure Step",
-          child: FocusScope(
-            onFocusChange: (focus) {
-              if (focus) return;
-              final d =
-                  int.parse(_pressureStepController.text, onError: (_) => 0);
-              final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
-              context
-                  .read<SettingsBloc>()
-                  .add(UpdateSettings((s) => s..pressureStep = pres));
-            },
-            child: TextField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
-              controller: _pressureStepController,
-            ),
-          ),
-          metric: "bar",
-          imperial: "psi",
-          settings: settings,
-        ),
-      ],
+      ),
     );
   }
 
