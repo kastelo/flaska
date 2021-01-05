@@ -41,22 +41,27 @@ class CylinderListView extends StatelessWidget {
                   .map(
                     (c) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: ListTile(
-                        key: ValueKey(c.id),
-                        tileColor: t.cardColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        leading: c.twinset
-                            ? Icon(Icons.looks_two, color: t.accentColor)
-                            : Icon(Icons.looks_one),
-                        title: Text(c.name),
-                        trailing: Switch(
-                          value: c.selected,
-                          onChanged: (selected) => context
-                              .read<CylinderListBloc>()
-                              .add(UpdateCylinder(c..selected = selected)),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: t.cardColor,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        onTap: () async => await editCylinder(context, c),
+                        child: ListTile(
+                          key: ValueKey(c.id),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          leading: c.twinset
+                              ? Icon(Icons.looks_two, color: t.accentColor)
+                              : Icon(Icons.looks_one),
+                          title: Text(c.name),
+                          trailing: Switch(
+                            value: c.selected,
+                            onChanged: (selected) => context
+                                .read<CylinderListBloc>()
+                                .add(UpdateCylinder(c..selected = selected)),
+                          ),
+                          onTap: () async => await editCylinder(context, c),
+                        ),
                       ),
                     ),
                   )

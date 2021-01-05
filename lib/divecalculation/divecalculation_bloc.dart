@@ -99,14 +99,10 @@ class DiveCalculationBloc
         ),
       );
       if (preferences == null) {
-        await loadPreferences(event.settings.isMetric);
-      } else {
-        if (newState.metric != state.metric) {
-          add(SetTankPressure(newState.tankPressure));
-          add(SetDepth(
-            newState.rockBottom?.depth ?? DistanceM(15),
-          ));
-        }
+        await loadPreferences();
+      } else if (newState.metric != state.metric) {
+        add(SetTankPressure(newState.tankPressure));
+        add(SetDepth(newState.rockBottom.depth));
       }
       yield newState;
     }
@@ -115,10 +111,16 @@ class DiveCalculationBloc
       var depth = event.depth;
       if (state.metric) {
         depth = DistanceM(depth.m.round().toDouble());
-        if (preferences != null) preferences.setDouble('depth', depth.m);
+        if (preferences != null) {
+          preferences.setDouble('depth', depth.m);
+          preferences.setBool('metric', true);
+        }
       } else {
         depth = DistanceFt(depth.ft.round().roundi(10).toDouble());
-        if (preferences != null) preferences.setDouble('depth', depth.ft);
+        if (preferences != null) {
+          preferences.setDouble('depth', depth.ft);
+          preferences.setBool('metric', false);
+        }
       }
       yield state.copyWith(rockBottom: state.rockBottom.copyWith(depth: depth));
     }
@@ -127,20 +129,27 @@ class DiveCalculationBloc
       var pressure = event.pressure;
       if (state.metric) {
         pressure = PressureBar(pressure.bar.round().roundi(5));
-        if (preferences != null) preferences.setInt('pressure', pressure.bar);
+        if (preferences != null) {
+          preferences.setInt('pressure', pressure.bar);
+          preferences.setBool('metric', true);
+        }
       } else {
         pressure = PressurePsi(pressure.psi.round().roundi(100));
-        if (preferences != null) preferences.setInt('pressure', pressure.psi);
+        if (preferences != null) {
+          preferences.setInt('pressure', pressure.psi);
+          preferences.setBool('metric', false);
+        }
       }
       yield state.copyWith(tankPressure: pressure);
     }
   }
 
-  Future loadPreferences(bool metric) async {
+  Future loadPreferences() async {
     preferences = await SharedPreferences.getInstance();
+    final metric = preferences.getBool('metric') ?? true;
     final pres = preferences.getInt('pressure') ?? 200;
-    add(SetTankPressure(metric ? PressureBar(pres) : PressurePsi(pres)));
     final dep = preferences.getDouble('depth') ?? 15;
+    add(SetTankPressure(metric ? PressureBar(pres) : PressurePsi(pres)));
     add(SetDepth(metric ? DistanceM(dep) : DistanceFt(dep)));
   }
 }
