@@ -23,21 +23,21 @@
                                 <rect key="frame" x="207" y="448" width="0.5" height="0.5"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXk-GO-UjI">
-                                <rect key="frame" x="16" y="60" width="382" height="128"/>
+                                <rect key="frame" x="16" y="128" width="382" height="128"/>
                                 <color key="backgroundColor" red="0.062745098039215685" green="0.062745098039215685" blue="0.062745098039215685" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="FeC-Ag-0uK"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ac-SR-arY">
-                                <rect key="frame" x="16" y="204" width="382" height="128"/>
+                                <rect key="frame" x="16" y="272" width="382" height="128"/>
                                 <color key="backgroundColor" red="0.062745098040000002" green="0.062745098040000002" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="f7A-kL-uuH"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rT1-n0-VNq">
-                                <rect key="frame" x="16" y="348" width="382" height="128"/>
+                                <rect key="frame" x="16" y="416" width="382" height="128"/>
                                 <color key="backgroundColor" red="0.062745098040000002" green="0.062745098040000002" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="TXa-Ke-jTx"/>
@@ -49,11 +49,11 @@
                             <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1a2-6s-vTC"/>
                             <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="4X2-HB-R7a"/>
                             <constraint firstItem="rT1-n0-VNq" firstAttribute="width" secondItem="hXk-GO-UjI" secondAttribute="width" id="6iu-YK-1xd"/>
-                            <constraint firstItem="hXk-GO-UjI" firstAttribute="top" secondItem="Ydg-fD-yQy" secondAttribute="bottom" constant="16" id="Byc-Uv-p3g"/>
                             <constraint firstItem="rT1-n0-VNq" firstAttribute="top" secondItem="2ac-SR-arY" secondAttribute="bottom" constant="16" id="DYm-P1-uDB"/>
                             <constraint firstItem="rT1-n0-VNq" firstAttribute="centerX" secondItem="hXk-GO-UjI" secondAttribute="centerX" id="EMw-l9-fgJ"/>
                             <constraint firstItem="2ac-SR-arY" firstAttribute="top" secondItem="hXk-GO-UjI" secondAttribute="bottom" constant="16" id="GlJ-P3-dkV"/>
                             <constraint firstItem="hXk-GO-UjI" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="16" id="QPB-bE-tvG"/>
+                            <constraint firstItem="hXk-GO-UjI" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="128" id="a6t-xI-Nrw"/>
                             <constraint firstAttribute="trailing" secondItem="hXk-GO-UjI" secondAttribute="trailing" constant="16" id="aQV-H5-4rY"/>
                             <constraint firstItem="2ac-SR-arY" firstAttribute="centerX" secondItem="hXk-GO-UjI" secondAttribute="centerX" id="j4u-YO-1XP"/>
                             <constraint firstItem="2ac-SR-arY" firstAttribute="width" secondItem="hXk-GO-UjI" secondAttribute="width" id="m9z-Qz-OxH"/>
