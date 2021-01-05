@@ -109,22 +109,28 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
     }
 
     if (event is _NewCylinders) {
-      var newState = state.copyWith(cylinders: event.cylinders);
-      if (newState.to == null) {
-        newState = newState.copyWith(
-          to: TransfillCylinderModel(
-            cylinder: newState.cylinders.first,
-            pressure: PressureBar(50),
-          ),
-        );
-      }
-      if (newState.from == null) {
-        newState = newState.copyWith(
-          from: TransfillCylinderModel(
-            cylinder: newState.cylinders.first,
-            pressure: PressureBar(220),
-          ),
-        );
+      final selCylinders =
+          (event.cylinders ?? []).where((c) => c.selected).toList();
+      var newState = state.copyWith(cylinders: selCylinders);
+      if (newState.cylinders.isNotEmpty) {
+        if (newState.from == null ||
+            !selCylinders.contains(newState.from.cylinder)) {
+          newState = newState.copyWith(
+            from: TransfillCylinderModel(
+              cylinder: selCylinders.first,
+              pressure: PressureBar(220),
+            ),
+          );
+        }
+        if (newState.to == null ||
+            !selCylinders.contains(newState.to.cylinder)) {
+          newState = newState.copyWith(
+            to: TransfillCylinderModel(
+              cylinder: selCylinders.first,
+              pressure: PressureBar(50),
+            ),
+          );
+        }
       }
       yield newState;
       if (preferences == null && newState.init) {
@@ -161,8 +167,9 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
     final toPressure = preferences.getInt('toPressure');
 
     if (fromCylinder != null && fromPressure != null) {
-      final cyl = state.cylinders
-          .firstWhere((c) => c.id.toString() == fromCylinder, orElse: null);
+      final cyl = state.cylinders.firstWhere(
+          (c) => c.id.toString() == fromCylinder,
+          orElse: () => null);
       final press =
           metric ? PressureBar(fromPressure) : PressurePsi(fromPressure);
       if (cyl != null) {
@@ -172,7 +179,7 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
 
     if (toCylinder != null && toPressure != null) {
       final cyl = state.cylinders
-          .firstWhere((c) => c.id.toString() == toCylinder, orElse: null);
+          .firstWhere((c) => c.id.toString() == toCylinder, orElse: () => null);
       final press = metric ? PressureBar(toPressure) : PressurePsi(toPressure);
       if (cyl != null) {
         add(NewTo(TransfillCylinderModel(cylinder: cyl, pressure: press)));
