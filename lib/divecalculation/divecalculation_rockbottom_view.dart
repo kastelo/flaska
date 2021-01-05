@@ -37,7 +37,7 @@ class RockBottomView extends StatelessWidget {
                       Expanded(
                         child: ValueUnit(
                             title: "TIME",
-                            value: state.rockBottom.troubleSolvingDurationMin
+                            value: state.settings.troubleSolvingDuration
                                 .toString(),
                             unit: "min"),
                       ),

@@ -5,6 +5,7 @@ import '../divecalculation/pressureslider.dart';
 import '../divecalculation/valueunit.dart';
 import '../models/cylinder_model.dart';
 import '../models/units.dart';
+import '../proto/proto.dart';
 import 'transfill_bloc.dart';
 import 'transfill_result_viewmodel.dart';
 
@@ -36,7 +37,7 @@ class _TransfillViewState extends State<TransfillView> {
                         title: "From",
                         cylinders: state.cylinders,
                         selected: state.from,
-                        metric: state.metric,
+                        settings: state.settings,
                         onChanged: (m) =>
                             context.read<TransfillBloc>().add(NewFrom(m)),
                       ),
@@ -47,7 +48,7 @@ class _TransfillViewState extends State<TransfillView> {
                         title: "To",
                         cylinders: state.cylinders,
                         selected: state.to,
-                        metric: state.metric,
+                        settings: state.settings,
                         onChanged: (m) =>
                             context.read<TransfillBloc>().add(NewTo(m)),
                         child: TransfillResultView(
@@ -74,7 +75,7 @@ class TransfillCylinderEditView extends StatelessWidget {
   final List<CylinderModel> cylinders;
   final TransfillCylinderModel selected;
   final Function(TransfillCylinderModel) onChanged;
-  final bool metric;
+  final SettingsData settings;
   final Widget child;
 
   const TransfillCylinderEditView({
@@ -82,9 +83,11 @@ class TransfillCylinderEditView extends StatelessWidget {
     @required this.cylinders,
     @required this.selected,
     @required this.onChanged,
-    @required this.metric,
+    @required this.settings,
     this.child,
   });
+
+  bool get metric => settings.isMetric;
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +142,9 @@ class TransfillCylinderEditView extends StatelessWidget {
                     child: PressureSlider(
                       value: selected.pressure,
                       metric: metric,
+                      minValue: settings.minPressure,
+                      maxValue: settings.maxPressure,
+                      step: settings.pressureStep,
                       onChanged: (pres) {
                         onChanged(TransfillCylinderModel(
                           cylinder: selected.cylinder,

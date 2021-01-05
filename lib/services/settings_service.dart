@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:protobuf/protobuf.dart';
 
 import '../proto/proto.dart';
 
@@ -19,11 +20,17 @@ final defaultSettings = SettingsData()
   ..metric = (MeasurementDependentSettingsData()
     ..sacRate = 15
     ..ascentRate = 10
-    ..safetyStopDepth = 5)
+    ..safetyStopDepth = 5
+    ..minPressure = 30
+    ..maxPressure = 300
+    ..pressureStep = 5)
   ..imperial = (MeasurementDependentSettingsData()
     ..sacRate = 0.5
     ..ascentRate = 30
-    ..safetyStopDepth = 15);
+    ..safetyStopDepth = 15
+    ..minPressure = 300
+    ..maxPressure = 4000
+    ..pressureStep = 100);
 
 class FakeSettingsListService implements SettingsService {
   var settings = SettingsData();
@@ -47,11 +54,11 @@ class LocalSettingsService implements SettingsService {
       final listFile = File('${directory.path}/settings.pb');
       final data = await listFile.readAsBytes();
       if (data.isEmpty) {
-        return SettingsData.fromBuffer(defaultSettings.writeToBuffer());
+        return defaultSettings.deepCopy();
       }
       return SettingsData.fromBuffer(data);
     } catch (e) {
-      return SettingsData.fromBuffer(defaultSettings.writeToBuffer());
+      return defaultSettings.deepCopy();
     }
   }
 

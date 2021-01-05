@@ -13,6 +13,8 @@ const _gitVer =
     String.fromEnvironment("GITVERSION", defaultValue: "unknown-dev");
 
 final _decimalExp = RegExp(r'[0-9\.,]');
+final _integerExp = RegExp(r'[0-9]');
+
 double parseDouble(String s) {
   return double.parse(s.trim().replaceAll(",", "."), (_) => 0.0);
 }
@@ -31,6 +33,9 @@ class _SettingsViewState extends State<SettingsView> {
   final _safetyStopDurationController = TextEditingController();
   final _safetyStopDepthController = TextEditingController();
   final _safetyStopSacMultiplierController = TextEditingController();
+  final _minPressureController = TextEditingController();
+  final _maxPressureController = TextEditingController();
+  final _pressureStepController = TextEditingController();
   SettingsData prevSettings;
 
   @override
@@ -284,20 +289,74 @@ class _SettingsViewState extends State<SettingsView> {
           ),
           trailer: "×",
         ),
+        headerRow(context: context, title: "Slider settings"),
+        titledUnitRow(
+          title: "Min Pressure",
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d =
+                  int.parse(_minPressureController.text, onError: (_) => 0);
+              final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..minPressure = pres));
+            },
+            child: TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
+              controller: _minPressureController,
+            ),
+          ),
+          metric: "bar",
+          imperial: "psi",
+          settings: settings,
+        ),
+        titledUnitRow(
+          title: "Max Pressure",
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d =
+                  int.parse(_maxPressureController.text, onError: (_) => 0);
+              final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..maxPressure = pres));
+            },
+            child: TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
+              controller: _maxPressureController,
+            ),
+          ),
+          metric: "bar",
+          imperial: "psi",
+          settings: settings,
+        ),
+        titledUnitRow(
+          title: "Pressure Step",
+          child: FocusScope(
+            onFocusChange: (focus) {
+              if (focus) return;
+              final d =
+                  int.parse(_pressureStepController.text, onError: (_) => 0);
+              final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
+              context
+                  .read<SettingsBloc>()
+                  .add(UpdateSettings((s) => s..pressureStep = pres));
+            },
+            child: TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
+              controller: _pressureStepController,
+            ),
+          ),
+          metric: "bar",
+          imperial: "psi",
+          settings: settings,
+        ),
       ],
-    );
-  }
-
-  Widget troubleSolvingTable(SettingsData settings) {
-    return Form(
-      child: Table(
-        columnWidths: {
-          0: IntrinsicColumnWidth(),
-          2: IntrinsicColumnWidth(),
-        },
-        defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
-        children: <TableRow>[],
-      ),
     );
   }
 

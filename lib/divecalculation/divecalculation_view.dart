@@ -1,15 +1,16 @@
 import 'dart:math';
 
-import 'package:flaska/divecalculation/pressureslider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cylinderlist/cylinderlist_bloc.dart';
+import '../divecalculation/pressureslider.dart';
 import '../models/cylinder_model.dart';
+import '../models/units.dart';
 import 'divecalculation_bloc.dart';
 import 'divecalculation_cylinder_view.dart';
-import 'divecalculation_viewmodel.dart';
 import 'divecalculation_rockbottom_view.dart';
+import 'divecalculation_viewmodel.dart';
 
 class DiveCalculationView extends StatelessWidget {
   @override
@@ -71,7 +72,9 @@ class _PressureSlider extends StatelessWidget {
       }
       return PressureSlider(
         value: state.tankPressure,
-        withMin: true,
+        minValue: state.settings.minPressure,
+        maxValue: state.settings.maxPressure,
+        step: state.settings.pressureStep,
         metric: state.metric,
         onChanged: (pressure) =>
             context.read<DiveCalculationBloc>().add(SetTankPressure(pressure)),

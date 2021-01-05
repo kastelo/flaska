@@ -63,6 +63,9 @@ const MeasurementDependentSettingsData$json = const {
     const {'1': 'sac_rate', '3': 1, '4': 1, '5': 1, '10': 'sacRate'},
     const {'1': 'ascent_rate', '3': 2, '4': 1, '5': 1, '10': 'ascentRate'},
     const {'1': 'safety_stop_depth', '3': 3, '4': 1, '5': 1, '10': 'safetyStopDepth'},
+    const {'1': 'min_pressure', '3': 4, '4': 1, '5': 5, '10': 'minPressure'},
+    const {'1': 'max_pressure', '3': 5, '4': 1, '5': 5, '10': 'maxPressure'},
+    const {'1': 'pressure_step', '3': 6, '4': 1, '5': 5, '10': 'pressureStep'},
   ],
 };
 

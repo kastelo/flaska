@@ -41,4 +41,7 @@ message MeasurementDependentSettingsData {
     double sac_rate = 1; // volume units per min
     double ascent_rate = 2; // distance units per min
     double safety_stop_depth = 3; // distance units
+    int32 min_pressure = 4; // pressure units
+    int32 max_pressure = 5; // pressure units
+    int32 pressure_step = 6; // pressure units
 }

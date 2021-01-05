@@ -1,4 +1,5 @@
 import 'compressibility.dart';
+import '../proto/proto.dart';
 
 const barPerPsi = 0.0689476;
 const literPerCuft = 0.0353147;
@@ -123,5 +124,68 @@ class WeightLb extends Weight {
 extension Rounding on int {
   int roundi(int intv) {
     return (this + intv / 2) ~/ intv * intv;
+  }
+}
+
+extension SettingsModel on SettingsData {
+  bool get valid => measurements != null;
+  bool get isMetric => measurements == MeasurementSystem.METRIC;
+
+  Volume get sacRate =>
+      isMetric ? VolumeLiter(metric.sacRate) : VolumeCuFt(imperial.sacRate);
+  set sacRate(Volume v) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.sacRate = v.liter;
+    else
+      imperial.sacRate = v.cuft;
+  }
+
+  Distance get ascentRate =>
+      isMetric ? DistanceM(metric.ascentRate) : DistanceFt(imperial.ascentRate);
+  set ascentRate(Distance v) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.ascentRate = v.m;
+    else
+      imperial.ascentRate = v.ft;
+  }
+
+  Distance get safetyStopDepth => isMetric
+      ? DistanceM(metric.safetyStopDepth)
+      : DistanceFt(imperial.safetyStopDepth);
+  set safetyStopDepth(Distance v) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.safetyStopDepth = v.m;
+    else
+      imperial.safetyStopDepth = v.ft;
+  }
+
+  Pressure get minPressure => isMetric
+      ? PressureBar(metric.minPressure)
+      : PressurePsi(imperial.minPressure);
+  set minPressure(Pressure p) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.minPressure = p.bar;
+    else
+      imperial.minPressure = p.bar;
+  }
+
+  Pressure get maxPressure => isMetric
+      ? PressureBar(metric.maxPressure)
+      : PressurePsi(imperial.maxPressure);
+  set maxPressure(Pressure p) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.maxPressure = p.bar;
+    else
+      imperial.maxPressure = p.bar;
+  }
+
+  Pressure get pressureStep => isMetric
+      ? PressureBar(metric.pressureStep)
+      : PressurePsi(imperial.pressureStep);
+  set pressureStep(Pressure p) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.pressureStep = p.bar;
+    else
+      imperial.pressureStep = p.bar;
   }
 }

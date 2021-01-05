@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import '../proto/proto.dart';
+import '../settings/settings_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../models/cylinder_model.dart';
@@ -7,75 +9,45 @@ import 'units.dart';
 
 class RockBottomModel {
   final Distance depth;
-  final Volume sac;
-  final Distance ascentRatePerMin;
-  final double ascentSacMultiplier;
-  final double troubleSolvingDurationMin;
-  final double troubleSolvingSacMultiplier;
-  final Distance safetyStopDepth;
-  final double safetyStopDurationMin;
-  final double safetyStopSacMultiplier;
+  final SettingsData settings;
 
   const RockBottomModel({
     @required this.depth,
-    @required this.sac,
-    @required this.ascentRatePerMin,
-    @required this.ascentSacMultiplier,
-    @required this.troubleSolvingDurationMin,
-    @required this.troubleSolvingSacMultiplier,
-    @required this.safetyStopDepth,
-    @required this.safetyStopDurationMin,
-    @required this.safetyStopSacMultiplier,
+    @required this.settings,
   });
+
+  RockBottomModel.fromSettings(SettingsData settings, Distance depth)
+      : settings = settings,
+        depth = depth;
 
   RockBottomModel copyWith({
     Distance depth,
-    Volume sac,
-    Distance ascentRatePerMin,
-    double ascentSacMultiplier,
-    double troubleSolvingDurationMin,
-    double troubleSolvingSacMultiplier,
-    Distance safetyStopDepth,
-    double safetyStopDurationMin,
-    double safetyStopSacMultiplier,
+    SettingsData settings,
   }) =>
       RockBottomModel(
         depth: depth ?? this.depth,
-        sac: sac ?? this.sac,
-        ascentRatePerMin: ascentRatePerMin ?? this.ascentRatePerMin,
-        ascentSacMultiplier: ascentSacMultiplier ?? this.ascentSacMultiplier,
-        troubleSolvingDurationMin:
-            troubleSolvingDurationMin ?? this.troubleSolvingDurationMin,
-        troubleSolvingSacMultiplier:
-            troubleSolvingSacMultiplier ?? this.troubleSolvingSacMultiplier,
-        safetyStopDepth: safetyStopDepth ?? this.safetyStopDepth,
-        safetyStopDurationMin:
-            safetyStopDurationMin ?? this.safetyStopDurationMin,
-        safetyStopSacMultiplier:
-            safetyStopSacMultiplier ?? this.safetyStopSacMultiplier,
+        settings: settings ?? this.settings,
       );
 
-  bool get valid =>
-      this.depth != null &&
-      this.sac != null &&
-      this.ascentRatePerMin != null &&
-      this.sac.liter > 0 &&
-      this.ascentRatePerMin.m > 0;
+  bool get valid => this.depth != null && this.settings != null;
 
   double get avgAtm => (10 + depth.m / 2) / 10;
 
   Volume get volume {
     final depthAtm = (10 + depth.m) / 10;
-    final safetyStopAtm = (10 + safetyStopDepth.m) / 10;
-    final troubleSolvingL = troubleSolvingDurationMin *
-        sac.liter *
-        troubleSolvingSacMultiplier *
+    final safetyStopAtm = (10 + settings.safetyStopDepth.m) / 10;
+    final troubleSolvingL = settings.troubleSolvingDuration *
+        settings.sacRate.liter *
+        settings.troubleSolvingSacMultiplier *
         depthAtm;
-    final ascentL =
-        depth.m / ascentRatePerMin.m * sac.liter * ascentSacMultiplier * avgAtm;
-    final safetyStopL = safetyStopDurationMin *
-        sac.liter *
-        safetyStopSacMultiplier *
+    final ascentL = depth.m /
+        settings.ascentRate.m *
+        settings.sacRate.liter *
+        settings.ascentSacMultiplier *
+        avgAtm;
+    final safetyStopL = settings.safetyStopDuration *
+        settings.sacRate.liter *
+        settings.safetyStopSacMultiplier *
         safetyStopAtm;
     return VolumeLiter(troubleSolvingL + ascentL + safetyStopL);
   }
@@ -84,7 +56,7 @@ class RockBottomModel {
     return max(
         0,
         (cylinder.compressedVolume(pressure).liter - volume.liter) /
-            sac.liter /
+            settings.sacRate.liter /
             avgAtm);
   }
 

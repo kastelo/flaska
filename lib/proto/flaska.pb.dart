@@ -283,6 +283,9 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
     ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sacRate', $pb.PbFieldType.OD)
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentRate', $pb.PbFieldType.OD)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDepth', $pb.PbFieldType.OD)
+    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minPressure', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxPressure', $pb.PbFieldType.O3)
+    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressureStep', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -335,5 +338,32 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   $core.bool hasSafetyStopDepth() => $_has(2);
   @$pb.TagNumber(3)
   void clearSafetyStopDepth() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minPressure => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minPressure($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasMinPressure() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinPressure() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get maxPressure => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set maxPressure($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMaxPressure() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMaxPressure() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get pressureStep => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set pressureStep($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasPressureStep() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearPressureStep() => clearField(6);
 }
 

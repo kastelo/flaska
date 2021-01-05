@@ -9,40 +9,40 @@ import '../proto/proto.dart';
 import '../settings/settings_bloc.dart';
 
 class DiveCalculationState {
-  final RockBottomModel rockBottom;
+  final SettingsData settings;
+  final Distance depth;
   final Pressure tankPressure;
-  final bool metric;
 
   bool get valid =>
-      rockBottom != null &&
-      rockBottom.valid &&
-      tankPressure != null &&
-      tankPressure.bar > 0 &&
-      metric != null;
+      settings != null &&
+      settings.valid &&
+      depth != null &&
+      tankPressure != null;
 
-  Distance get depth => rockBottom.depth;
-  Volume get sac => rockBottom.sac;
+  bool get metric => settings.measurements == MeasurementSystem.METRIC;
+  RockBottomModel get rockBottom =>
+      RockBottomModel.fromSettings(settings, depth);
 
   const DiveCalculationState({
-    this.rockBottom,
+    this.settings,
+    this.depth,
     this.tankPressure,
-    this.metric,
   });
 
   const DiveCalculationState.empty()
-      : rockBottom = null,
-        tankPressure = null,
-        metric = null;
+      : settings = null,
+        depth = null,
+        tankPressure = null;
 
   DiveCalculationState copyWith({
-    RockBottomModel rockBottom,
+    SettingsData settings,
+    Distance depth,
     Pressure tankPressure,
-    bool metric,
   }) =>
       DiveCalculationState(
-        rockBottom: rockBottom ?? this.rockBottom,
+        settings: settings ?? this.settings,
+        depth: depth ?? this.depth,
         tankPressure: tankPressure ?? this.tankPressure,
-        metric: metric ?? this.metric,
       );
 }
 
@@ -88,26 +88,14 @@ class DiveCalculationBloc
   Stream<DiveCalculationState> mapEventToState(
       DiveCalculationEvent event) async* {
     if (event is _NewSettings) {
-      final newState = state.copyWith(
-        metric: event.settings.isMetric,
-        rockBottom: RockBottomModel(
-          depth: state.rockBottom?.depth ?? DistanceM(15),
-          sac: event.settings.sacRate,
-          ascentRatePerMin: event.settings.ascentRate,
-          ascentSacMultiplier: event.settings.ascentSacMultiplier,
-          troubleSolvingDurationMin: event.settings.troubleSolvingDuration,
-          troubleSolvingSacMultiplier:
-              event.settings.troubleSolvingSacMultiplier,
-          safetyStopDepth: event.settings.safetyStopDepth,
-          safetyStopDurationMin: event.settings.safetyStopDuration,
-          safetyStopSacMultiplier: event.settings.safetyStopSacMultiplier,
-        ),
-      );
-      if (preferences == null) {
-        await loadPreferences();
-      } else if (newState.metric != state.metric) {
-        add(SetTankPressure(newState.tankPressure));
-        add(SetDepth(newState.rockBottom.depth));
+      final newState = state.copyWith(settings: event.settings);
+      if (newState.settings != null && newState.settings.valid) {
+        if (preferences == null) {
+          await loadPreferences();
+        } else if (newState.metric != state.metric) {
+          add(SetTankPressure(newState.tankPressure));
+          add(SetDepth(newState.depth));
+        }
       }
       yield newState;
     }
@@ -127,20 +115,18 @@ class DiveCalculationBloc
           preferences.setBool('metric', false);
         }
       }
-      yield state.copyWith(rockBottom: state.rockBottom.copyWith(depth: depth));
+      yield state.copyWith(depth: depth);
     }
 
     if (event is SetTankPressure) {
       var pressure = event.pressure;
       if (state.metric) {
-        if (pressure.bar <= 0) pressure = PressureBar(35);
         pressure = PressureBar(pressure.bar.round().roundi(5));
         if (preferences != null) {
           preferences.setInt('pressure', pressure.bar);
           preferences.setBool('metric', true);
         }
       } else {
-        if (pressure.psi <= 0) pressure = PressurePsi(500);
         pressure = PressurePsi(pressure.psi.round().roundi(100));
         if (preferences != null) {
           preferences.setInt('pressure', pressure.psi);
