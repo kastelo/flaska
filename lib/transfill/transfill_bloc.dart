@@ -16,6 +16,7 @@ class TransfillState {
   final TransfillCylinderModel from;
   final TransfillCylinderModel to;
 
+  bool get metric => settings.measurements == MeasurementSystem.METRIC;
   bool get init => settings != null && cylinders != null;
   bool get valid =>
       settings != null && cylinders != null && from != null && to != null;
@@ -95,10 +96,16 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
   Stream<TransfillState> mapEventToState(TransfillEvent event) async* {
     if (event is _NewSettings) {
       final newState = state.copyWith(settings: event.settings);
-      yield newState;
-      if (preferences == null && newState.init) {
-        await loadPreferences();
+      if (preferences == null) {
+        if (newState.init) {
+          await loadPreferences();
+        }
+      } else if (newState.metric != state.metric) {
+        preferences.setBool('metric', newState.metric);
+        if (state.from != null) add(NewFrom(state.from));
+        if (state.to != null) add(NewTo(state.to));
       }
+      yield newState;
     }
 
     if (event is _NewCylinders) {
@@ -108,7 +115,6 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
           to: TransfillCylinderModel(
             cylinder: newState.cylinders.first,
             pressure: PressureBar(50),
-            metric: state.settings.isMetric,
           ),
         );
       }
@@ -117,7 +123,6 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
           from: TransfillCylinderModel(
             cylinder: newState.cylinders.first,
             pressure: PressureBar(220),
-            metric: state.settings.isMetric,
           ),
         );
       }
@@ -129,10 +134,21 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
 
     if (event is NewFrom) {
       yield state.copyWith(from: event.from);
+      if (preferences != null) {
+        preferences.setInt('fromPressure',
+            state.metric ? event.from.pressure.bar : event.from.pressure.psi);
+        preferences.setString(
+            'fromCylinder', event.from.cylinder.id.toString());
+      }
     }
 
     if (event is NewTo) {
       yield state.copyWith(to: event.to);
+      if (preferences != null) {
+        preferences.setInt('toPressure',
+            state.metric ? event.to.pressure.bar : event.to.pressure.psi);
+        preferences.setString('toCylinder', event.to.cylinder.id.toString());
+      }
     }
   }
 
@@ -141,17 +157,35 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
     final metric = preferences.getBool('metric') ?? true;
     final fromCylinder = preferences.getString('fromCylinder');
     final toCylinder = preferences.getString('toCylinder');
-    final fromPressure = preferences.getInt('fromPressure') ?? 15;
-    final toPressure = preferences.getInt('toPressure') ?? 15;
+    final fromPressure = preferences.getInt('fromPressure');
+    final toPressure = preferences.getInt('toPressure');
+
+    if (fromCylinder != null && fromPressure != null) {
+      final cyl = state.cylinders
+          .firstWhere((c) => c.id.toString() == fromCylinder, orElse: null);
+      final press =
+          metric ? PressureBar(fromPressure) : PressurePsi(fromPressure);
+      if (cyl != null) {
+        add(NewFrom(TransfillCylinderModel(cylinder: cyl, pressure: press)));
+      }
+    }
+
+    if (toCylinder != null && toPressure != null) {
+      final cyl = state.cylinders
+          .firstWhere((c) => c.id.toString() == toCylinder, orElse: null);
+      final press = metric ? PressureBar(toPressure) : PressurePsi(toPressure);
+      if (cyl != null) {
+        add(NewTo(TransfillCylinderModel(cylinder: cyl, pressure: press)));
+      }
+    }
   }
 }
 
 class TransfillCylinderModel {
   final CylinderModel cylinder;
   final Pressure pressure;
-  final bool metric;
 
-  const TransfillCylinderModel({this.cylinder, this.pressure, this.metric});
+  const TransfillCylinderModel({this.cylinder, this.pressure});
 
   Volume get gas => VolumeLiter(cylinder.waterVolume.liter *
       equivalentPressure(pressure).bar *
