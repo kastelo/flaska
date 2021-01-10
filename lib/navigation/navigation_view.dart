@@ -76,6 +76,7 @@ class _BodyWidgetState extends State<BodyWidget> {
         ),
       ],
       child: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
         children: [
           DiveCalculationView(),
           TransfillView(),
