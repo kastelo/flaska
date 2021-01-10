@@ -90,13 +90,14 @@ class _DepthSlider extends StatelessWidget {
       if (!state.valid) {
         return Container();
       }
-      final dcvm = DiveCalculationViewModel(state);
       return DepthSlider(
         value: state.depth,
-        maxValue: dcvm.maxDepth,
         metric: state.metric,
         onChanged: (depth) =>
             context.read<DiveCalculationBloc>().add(SetDepth(depth)),
+        minValue: state.settings.minDepth,
+        maxValue: state.settings.maxDepth,
+        gradual: true,
       );
     });
   }

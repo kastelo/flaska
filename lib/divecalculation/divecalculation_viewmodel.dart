@@ -108,7 +108,6 @@ class DiveCalculationViewModel {
       ? sprintf("%.0f", [state.settings.sacRate.l])
       : sprintf("%.1f", [state.settings.sacRate.cuft]);
 
-  Distance get maxDepth => state.metric ? DistanceM(50) : DistanceFt(200);
   double get maxSAC => state.metric ? 30 : 1;
 
   Distance toDistance(double value) =>

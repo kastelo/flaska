@@ -286,6 +286,8 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minPressure', $pb.PbFieldType.O3)
     ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxPressure', $pb.PbFieldType.O3)
     ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressureStep', $pb.PbFieldType.O3)
+    ..a<$core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minDepth', $pb.PbFieldType.O3)
+    ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxDepth', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -365,5 +367,23 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   $core.bool hasPressureStep() => $_has(5);
   @$pb.TagNumber(6)
   void clearPressureStep() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.int get minDepth => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set minDepth($core.int v) { $_setSignedInt32(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasMinDepth() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearMinDepth() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.int get maxDepth => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set maxDepth($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasMaxDepth() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearMaxDepth() => clearField(8);
 }
 

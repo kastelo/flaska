@@ -23,14 +23,18 @@ final defaultSettings = SettingsData()
     ..safetyStopDepth = 5
     ..minPressure = 30
     ..maxPressure = 300
-    ..pressureStep = 5)
+    ..pressureStep = 5
+    ..minDepth = 2
+    ..maxDepth = 40)
   ..imperial = (MeasurementDependentSettingsData()
     ..sacRate = 0.5
     ..ascentRate = 30
     ..safetyStopDepth = 15
     ..minPressure = 300
     ..maxPressure = 4000
-    ..pressureStep = 100);
+    ..pressureStep = 100
+    ..minDepth = 10
+    ..maxDepth = 150);
 
 class FakeSettingsListService implements SettingsService {
   var settings = SettingsData();
@@ -56,7 +60,9 @@ class LocalSettingsService implements SettingsService {
       if (data.isEmpty) {
         return defaultSettings.deepCopy();
       }
-      return SettingsData.fromBuffer(data);
+      var s = defaultSettings.deepCopy();
+      s.mergeFromBuffer(data);
+      return s;
     } catch (e) {
       return defaultSettings.deepCopy();
     }

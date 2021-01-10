@@ -36,6 +36,8 @@ class _SettingsViewState extends State<SettingsView> {
   final _minPressureController = TextEditingController();
   final _maxPressureController = TextEditingController();
   final _pressureStepController = TextEditingController();
+  final _minDepthController = TextEditingController();
+  final _maxDepthController = TextEditingController();
   SettingsData prevSettings;
 
   @override
@@ -62,7 +64,8 @@ class _SettingsViewState extends State<SettingsView> {
                   troubleSolvingTable(context, state.settings),
                   ascentTable(context, state.settings),
                   safetyStopTable(context, state.settings),
-                  slidersTable(context, state.settings),
+                  pressureSlidersTable(context, state.settings),
+                  depthSlidersTable(context, state.settings),
                   Divider(
                     height: 32,
                     indent: 32,
@@ -349,8 +352,8 @@ class _SettingsViewState extends State<SettingsView> {
       _safetyStopDurationController.text =
           settings.safetyStopDuration.toString();
       _safetyStopDepthController.text = settings.isMetric
-          ? settings.safetyStopDepth.m.toString()
-          : settings.safetyStopDepth.ft.toString();
+          ? settings.safetyStopDepth.m.toInt().toString()
+          : settings.safetyStopDepth.ft.toInt().toString();
       _safetyStopSacMultiplierController.text =
           settings.safetyStopSacMultiplier.toString();
     }
@@ -411,10 +414,9 @@ class _SettingsViewState extends State<SettingsView> {
                           .add(UpdateSettings((s) => s..safetyStopDepth = dep));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: TextInputType.number,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
+                        FilteringTextInputFormatter.allow(_integerExp)
                       ],
                       controller: _safetyStopDepthController,
                     ),
@@ -452,10 +454,10 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _slidersSettings;
-  Widget slidersTable(BuildContext context, SettingsData settings) {
-    if (settings != _slidersSettings) {
-      _slidersSettings = settings;
+  SettingsData _pressureSlidersSettings;
+  Widget pressureSlidersTable(BuildContext context, SettingsData settings) {
+    if (settings != _pressureSlidersSettings) {
+      _pressureSlidersSettings = settings;
 
       _minPressureController.text = settings.isMetric
           ? settings.minPressure.bar.toString()
@@ -564,6 +566,98 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   metric: "bar",
                   imperial: "psi",
+                  settings: settings,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SettingsData _depthSlidersSettings;
+  Widget depthSlidersTable(BuildContext context, SettingsData settings) {
+    if (settings != _depthSlidersSettings) {
+      _depthSlidersSettings = settings;
+
+      _minDepthController.text = settings.isMetric
+          ? settings.minDepth.m.toInt().toString()
+          : settings.minDepth.ft.toInt().toString();
+      _maxDepthController.text = settings.isMetric
+          ? settings.maxDepth.m.toInt().toString()
+          : settings.maxDepth.ft.toInt().toString();
+    }
+
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "DEPTH SLIDERS",
+              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+            ),
+            Table(
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                2: IntrinsicColumnWidth(),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              children: <TableRow>[
+                titledUnitRow(
+                  title: "Min Depth",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(_minDepthController.text);
+                      final depth =
+                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..minDepth = depth));
+                    },
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_integerExp)
+                      ],
+                      controller: _minDepthController,
+                    ),
+                  ),
+                  metric: "m",
+                  imperial: "ft",
+                  settings: settings,
+                ),
+                titledUnitRow(
+                  title: "Max Depth",
+                  child: FocusScope(
+                    onFocusChange: (focus) {
+                      if (focus) return;
+                      final d = parseDouble(_maxDepthController.text);
+                      final depth =
+                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context
+                          .read<SettingsBloc>()
+                          .add(UpdateSettings((s) => s..minDepth = depth));
+                    },
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(_integerExp)
+                      ],
+                      controller: _maxDepthController,
+                    ),
+                  ),
+                  metric: "m",
+                  imperial: "ft",
                   settings: settings,
                 ),
               ],

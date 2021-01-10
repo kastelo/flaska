@@ -44,4 +44,6 @@ message MeasurementDependentSettingsData {
     int32 min_pressure = 4; // pressure units
     int32 max_pressure = 5; // pressure units
     int32 pressure_step = 6; // pressure units
+    int32 min_depth = 7; // distance units
+    int32 max_depth = 8; // distance units
 }

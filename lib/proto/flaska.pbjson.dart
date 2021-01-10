@@ -66,6 +66,8 @@ const MeasurementDependentSettingsData$json = const {
     const {'1': 'min_pressure', '3': 4, '4': 1, '5': 5, '10': 'minPressure'},
     const {'1': 'max_pressure', '3': 5, '4': 1, '5': 5, '10': 'maxPressure'},
     const {'1': 'pressure_step', '3': 6, '4': 1, '5': 5, '10': 'pressureStep'},
+    const {'1': 'min_depth', '3': 7, '4': 1, '5': 5, '10': 'minDepth'},
+    const {'1': 'max_depth', '3': 8, '4': 1, '5': 5, '10': 'maxDepth'},
   ],
 };
 

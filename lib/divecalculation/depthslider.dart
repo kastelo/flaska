@@ -4,20 +4,25 @@ import 'package:flaska/models/units.dart';
 import 'package:flutter/material.dart';
 
 class DepthSlider extends StatelessWidget {
-  final bool metric;
   final Distance value;
-  final Distance maxValue;
+  final bool metric;
   final Function(Distance) onChanged;
+  final Distance minValue;
+  final Distance maxValue;
+  final bool gradual;
 
   double get _current => metric ? value.m.toDouble() : value.ft.toDouble();
+  double get _min => metric ? minValue.m.toDouble() : minValue.ft.toDouble();
   double get _max => metric ? maxValue.m.toDouble() : maxValue.ft.toDouble();
   String get _unit => metric ? "m" : "ft";
 
   DepthSlider({
-    @required this.metric,
     @required this.value,
-    @required this.maxValue,
+    @required this.metric,
     @required this.onChanged,
+    @required this.minValue,
+    @required this.maxValue,
+    this.gradual = false,
   });
 
   @override
@@ -28,11 +33,12 @@ class DepthSlider extends StatelessWidget {
         children: [
           Expanded(
             child: Slider(
-              value: min(_current, _max),
-              min: 0,
-              max: _max,
-              onChanged: (value) =>
-                  onChanged(metric ? DistanceM(value) : DistanceFt(value)),
+              value: toGradual(max(min(_current, _max), _min)),
+              min: toGradual(_min),
+              max: toGradual(_max),
+              onChanged: (value) => onChanged(metric
+                  ? DistanceM(fromGradual(value))
+                  : DistanceFt(fromGradual(value))),
             ),
           ),
           Text(
@@ -43,5 +49,15 @@ class DepthSlider extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  static const _pow = 2;
+
+  double fromGradual(double v) {
+    return pow(v, _pow);
+  }
+
+  double toGradual(double v) {
+    return pow(v, 1 / _pow);
   }
 }

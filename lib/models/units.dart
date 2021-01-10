@@ -188,4 +188,24 @@ extension SettingsModel on SettingsData {
     else
       imperial.pressureStep = p.bar;
   }
+
+  Distance get minDepth => isMetric
+      ? DistanceM(metric.minDepth.toDouble())
+      : DistanceFt(imperial.minDepth.toDouble());
+  set minDepth(Distance d) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.minDepth = d.m.toInt();
+    else
+      imperial.minDepth = d.ft.toInt();
+  }
+
+  Distance get maxDepth => isMetric
+      ? DistanceM(metric.maxDepth.toDouble())
+      : DistanceFt(imperial.maxDepth.toDouble());
+  set maxDepth(Distance d) {
+    if (measurements == MeasurementSystem.METRIC)
+      metric.maxDepth = d.m.toInt();
+    else
+      imperial.maxDepth = d.ft.toInt();
+  }
 }
