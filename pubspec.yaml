@@ -1,7 +1,7 @@
 name: flaska
 description: A cylinder helper tool
 publish_to: 'none'
-version: 1.0.0
+version: 1.1.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
