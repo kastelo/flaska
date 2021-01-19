@@ -1,7 +1,6 @@
 import 'package:sprintf/sprintf.dart';
 
 import '../models/units.dart';
-import '../settings/settings_bloc.dart';
 import 'divecalculation_bloc.dart';
 
 class DiveCalculationViewModel {

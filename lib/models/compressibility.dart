@@ -43,8 +43,8 @@ Pressure pressureForGasVolume(Volume gasVolume, Volume cylinderWaterVolume) {
       final y0 = airZ[pair.key - 1][1];
       final y1 = pair.value[1];
       final y = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
-      return PressureBar(p ~/ y);
+      return PressureBar((p * y).toInt());
     }
   }
-  return PressureBar(p ~/ airZ.last[1]);
+  return PressureBar((p * airZ.last[1]).toInt());
 }

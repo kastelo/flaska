@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../cylinderlist/cylinderlist_bloc.dart';
-import '../models/compressibility.dart';
 import '../models/cylinder_model.dart';
 import '../models/units.dart';
 import '../proto/proto.dart';
 import '../settings/settings_bloc.dart';
+import 'transfill_result_viewmodel.dart';
 
 class TransfillState {
   final SettingsData settings;
@@ -186,17 +186,4 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
       }
     }
   }
-}
-
-class TransfillCylinderModel {
-  final CylinderModel cylinder;
-  final Pressure pressure;
-
-  const TransfillCylinderModel({this.cylinder, this.pressure});
-
-  Volume get gas =>
-      VolumeL(gasVolumeAtPressure(pressure, cylinder.waterVolume).l *
-          cylinder.twinFactor);
-  Volume get totalVolume =>
-      VolumeL(cylinder.waterVolume.l * cylinder.twinFactor);
 }

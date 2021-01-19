@@ -1,6 +1,19 @@
 import '../models/compressibility.dart';
+import '../models/cylinder_model.dart';
 import '../models/units.dart';
-import 'transfill_bloc.dart';
+
+class TransfillCylinderModel {
+  final CylinderModel cylinder;
+  final Pressure pressure;
+
+  const TransfillCylinderModel({this.cylinder, this.pressure});
+
+  Volume get gas =>
+      VolumeL(gasVolumeAtPressure(pressure, cylinder.waterVolume).l *
+          cylinder.twinFactor);
+  Volume get totalVolume =>
+      VolumeL(cylinder.waterVolume.l * cylinder.twinFactor);
+}
 
 class TransfillResultViewModel {
   final TransfillCylinderModel from;
