@@ -12,4 +12,8 @@ platform :ios do
 	}
     )
   end
+  lane :upload do
+    app_store_connect_api_key
+    deliver
+  end
 end
