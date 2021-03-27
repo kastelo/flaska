@@ -87,13 +87,15 @@ class CylinderModel {
   Volume compressedVolume(Pressure p) =>
       VolumeL(twinFactor * gasVolumeAtPressure(p, waterVolume).l);
 
-  Weight buoyancy(Pressure p) => WeightKg(externalVolume.l * waterPerL -
-      weight.kg +
-      valveBuyoancyKg +
-      twinBuyoancyKg * (twinFactor - 1) -
-      compressedVolume(p).l * airKgPerL);
+  Weight buoyancy(Pressure p) => WeightKg(
+        twinFactor * _externalVolume.l * waterPerL -
+            twinFactor * weight.kg +
+            twinFactor * valveBuyoancyKg +
+            twinBuyoancyKg * (twinFactor - 1) -
+            compressedVolume(p).l * airKgPerL,
+      );
 
-  Volume get externalVolume =>
+  Volume get _externalVolume =>
       VolumeL(weight.kg / materialDensity + waterVolume.l);
 }
 
