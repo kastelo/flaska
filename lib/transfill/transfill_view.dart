@@ -38,8 +38,7 @@ class _TransfillViewState extends State<TransfillView> {
                         cylinders: state.cylinders,
                         selected: state.from,
                         settings: state.settings,
-                        onChanged: (m) =>
-                            context.read<TransfillBloc>().add(NewFrom(m)),
+                        onChanged: (m) => context.read<TransfillBloc>().add(NewFrom(m)),
                       ),
                     ),
                     Padding(
@@ -49,8 +48,7 @@ class _TransfillViewState extends State<TransfillView> {
                         cylinders: state.cylinders,
                         selected: state.to,
                         settings: state.settings,
-                        onChanged: (m) =>
-                            context.read<TransfillBloc>().add(NewTo(m)),
+                        onChanged: (m) => context.read<TransfillBloc>().add(NewTo(m)),
                         child: TransfillResultView(
                           result: TransfillResultViewModel(
                             from: state.from,
@@ -104,6 +102,7 @@ class TransfillCylinderEditView extends StatelessWidget {
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
@@ -111,18 +110,14 @@ class TransfillCylinderEditView extends StatelessWidget {
                       width: 30,
                       child: Text(
                         title,
-                        style: t.textTheme.caption
-                            .copyWith(color: t.disabledColor),
+                        style: t.textTheme.caption.copyWith(color: t.disabledColor),
                       ),
                     ),
                   ),
                   Expanded(
                     child: DropdownButton(
                       value: selected.cylinder,
-                      items: cylinders
-                          .map((c) =>
-                              DropdownMenuItem(value: c, child: Text(c.name)))
-                          .toList(),
+                      items: cylinders.map((c) => DropdownMenuItem(value: c, child: Text(c.name))).toList(),
                       onChanged: (cyl) {
                         onChanged(TransfillCylinderModel(
                           cylinder: cyl,
@@ -135,9 +130,7 @@ class TransfillCylinderEditView extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text("With",
-                      style:
-                          t.textTheme.caption.copyWith(color: t.disabledColor)),
+                  Text("With", style: t.textTheme.caption.copyWith(color: t.disabledColor)),
                   Expanded(
                     child: PressureSlider(
                       value: selected.pressure,
@@ -183,10 +176,7 @@ class TransfillResultView extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: ValueUnit(
-                    title: "PRESSURE",
-                    value: _pressure(result.resultingPressure),
-                    unit: _unit),
+                child: ValueUnit(title: "PRESSURE", value: _pressure(result.resultingPressure), unit: _unit),
               )
             ],
           ),
@@ -194,22 +184,13 @@ class TransfillResultView extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: ValueUnit(
-                    title: "T1",
-                    value: _pressure(result.t1Pressure),
-                    unit: _unit),
+                child: ValueUnit(title: "T1", value: _pressure(result.t1Pressure), unit: _unit),
               ),
               Expanded(
-                child: ValueUnit(
-                    title: "T2",
-                    value: _pressure(result.t2Pressure),
-                    unit: _unit),
+                child: ValueUnit(title: "T2", value: _pressure(result.t2Pressure), unit: _unit),
               ),
               Expanded(
-                child: ValueUnit(
-                    title: "TWINSET",
-                    value: _pressure(result.resultingPressure),
-                    unit: _unit),
+                child: ValueUnit(title: "TWINSET", value: _pressure(result.resultingPressure), unit: _unit),
               )
             ],
           ),

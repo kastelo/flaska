@@ -7,10 +7,8 @@ import '../proto/proto.dart';
 import 'settings_bloc.dart';
 
 const _appBuild = int.fromEnvironment("BUILD", defaultValue: 0);
-const _marketingVer =
-    String.fromEnvironment("MARKETINGVERSION", defaultValue: "0.0.0");
-const _gitVer =
-    String.fromEnvironment("GITVERSION", defaultValue: "unknown-dev");
+const _marketingVer = String.fromEnvironment("MARKETINGVERSION", defaultValue: "0.0.0");
+const _gitVer = String.fromEnvironment("GITVERSION", defaultValue: "unknown-dev");
 
 final _decimalExp = RegExp(r'[0-9\.,]');
 final _integerExp = RegExp(r'[0-9]');
@@ -90,9 +88,7 @@ class _SettingsViewState extends State<SettingsView> {
     if (settings != _generalSettings) {
       _generalSettings = settings;
 
-      _sacRateController.text = settings.isMetric
-          ? settings.sacRate.l.toString()
-          : settings.sacRate.cuft.toString();
+      _sacRateController.text = settings.isMetric ? settings.sacRate.l.toString() : settings.sacRate.cuft.toString();
     }
 
     final t = Theme.of(context);
@@ -117,6 +113,7 @@ class _SettingsViewState extends State<SettingsView> {
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <TableRow>[
                 titledRow(
                   title: "System",
@@ -124,17 +121,11 @@ class _SettingsViewState extends State<SettingsView> {
                     dropdownColor: Theme.of(context).cardColor,
                     value: settings.measurements,
                     items: [
-                      DropdownMenuItem(
-                          value: MeasurementSystem.METRIC,
-                          child: Text("Metric")),
-                      DropdownMenuItem(
-                          value: MeasurementSystem.IMPERIAL,
-                          child: Text("Imperial")),
+                      DropdownMenuItem(value: MeasurementSystem.METRIC, child: Text("Metric")),
+                      DropdownMenuItem(value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
                     ],
                     onChanged: (value) {
-                      context
-                          .read<SettingsBloc>()
-                          .add(SetMeasurementSystem(value));
+                      context.read<SettingsBloc>().add(SetMeasurementSystem(value));
                     },
                   ),
                 ),
@@ -144,18 +135,12 @@ class _SettingsViewState extends State<SettingsView> {
                     onFocusChange: (focus) {
                       if (focus) return;
                       final d = parseDouble(_sacRateController.text);
-                      final vol =
-                          settings.isMetric ? VolumeL(d) : VolumeCuFt(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..sacRate = vol));
+                      final vol = settings.isMetric ? VolumeL(d) : VolumeCuFt(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..sacRate = vol));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _sacRateController,
                     ),
                   ),
@@ -176,10 +161,8 @@ class _SettingsViewState extends State<SettingsView> {
     if (settings != _troubleSolvingSettings) {
       _troubleSolvingSettings = settings;
 
-      _troubleSolvingDurationController.text =
-          settings.troubleSolvingDuration.toString();
-      _troubleSolvingSacMultiplierController.text =
-          settings.troubleSolvingSacMultiplier.toString();
+      _troubleSolvingDurationController.text = settings.troubleSolvingDuration.toString();
+      _troubleSolvingSacMultiplierController.text = settings.troubleSolvingSacMultiplier.toString();
     }
 
     final t = Theme.of(context);
@@ -204,23 +187,19 @@ class _SettingsViewState extends State<SettingsView> {
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <TableRow>[
                 titledRow(
                   title: "Duration",
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d =
-                          parseDouble(_troubleSolvingDurationController.text);
-                      context.read<SettingsBloc>().add(
-                          UpdateSettings((s) => s..troubleSolvingDuration = d));
+                      final d = parseDouble(_troubleSolvingDurationController.text);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..troubleSolvingDuration = d));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _troubleSolvingDurationController,
                     ),
                   ),
@@ -231,17 +210,12 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = parseDouble(
-                          _troubleSolvingSacMultiplierController.text);
-                      context.read<SettingsBloc>().add(UpdateSettings(
-                          (s) => s..troubleSolvingSacMultiplier = d));
+                      final d = parseDouble(_troubleSolvingSacMultiplierController.text);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..troubleSolvingSacMultiplier = d));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _troubleSolvingSacMultiplierController,
                     ),
                   ),
@@ -260,11 +234,8 @@ class _SettingsViewState extends State<SettingsView> {
     if (settings != _ascentSettings) {
       _ascentSettings = settings;
 
-      _ascentRateController.text = settings.isMetric
-          ? settings.ascentRate.m.toString()
-          : settings.ascentRate.ft.toString();
-      _ascentSacMultiplierController.text =
-          settings.ascentSacMultiplier.toString();
+      _ascentRateController.text = settings.isMetric ? settings.ascentRate.m.toString() : settings.ascentRate.ft.toString();
+      _ascentSacMultiplierController.text = settings.ascentSacMultiplier.toString();
     }
 
     final t = Theme.of(context);
@@ -289,6 +260,7 @@ class _SettingsViewState extends State<SettingsView> {
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <TableRow>[
                 titledUnitRow(
                   title: "Ascent rate",
@@ -296,18 +268,12 @@ class _SettingsViewState extends State<SettingsView> {
                     onFocusChange: (focus) {
                       if (focus) return;
                       final d = parseDouble(_ascentRateController.text);
-                      final rate =
-                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..ascentRate = rate));
+                      final rate = settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..ascentRate = rate));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _ascentRateController,
                     ),
                   ),
@@ -320,17 +286,12 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d =
-                          parseDouble(_ascentSacMultiplierController.text);
-                      context.read<SettingsBloc>().add(
-                          UpdateSettings((s) => s..ascentSacMultiplier = d));
+                      final d = parseDouble(_ascentSacMultiplierController.text);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..ascentSacMultiplier = d));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _ascentSacMultiplierController,
                     ),
                   ),
@@ -349,13 +310,9 @@ class _SettingsViewState extends State<SettingsView> {
     if (settings != _safetyStopSettings) {
       _safetyStopSettings = settings;
 
-      _safetyStopDurationController.text =
-          settings.safetyStopDuration.toString();
-      _safetyStopDepthController.text = settings.isMetric
-          ? settings.safetyStopDepth.m.toInt().toString()
-          : settings.safetyStopDepth.ft.toInt().toString();
-      _safetyStopSacMultiplierController.text =
-          settings.safetyStopSacMultiplier.toString();
+      _safetyStopDurationController.text = settings.safetyStopDuration.toString();
+      _safetyStopDepthController.text = settings.isMetric ? settings.safetyStopDepth.m.toInt().toString() : settings.safetyStopDepth.ft.toInt().toString();
+      _safetyStopSacMultiplierController.text = settings.safetyStopSacMultiplier.toString();
     }
 
     final t = Theme.of(context);
@@ -380,6 +337,7 @@ class _SettingsViewState extends State<SettingsView> {
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <TableRow>[
                 titledRow(
                   title: "Duration",
@@ -387,15 +345,11 @@ class _SettingsViewState extends State<SettingsView> {
                     onFocusChange: (focus) {
                       if (focus) return;
                       final d = parseDouble(_safetyStopDurationController.text);
-                      context.read<SettingsBloc>().add(
-                          UpdateSettings((s) => s..safetyStopDuration = d));
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..safetyStopDuration = d));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _safetyStopDurationController,
                     ),
                   ),
@@ -407,17 +361,12 @@ class _SettingsViewState extends State<SettingsView> {
                     onFocusChange: (focus) {
                       if (focus) return;
                       final d = parseDouble(_safetyStopDepthController.text);
-                      final dep =
-                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..safetyStopDepth = dep));
+                      final dep = settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..safetyStopDepth = dep));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_integerExp)
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
                       controller: _safetyStopDepthController,
                     ),
                   ),
@@ -430,17 +379,12 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d =
-                          parseDouble(_safetyStopSacMultiplierController.text);
-                      context.read<SettingsBloc>().add(UpdateSettings(
-                          (s) => s..safetyStopSacMultiplier = d));
+                      final d = parseDouble(_safetyStopSacMultiplierController.text);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..safetyStopSacMultiplier = d));
                     },
                     child: TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_decimalExp)
-                      ],
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
                       controller: _safetyStopSacMultiplierController,
                     ),
                   ),
@@ -459,15 +403,9 @@ class _SettingsViewState extends State<SettingsView> {
     if (settings != _pressureSlidersSettings) {
       _pressureSlidersSettings = settings;
 
-      _minPressureController.text = settings.isMetric
-          ? settings.minPressure.bar.toString()
-          : settings.minPressure.psi.toString();
-      _maxPressureController.text = settings.isMetric
-          ? settings.maxPressure.bar.toString()
-          : settings.maxPressure.psi.toString();
-      _pressureStepController.text = settings.isMetric
-          ? settings.pressureStep.bar.toString()
-          : settings.pressureStep.psi.toString();
+      _minPressureController.text = settings.isMetric ? settings.minPressure.bar.toString() : settings.minPressure.psi.toString();
+      _maxPressureController.text = settings.isMetric ? settings.maxPressure.bar.toString() : settings.maxPressure.psi.toString();
+      _pressureStepController.text = settings.isMetric ? settings.pressureStep.bar.toString() : settings.pressureStep.psi.toString();
     }
 
     final t = Theme.of(context);
@@ -492,25 +430,20 @@ class _SettingsViewState extends State<SettingsView> {
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <TableRow>[
                 titledUnitRow(
                   title: "Min Pressure",
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = int.parse(_minPressureController.text,
-                          onError: (_) => 0);
-                      final pres =
-                          settings.isMetric ? PressureBar(d) : PressurePsi(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..minPressure = pres));
+                      final d = int.parse(_minPressureController.text, onError: (_) => 0);
+                      final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..minPressure = pres));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_integerExp)
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
                       controller: _minPressureController,
                     ),
                   ),
@@ -523,19 +456,13 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = int.parse(_maxPressureController.text,
-                          onError: (_) => 0);
-                      final pres =
-                          settings.isMetric ? PressureBar(d) : PressurePsi(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..maxPressure = pres));
+                      final d = int.parse(_maxPressureController.text, onError: (_) => 0);
+                      final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..maxPressure = pres));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_integerExp)
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
                       controller: _maxPressureController,
                     ),
                   ),
@@ -548,19 +475,13 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = int.parse(_pressureStepController.text,
-                          onError: (_) => 0);
-                      final pres =
-                          settings.isMetric ? PressureBar(d) : PressurePsi(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..pressureStep = pres));
+                      final d = int.parse(_pressureStepController.text, onError: (_) => 0);
+                      final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..pressureStep = pres));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_integerExp)
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
                       controller: _pressureStepController,
                     ),
                   ),
@@ -581,12 +502,8 @@ class _SettingsViewState extends State<SettingsView> {
     if (settings != _depthSlidersSettings) {
       _depthSlidersSettings = settings;
 
-      _minDepthController.text = settings.isMetric
-          ? settings.minDepth.m.toInt().toString()
-          : settings.minDepth.ft.toInt().toString();
-      _maxDepthController.text = settings.isMetric
-          ? settings.maxDepth.m.toInt().toString()
-          : settings.maxDepth.ft.toInt().toString();
+      _minDepthController.text = settings.isMetric ? settings.minDepth.m.toInt().toString() : settings.minDepth.ft.toInt().toString();
+      _maxDepthController.text = settings.isMetric ? settings.maxDepth.m.toInt().toString() : settings.maxDepth.ft.toInt().toString();
     }
 
     final t = Theme.of(context);
@@ -611,6 +528,7 @@ class _SettingsViewState extends State<SettingsView> {
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <TableRow>[
                 titledUnitRow(
                   title: "Min Depth",
@@ -618,17 +536,12 @@ class _SettingsViewState extends State<SettingsView> {
                     onFocusChange: (focus) {
                       if (focus) return;
                       final d = parseDouble(_minDepthController.text);
-                      final depth =
-                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..minDepth = depth));
+                      final depth = settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..minDepth = depth));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_integerExp)
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
                       controller: _minDepthController,
                     ),
                   ),
@@ -642,17 +555,12 @@ class _SettingsViewState extends State<SettingsView> {
                     onFocusChange: (focus) {
                       if (focus) return;
                       final d = parseDouble(_maxDepthController.text);
-                      final depth =
-                          settings.isMetric ? DistanceM(d) : DistanceFt(d);
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateSettings((s) => s..minDepth = depth));
+                      final depth = settings.isMetric ? DistanceM(d) : DistanceFt(d);
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..minDepth = depth));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(_integerExp)
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(_integerExp)],
                       controller: _maxDepthController,
                     ),
                   ),
@@ -676,11 +584,7 @@ class _SettingsViewState extends State<SettingsView> {
       Container(),
       Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child: Text(title,
-            style: Theme.of(context)
-                .textTheme
-                .subtitle1
-                .copyWith(color: Colors.grey)),
+        child: Text(title, style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.grey)),
       ),
       Container(),
     ]);
@@ -696,19 +600,11 @@ class _SettingsViewState extends State<SettingsView> {
         ),
       ),
       child,
-      trailer == null || trailer.isEmpty
-          ? Container()
-          : Padding(
-              padding: const EdgeInsets.only(left: 16.0), child: Text(trailer)),
+      trailer == null || trailer.isEmpty ? Container() : Padding(padding: const EdgeInsets.only(left: 16.0), child: Text(trailer)),
     ]);
   }
 
-  TableRow titledUnitRow(
-      {String title,
-      Widget child,
-      String metric,
-      String imperial,
-      SettingsData settings}) {
+  TableRow titledUnitRow({String title, Widget child, String metric, String imperial, SettingsData settings}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -720,9 +616,7 @@ class _SettingsViewState extends State<SettingsView> {
       child,
       Padding(
         padding: const EdgeInsets.only(left: 16.0),
-        child: Text(settings.measurements == MeasurementSystem.METRIC
-            ? metric
-            : imperial),
+        child: Text(settings.measurements == MeasurementSystem.METRIC ? metric : imperial),
       )
     ]);
   }
@@ -734,11 +628,7 @@ class WithUnit extends StatelessWidget {
   final String imperial;
   final Widget child;
 
-  const WithUnit(
-      {@required this.measurements,
-      @required this.metric,
-      @required this.imperial,
-      @required this.child});
+  const WithUnit({@required this.measurements, @required this.metric, @required this.imperial, @required this.child});
 
   @override
   Widget build(BuildContext context) {

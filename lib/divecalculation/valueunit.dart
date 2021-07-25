@@ -5,8 +5,7 @@ class ValueUnit extends StatelessWidget {
   final String value;
   final String unit;
 
-  const ValueUnit(
-      {@required this.title, @required this.value, @required this.unit});
+  const ValueUnit({@required this.title, @required this.value, @required this.unit});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +18,7 @@ class ValueUnit extends StatelessWidget {
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(
               flex: 2,
@@ -39,6 +39,7 @@ class ValueUnit extends StatelessWidget {
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(
               flex: 2,

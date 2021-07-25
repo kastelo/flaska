@@ -2,9 +2,13 @@
 //  Generated code. Do not modify.
 //  source: flaska.proto
 //
-// @dart = 2.3
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+// @dart = 2.7
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
 
+import 'dart:core' as $core;
+import 'dart:convert' as $convert;
+import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use measurementSystemDescriptor instead')
 const MeasurementSystem$json = const {
   '1': 'MeasurementSystem',
   '2': const [
@@ -13,6 +17,9 @@ const MeasurementSystem$json = const {
   ],
 };
 
+/// Descriptor for `MeasurementSystem`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List measurementSystemDescriptor = $convert.base64Decode('ChFNZWFzdXJlbWVudFN5c3RlbRIKCgZNRVRSSUMQABIMCghJTVBFUklBTBAB');
+@$core.Deprecated('Use metalDescriptor instead')
 const Metal$json = const {
   '1': 'Metal',
   '2': const [
@@ -21,6 +28,9 @@ const Metal$json = const {
   ],
 };
 
+/// Descriptor for `Metal`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List metalDescriptor = $convert.base64Decode('CgVNZXRhbBIJCgVTVEVFTBAAEg0KCUFMVU1JTklVTRAB');
+@$core.Deprecated('Use cylinderSetDescriptor instead')
 const CylinderSet$json = const {
   '1': 'CylinderSet',
   '2': const [
@@ -28,6 +38,9 @@ const CylinderSet$json = const {
   ],
 };
 
+/// Descriptor for `CylinderSet`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cylinderSetDescriptor = $convert.base64Decode('CgtDeWxpbmRlclNldBIrCgljeWxpbmRlcnMYASADKAsyDS5DeWxpbmRlckRhdGFSCWN5bGluZGVycw==');
+@$core.Deprecated('Use cylinderDataDescriptor instead')
 const CylinderData$json = const {
   '1': 'CylinderData',
   '2': const [
@@ -40,9 +53,13 @@ const CylinderData$json = const {
     const {'1': 'weight', '3': 7, '4': 1, '5': 1, '10': 'weight'},
     const {'1': 'twinset', '3': 8, '4': 1, '5': 8, '10': 'twinset'},
     const {'1': 'selected', '3': 9, '4': 1, '5': 8, '10': 'selected'},
+    const {'1': 'overfill', '3': 10, '4': 1, '5': 8, '10': 'overfill'},
   ],
 };
 
+/// Descriptor for `CylinderData`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cylinderDataDescriptor = $convert.base64Decode('CgxDeWxpbmRlckRhdGESDgoCaWQYASABKAlSAmlkEhIKBG5hbWUYAiABKAlSBG5hbWUSHAoFbWV0YWwYAyABKA4yBi5NZXRhbFIFbWV0YWwSNgoMbWVhc3VyZW1lbnRzGAQgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxIWCgZ2b2x1bWUYBSABKAFSBnZvbHVtZRIpChB3b3JraW5nX3ByZXNzdXJlGAYgASgFUg93b3JraW5nUHJlc3N1cmUSFgoGd2VpZ2h0GAcgASgBUgZ3ZWlnaHQSGAoHdHdpbnNldBgIIAEoCFIHdHdpbnNldBIaCghzZWxlY3RlZBgJIAEoCFIIc2VsZWN0ZWQSGgoIb3ZlcmZpbGwYCiABKAhSCG92ZXJmaWxs');
+@$core.Deprecated('Use settingsDataDescriptor instead')
 const SettingsData$json = const {
   '1': 'SettingsData',
   '2': const [
@@ -57,6 +74,9 @@ const SettingsData$json = const {
   ],
 };
 
+/// Descriptor for `SettingsData`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXI=');
+@$core.Deprecated('Use measurementDependentSettingsDataDescriptor instead')
 const MeasurementDependentSettingsData$json = const {
   '1': 'MeasurementDependentSettingsData',
   '2': const [
@@ -71,3 +91,5 @@ const MeasurementDependentSettingsData$json = const {
   ],
 };
 
+/// Descriptor for `MeasurementDependentSettingsData`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZRIfCgthc2NlbnRfcmF0ZRgCIAEoAVIKYXNjZW50UmF0ZRIqChFzYWZldHlfc3RvcF9kZXB0aBgDIAEoAVIPc2FmZXR5U3RvcERlcHRoEiEKDG1pbl9wcmVzc3VyZRgEIAEoBVILbWluUHJlc3N1cmUSIQoMbWF4X3ByZXNzdXJlGAUgASgFUgttYXhQcmVzc3VyZRIjCg1wcmVzc3VyZV9zdGVwGAYgASgFUgxwcmVzc3VyZVN0ZXASGwoJbWluX2RlcHRoGAcgASgFUghtaW5EZXB0aBIbCgltYXhfZGVwdGgYCCABKAVSCG1heERlcHRo');

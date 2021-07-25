@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: flaska.proto
 //
-// @dart = 2.3
+// @dart = 2.7
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
 import 'dart:core' as $core;
@@ -20,7 +20,15 @@ class CylinderSet extends $pb.GeneratedMessage {
   ;
 
   CylinderSet._() : super();
-  factory CylinderSet() => create();
+  factory CylinderSet({
+    $core.Iterable<CylinderData> cylinders,
+  }) {
+    final _result = create();
+    if (cylinders != null) {
+      _result.cylinders.addAll(cylinders);
+    }
+    return _result;
+  }
   factory CylinderSet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CylinderSet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -32,7 +40,7 @@ class CylinderSet extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CylinderSet copyWith(void Function(CylinderSet) updates) => super.copyWith((message) => updates(message as CylinderSet)); // ignore: deprecated_member_use
+  CylinderSet copyWith(void Function(CylinderSet) updates) => super.copyWith((message) => updates(message as CylinderSet)) as CylinderSet; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CylinderSet create() => CylinderSet._();
@@ -57,11 +65,56 @@ class CylinderData extends $pb.GeneratedMessage {
     ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', $pb.PbFieldType.OD)
     ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'twinset')
     ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selected')
+    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'overfill')
     ..hasRequiredFields = false
   ;
 
   CylinderData._() : super();
-  factory CylinderData() => create();
+  factory CylinderData({
+    $core.String id,
+    $core.String name,
+    Metal metal,
+    MeasurementSystem measurements,
+    $core.double volume,
+    $core.int workingPressure,
+    $core.double weight,
+    $core.bool twinset,
+    $core.bool selected,
+    $core.bool overfill,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (metal != null) {
+      _result.metal = metal;
+    }
+    if (measurements != null) {
+      _result.measurements = measurements;
+    }
+    if (volume != null) {
+      _result.volume = volume;
+    }
+    if (workingPressure != null) {
+      _result.workingPressure = workingPressure;
+    }
+    if (weight != null) {
+      _result.weight = weight;
+    }
+    if (twinset != null) {
+      _result.twinset = twinset;
+    }
+    if (selected != null) {
+      _result.selected = selected;
+    }
+    if (overfill != null) {
+      _result.overfill = overfill;
+    }
+    return _result;
+  }
   factory CylinderData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CylinderData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -73,7 +126,7 @@ class CylinderData extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CylinderData copyWith(void Function(CylinderData) updates) => super.copyWith((message) => updates(message as CylinderData)); // ignore: deprecated_member_use
+  CylinderData copyWith(void Function(CylinderData) updates) => super.copyWith((message) => updates(message as CylinderData)) as CylinderData; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CylinderData create() => CylinderData._();
@@ -163,6 +216,15 @@ class CylinderData extends $pb.GeneratedMessage {
   $core.bool hasSelected() => $_has(8);
   @$pb.TagNumber(9)
   void clearSelected() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get overfill => $_getBF(9);
+  @$pb.TagNumber(10)
+  set overfill($core.bool v) { $_setBool(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasOverfill() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearOverfill() => clearField(10);
 }
 
 class SettingsData extends $pb.GeneratedMessage {
@@ -179,7 +241,43 @@ class SettingsData extends $pb.GeneratedMessage {
   ;
 
   SettingsData._() : super();
-  factory SettingsData() => create();
+  factory SettingsData({
+    MeasurementSystem measurements,
+    MeasurementDependentSettingsData metric,
+    MeasurementDependentSettingsData imperial,
+    $core.double troubleSolvingDuration,
+    $core.double troubleSolvingSacMultiplier,
+    $core.double ascentSacMultiplier,
+    $core.double safetyStopDuration,
+    $core.double safetyStopSacMultiplier,
+  }) {
+    final _result = create();
+    if (measurements != null) {
+      _result.measurements = measurements;
+    }
+    if (metric != null) {
+      _result.metric = metric;
+    }
+    if (imperial != null) {
+      _result.imperial = imperial;
+    }
+    if (troubleSolvingDuration != null) {
+      _result.troubleSolvingDuration = troubleSolvingDuration;
+    }
+    if (troubleSolvingSacMultiplier != null) {
+      _result.troubleSolvingSacMultiplier = troubleSolvingSacMultiplier;
+    }
+    if (ascentSacMultiplier != null) {
+      _result.ascentSacMultiplier = ascentSacMultiplier;
+    }
+    if (safetyStopDuration != null) {
+      _result.safetyStopDuration = safetyStopDuration;
+    }
+    if (safetyStopSacMultiplier != null) {
+      _result.safetyStopSacMultiplier = safetyStopSacMultiplier;
+    }
+    return _result;
+  }
   factory SettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory SettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -191,7 +289,7 @@ class SettingsData extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  SettingsData copyWith(void Function(SettingsData) updates) => super.copyWith((message) => updates(message as SettingsData)); // ignore: deprecated_member_use
+  SettingsData copyWith(void Function(SettingsData) updates) => super.copyWith((message) => updates(message as SettingsData)) as SettingsData; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SettingsData create() => SettingsData._();
@@ -292,7 +390,43 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   ;
 
   MeasurementDependentSettingsData._() : super();
-  factory MeasurementDependentSettingsData() => create();
+  factory MeasurementDependentSettingsData({
+    $core.double sacRate,
+    $core.double ascentRate,
+    $core.double safetyStopDepth,
+    $core.int minPressure,
+    $core.int maxPressure,
+    $core.int pressureStep,
+    $core.int minDepth,
+    $core.int maxDepth,
+  }) {
+    final _result = create();
+    if (sacRate != null) {
+      _result.sacRate = sacRate;
+    }
+    if (ascentRate != null) {
+      _result.ascentRate = ascentRate;
+    }
+    if (safetyStopDepth != null) {
+      _result.safetyStopDepth = safetyStopDepth;
+    }
+    if (minPressure != null) {
+      _result.minPressure = minPressure;
+    }
+    if (maxPressure != null) {
+      _result.maxPressure = maxPressure;
+    }
+    if (pressureStep != null) {
+      _result.pressureStep = pressureStep;
+    }
+    if (minDepth != null) {
+      _result.minDepth = minDepth;
+    }
+    if (maxDepth != null) {
+      _result.maxDepth = maxDepth;
+    }
+    return _result;
+  }
   factory MeasurementDependentSettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory MeasurementDependentSettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -304,7 +438,7 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  MeasurementDependentSettingsData copyWith(void Function(MeasurementDependentSettingsData) updates) => super.copyWith((message) => updates(message as MeasurementDependentSettingsData)); // ignore: deprecated_member_use
+  MeasurementDependentSettingsData copyWith(void Function(MeasurementDependentSettingsData) updates) => super.copyWith((message) => updates(message as MeasurementDependentSettingsData)) as MeasurementDependentSettingsData; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static MeasurementDependentSettingsData create() => MeasurementDependentSettingsData._();

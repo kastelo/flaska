@@ -24,6 +24,7 @@ message CylinderData {
     double weight = 7;
     bool twinset = 8;
     bool selected = 9;
+    bool overfill = 10;
 }
 
 message SettingsData {

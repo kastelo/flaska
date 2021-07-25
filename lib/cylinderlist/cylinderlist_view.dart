@@ -9,8 +9,7 @@ import '../proto/proto.dart';
 import 'cylinderlist_bloc.dart';
 import 'cylinderlist_edit_view.dart';
 
-final _defaultNewCylinder = CylinderModel.imperial(null, "", Metal.ALUMINIUM,
-    PressurePsi(3000), VolumeCuFt(77.4), WeightLb(31.9), false, true);
+final _defaultNewCylinder = CylinderModel.imperial(null, "", Metal.ALUMINIUM, PressurePsi(3000), VolumeCuFt(77.4), WeightLb(31.9), false, true, false);
 
 class CylinderListView extends StatelessWidget {
   @override
@@ -48,17 +47,12 @@ class CylinderListView extends StatelessWidget {
                         ),
                         child: ListTile(
                           key: ValueKey(c.id),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          leading: c.twinset
-                              ? Icon(Icons.looks_two, color: t.accentColor)
-                              : Icon(Icons.looks_one),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          leading: c.twinset ? Icon(Icons.looks_two, color: t.accentColor) : Icon(Icons.looks_one),
                           title: Text(c.name),
                           trailing: Switch(
                             value: c.selected,
-                            onChanged: (selected) => context
-                                .read<CylinderListBloc>()
-                                .add(UpdateCylinder(c..selected = selected)),
+                            onChanged: (selected) => context.read<CylinderListBloc>().add(UpdateCylinder(c..selected = selected)),
                           ),
                           onTap: () async => await editCylinder(context, c),
                         ),
@@ -78,10 +72,8 @@ class CylinderListView extends StatelessWidget {
       context: context,
       builder: (dialogContext) => CylinderEditView(
         cylinder: cylinder.toData(),
-        onChange: (cyl) =>
-            context.read<CylinderListBloc>().add(UpdateCylinder(cyl)),
-        onDelete: (id) =>
-            context.read<CylinderListBloc>().add(DeleteCylinder(id)),
+        onChange: (cyl) => context.read<CylinderListBloc>().add(UpdateCylinder(cyl)),
+        onDelete: (id) => context.read<CylinderListBloc>().add(DeleteCylinder(id)),
       ),
     );
   }

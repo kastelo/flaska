@@ -43,13 +43,11 @@ class DiveCalculationCylinderView extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(child: Text(cvm.cylinder.name, style: h0)),
-                Expanded(
-                  child: Text(
-                    cvm.weight,
-                    style: h1,
-                    textAlign: TextAlign.right,
-                  ),
+                Expanded(child: Text("${cvm.cylinder.name} @ ${cvm.cylinder.pressure(pressure)}", style: h0)),
+                Text(
+                  cvm.weight,
+                  style: h1,
+                  textAlign: TextAlign.right,
                 ),
               ],
             ),

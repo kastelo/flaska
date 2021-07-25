@@ -34,6 +34,8 @@ class PressureBar extends Pressure {
   PressureBar operator +(Pressure other) {
     return PressureBar(bar + other.bar);
   }
+
+  String toString() => "$bar bar";
 }
 
 class PressurePsi extends Pressure {
@@ -44,6 +46,8 @@ class PressurePsi extends Pressure {
   PressurePsi operator +(Pressure other) {
     return PressurePsi(psi + other.psi);
   }
+
+  String toString() => "$psi psi";
 }
 
 abstract class Volume {
@@ -66,9 +70,7 @@ class VolumeL extends Volume {
   final double l;
   double get cuft => l * literPerCuft;
   const VolumeL(this.l);
-  VolumeL.fromPressure(double cuft, int psi)
-      : l = VolumeCuFt(cuft).l /
-            gasVolumeAtPressure(PressurePsi(psi), VolumeL(1)).l;
+  VolumeL.fromPressure(double cuft, int psi) : l = VolumeCuFt(cuft).l / gasVolumeAtPressure(PressurePsi(psi), VolumeL(1)).l;
 
   VolumeL operator +(Volume other) {
     return VolumeL(l + other.l);
@@ -131,8 +133,7 @@ extension SettingsModel on SettingsData {
   bool get valid => measurements != null;
   bool get isMetric => measurements == MeasurementSystem.METRIC;
 
-  Volume get sacRate =>
-      isMetric ? VolumeL(metric.sacRate) : VolumeCuFt(imperial.sacRate);
+  Volume get sacRate => isMetric ? VolumeL(metric.sacRate) : VolumeCuFt(imperial.sacRate);
   set sacRate(Volume v) {
     if (measurements == MeasurementSystem.METRIC)
       metric.sacRate = v.l;
@@ -140,8 +141,7 @@ extension SettingsModel on SettingsData {
       imperial.sacRate = v.cuft;
   }
 
-  Distance get ascentRate =>
-      isMetric ? DistanceM(metric.ascentRate) : DistanceFt(imperial.ascentRate);
+  Distance get ascentRate => isMetric ? DistanceM(metric.ascentRate) : DistanceFt(imperial.ascentRate);
   set ascentRate(Distance v) {
     if (measurements == MeasurementSystem.METRIC)
       metric.ascentRate = v.m;
@@ -149,9 +149,7 @@ extension SettingsModel on SettingsData {
       imperial.ascentRate = v.ft;
   }
 
-  Distance get safetyStopDepth => isMetric
-      ? DistanceM(metric.safetyStopDepth)
-      : DistanceFt(imperial.safetyStopDepth);
+  Distance get safetyStopDepth => isMetric ? DistanceM(metric.safetyStopDepth) : DistanceFt(imperial.safetyStopDepth);
   set safetyStopDepth(Distance v) {
     if (measurements == MeasurementSystem.METRIC)
       metric.safetyStopDepth = v.m;
@@ -159,9 +157,7 @@ extension SettingsModel on SettingsData {
       imperial.safetyStopDepth = v.ft;
   }
 
-  Pressure get minPressure => isMetric
-      ? PressureBar(metric.minPressure)
-      : PressurePsi(imperial.minPressure);
+  Pressure get minPressure => isMetric ? PressureBar(metric.minPressure) : PressurePsi(imperial.minPressure);
   set minPressure(Pressure p) {
     if (measurements == MeasurementSystem.METRIC)
       metric.minPressure = p.bar;
@@ -169,9 +165,7 @@ extension SettingsModel on SettingsData {
       imperial.minPressure = p.bar;
   }
 
-  Pressure get maxPressure => isMetric
-      ? PressureBar(metric.maxPressure)
-      : PressurePsi(imperial.maxPressure);
+  Pressure get maxPressure => isMetric ? PressureBar(metric.maxPressure) : PressurePsi(imperial.maxPressure);
   set maxPressure(Pressure p) {
     if (measurements == MeasurementSystem.METRIC)
       metric.maxPressure = p.bar;
@@ -179,9 +173,7 @@ extension SettingsModel on SettingsData {
       imperial.maxPressure = p.bar;
   }
 
-  Pressure get pressureStep => isMetric
-      ? PressureBar(metric.pressureStep)
-      : PressurePsi(imperial.pressureStep);
+  Pressure get pressureStep => isMetric ? PressureBar(metric.pressureStep) : PressurePsi(imperial.pressureStep);
   set pressureStep(Pressure p) {
     if (measurements == MeasurementSystem.METRIC)
       metric.pressureStep = p.bar;
@@ -189,9 +181,7 @@ extension SettingsModel on SettingsData {
       imperial.pressureStep = p.bar;
   }
 
-  Distance get minDepth => isMetric
-      ? DistanceM(metric.minDepth.toDouble())
-      : DistanceFt(imperial.minDepth.toDouble());
+  Distance get minDepth => isMetric ? DistanceM(metric.minDepth.toDouble()) : DistanceFt(imperial.minDepth.toDouble());
   set minDepth(Distance d) {
     if (measurements == MeasurementSystem.METRIC)
       metric.minDepth = d.m.toInt();
@@ -199,9 +189,7 @@ extension SettingsModel on SettingsData {
       imperial.minDepth = d.ft.toInt();
   }
 
-  Distance get maxDepth => isMetric
-      ? DistanceM(metric.maxDepth.toDouble())
-      : DistanceFt(imperial.maxDepth.toDouble());
+  Distance get maxDepth => isMetric ? DistanceM(metric.maxDepth.toDouble()) : DistanceFt(imperial.maxDepth.toDouble());
   set maxDepth(Distance d) {
     if (measurements == MeasurementSystem.METRIC)
       metric.maxDepth = d.m.toInt();

@@ -56,8 +56,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                 children: [
                   OutlinedButton(
                     child: Text("Save"),
-                    style:
-                        OutlinedButton.styleFrom(primary: Colors.greenAccent),
+                    style: OutlinedButton.styleFrom(primary: Colors.greenAccent),
                     onPressed: valid
                         ? () async {
                             if (cylinder.id.isEmpty) {
@@ -78,11 +77,9 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                   if (cylinder.id.isNotEmpty)
                     OutlinedButton(
                       child: Text("Delete"),
-                      style:
-                          OutlinedButton.styleFrom(primary: Colors.redAccent),
+                      style: OutlinedButton.styleFrom(primary: Colors.redAccent),
                       onPressed: () async {
-                        await widget
-                            .onDelete(CylinderModel.fromData(cylinder).id);
+                        await widget.onDelete(CylinderModel.fromData(cylinder).id);
                         Navigator.pop(context);
                       },
                     ),
@@ -102,6 +99,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         2: IntrinsicColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
       children: <TableRow>[
         titledRow(
           title: "Name",
@@ -125,10 +123,8 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             dropdownColor: Theme.of(context).cardColor,
             value: cylinder.measurements,
             items: [
-              DropdownMenuItem(
-                  value: MeasurementSystem.METRIC, child: Text("Metric")),
-              DropdownMenuItem(
-                  value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
+              DropdownMenuItem(value: MeasurementSystem.METRIC, child: Text("Metric")),
+              DropdownMenuItem(value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
             ],
             onChanged: (value) {
               setState(() => cylinder.measurements = value);
@@ -142,8 +138,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             value: cylinder.metal,
             items: [
               DropdownMenuItem(value: Metal.STEEL, child: Text("Steel")),
-              DropdownMenuItem(
-                  value: Metal.ALUMINIUM, child: Text("Aluminium")),
+              DropdownMenuItem(value: Metal.ALUMINIUM, child: Text("Aluminium")),
             ],
             onChanged: (value) {
               setState(() => cylinder.metal = value);
@@ -153,10 +148,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Volume",
           child: TextFormField(
-            decoration: InputDecoration(
-                hintText: cylinder.measurements == MeasurementSystem.METRIC
-                    ? "Water volume in liters"
-                    : "Air volume in cuft"),
+            decoration: InputDecoration(hintText: cylinder.measurements == MeasurementSystem.METRIC ? "Water volume in liters" : "Air volume in cuft"),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
             initialValue: cylinder.volume.toString(),
@@ -179,14 +171,9 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Pressure",
           child: TextFormField(
-            decoration: InputDecoration(
-                hintText: cylinder.measurements == MeasurementSystem.METRIC
-                    ? "Working pressure in psi"
-                    : "Working pressure in bar"),
+            decoration: InputDecoration(hintText: cylinder.measurements == MeasurementSystem.METRIC ? "Working pressure in psi" : "Working pressure in bar"),
             keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-            ],
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
             initialValue: cylinder.workingPressure.toString(),
             onChanged: (value) {
               setState(() => cylinder.workingPressure = int.parse(value));
@@ -212,10 +199,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Weight",
           child: TextFormField(
-            decoration: InputDecoration(
-                hintText: cylinder.measurements == MeasurementSystem.METRIC
-                    ? "Empty weight in kg"
-                    : "Empty weight in lb"),
+            decoration: InputDecoration(hintText: cylinder.measurements == MeasurementSystem.METRIC ? "Empty weight in kg" : "Empty weight in lb"),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
             initialValue: cylinder.weight.toString(),
@@ -260,6 +244,31 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             Container(),
           ],
         ),
+        TableRow(
+          children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: Text(
+                  "Allow overfills:",
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Switch(
+                  value: cylinder.overfill,
+                  onChanged: (value) {
+                    setState(() => cylinder.overfill = value);
+                  },
+                ),
+              ],
+            ),
+            Container(),
+          ],
+        ),
       ],
     );
   }
@@ -278,8 +287,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
     ]);
   }
 
-  TableRow titledUnitRow(
-      {String title, Widget child, String metric, String imperial}) {
+  TableRow titledUnitRow({String title, Widget child, String metric, String imperial}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -291,9 +299,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
       child,
       Padding(
         padding: const EdgeInsets.only(left: 16.0),
-        child: Text(cylinder.measurements == MeasurementSystem.METRIC
-            ? metric
-            : imperial),
+        child: Text(cylinder.measurements == MeasurementSystem.METRIC ? metric : imperial),
       )
     ]);
   }
@@ -305,11 +311,7 @@ class WithUnit extends StatelessWidget {
   final String imperial;
   final Widget child;
 
-  const WithUnit(
-      {@required this.measurements,
-      @required this.metric,
-      @required this.imperial,
-      @required this.child});
+  const WithUnit({@required this.measurements, @required this.metric, @required this.imperial, @required this.child});
 
   @override
   Widget build(BuildContext context) {
