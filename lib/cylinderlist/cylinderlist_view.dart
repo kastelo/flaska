@@ -48,7 +48,7 @@ class CylinderListView extends StatelessWidget {
                         child: ListTile(
                           key: ValueKey(c.id),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                          leading: c.twinset ? Icon(Icons.looks_two, color: t.accentColor) : Icon(Icons.looks_one),
+                          leading: c.twinset ? Icon(Icons.looks_two, color: t.colorScheme.primary) : Icon(Icons.looks_one),
                           title: Text(c.name),
                           trailing: Switch(
                             value: c.selected,

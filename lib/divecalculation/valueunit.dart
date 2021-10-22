@@ -11,7 +11,7 @@ class ValueUnit extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Theme.of(context);
     final valueStyle = t.textTheme.headline5;
-    final titleStyle = t.textTheme.subtitle2.copyWith(color: t.accentColor);
+    final titleStyle = t.textTheme.subtitle2.copyWith(color: t.colorScheme.primary);
     final unitStyle = t.textTheme.bodyText1.copyWith(color: t.disabledColor);
 
     return Column(
