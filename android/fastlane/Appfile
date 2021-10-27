@@ -1,0 +1,2 @@
+json_key_data_raw(ENV['GOOGLE_API_KEY_JSON'])
+package_name("net.kastelo.flaska")
