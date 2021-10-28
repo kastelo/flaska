@@ -12,37 +12,38 @@ class DiveCalculationState {
   final SettingsData settings;
   final Distance depth;
   final Pressure tankPressure;
+  final Set<String> foldedClosed;
 
-  bool get valid =>
-      settings != null &&
-      settings.valid &&
-      depth != null &&
-      tankPressure != null;
-
+  bool get valid => settings != null && settings.valid && depth != null && tankPressure != null;
   bool get metric => settings.measurements == MeasurementSystem.METRIC;
-  RockBottomModel get rockBottom =>
-      RockBottomModel.fromSettings(settings, depth);
+  RockBottomModel get rockBottom => RockBottomModel.fromSettings(settings, depth);
+
+  bool foldedOpen(String id) => !(foldedClosed ?? {}).contains(id);
 
   const DiveCalculationState({
     this.settings,
     this.depth,
     this.tankPressure,
+    this.foldedClosed,
   });
 
   const DiveCalculationState.empty()
       : settings = null,
         depth = null,
-        tankPressure = null;
+        tankPressure = null,
+        foldedClosed = null;
 
   DiveCalculationState copyWith({
     SettingsData settings,
     Distance depth,
     Pressure tankPressure,
+    Set<String> foldedClosed,
   }) =>
       DiveCalculationState(
         settings: settings ?? this.settings,
         depth: depth ?? this.depth,
         tankPressure: tankPressure ?? this.tankPressure,
+        foldedClosed: foldedClosed ?? this.foldedClosed,
       );
 }
 
@@ -65,15 +66,23 @@ class _NewSettings extends DiveCalculationEvent {
   const _NewSettings(this.settings);
 }
 
-class DiveCalculationBloc
-    extends Bloc<DiveCalculationEvent, DiveCalculationState> {
+class _NewClosed extends DiveCalculationEvent {
+  final Set<String> foldedClosed;
+  const _NewClosed(this.foldedClosed);
+}
+
+class ToggleFolding extends DiveCalculationEvent {
+  final String id;
+  const ToggleFolding(this.id);
+}
+
+class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationState> {
   StreamSubscription settingsSub;
   SharedPreferences preferences;
 
-  DiveCalculationBloc(SettingsBloc settingsBloc)
-      : super(DiveCalculationState.empty()) {
+  DiveCalculationBloc(SettingsBloc settingsBloc) : super(DiveCalculationState.empty()) {
     this.add(_NewSettings(settingsBloc.state.settings));
-    settingsSub = settingsBloc.listen((settingsState) {
+    settingsSub = settingsBloc.stream.listen((settingsState) {
       this.add(_NewSettings(settingsState.settings));
     });
   }
@@ -85,8 +94,7 @@ class DiveCalculationBloc
   }
 
   @override
-  Stream<DiveCalculationState> mapEventToState(
-      DiveCalculationEvent event) async* {
+  Stream<DiveCalculationState> mapEventToState(DiveCalculationEvent event) async* {
     if (event is _NewSettings) {
       final newState = state.copyWith(settings: event.settings);
       if (newState.settings != null && newState.settings.valid) {
@@ -135,14 +143,33 @@ class DiveCalculationBloc
       }
       yield state.copyWith(tankPressure: pressure);
     }
+
+    if (event is _NewClosed) {
+      yield state.copyWith(foldedClosed: event.foldedClosed);
+    }
+
+    if (event is ToggleFolding) {
+      final foldedClosed = state.foldedClosed ?? {};
+      if (foldedClosed.contains(event.id)) {
+        foldedClosed.remove(event.id);
+      } else {
+        foldedClosed.add(event.id);
+      }
+      yield state.copyWith(foldedClosed: foldedClosed);
+      await preferences.setStringList('foldedClosed', foldedClosed.toList());
+    }
   }
 
   Future loadPreferences() async {
     preferences = await SharedPreferences.getInstance();
     final metric = preferences.getBool('metric') ?? true;
     final pres = preferences.getInt('pressure') ?? 200;
-    final dep = preferences.getDouble('depth') ?? 15;
     add(SetTankPressure(metric ? PressureBar(pres) : PressurePsi(pres)));
+
+    final dep = preferences.getDouble('depth') ?? 15;
     add(SetDepth(metric ? DistanceM(dep) : DistanceFt(dep)));
+
+    final closed = (preferences.getStringList('foldedClosed') ?? ['rockbottom']).toSet();
+    add(_NewClosed(closed));
   }
 }

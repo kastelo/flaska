@@ -5,11 +5,10 @@ import '../cylinderlist/cylinderlist_bloc.dart';
 import '../divecalculation/pressureslider.dart';
 import '../models/cylinder_model.dart';
 import '../models/units.dart';
+import 'depthslider.dart';
 import 'divecalculation_bloc.dart';
 import 'divecalculation_cylinder_view.dart';
 import 'divecalculation_rockbottom_view.dart';
-import 'divecalculation_viewmodel.dart';
-import 'depthslider.dart';
 
 class DiveCalculationView extends StatelessWidget {
   @override
@@ -34,10 +33,7 @@ class DiveCalculationView extends StatelessWidget {
               ]),
             ),
             SliverList(
-              delegate: SliverChildListDelegate(cylinderListState
-                  .selectedCylinders
-                  .map((cyl) => cylinder(context, cyl))
-                  .toList()),
+              delegate: SliverChildListDelegate(cylinderListState.selectedCylinders.map((cyl) => cylinder(context, cyl)).toList()),
             ),
           ],
         ),
@@ -45,8 +41,7 @@ class DiveCalculationView extends StatelessWidget {
     );
   }
 
-  Widget cylinder(BuildContext context, CylinderModel cylinder) =>
-      BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
+  Widget cylinder(BuildContext context, CylinderModel cylinder) => BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
         builder: (context, state) => state.valid
             ? Padding(
                 padding: const EdgeInsets.only(top: 8.0),
@@ -64,8 +59,7 @@ class DiveCalculationView extends StatelessWidget {
 class _PressureSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
-        builder: (context, state) {
+    return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(builder: (context, state) {
       if (!state.valid) {
         return Container();
       }
@@ -75,8 +69,7 @@ class _PressureSlider extends StatelessWidget {
         maxValue: state.settings.maxPressure,
         step: state.settings.pressureStep,
         metric: state.metric,
-        onChanged: (pressure) =>
-            context.read<DiveCalculationBloc>().add(SetTankPressure(pressure)),
+        onChanged: (pressure) => context.read<DiveCalculationBloc>().add(SetTankPressure(pressure)),
       );
     });
   }
@@ -85,16 +78,14 @@ class _PressureSlider extends StatelessWidget {
 class _DepthSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
-        builder: (context, state) {
+    return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(builder: (context, state) {
       if (!state.valid) {
         return Container();
       }
       return DepthSlider(
         value: state.depth,
         metric: state.metric,
-        onChanged: (depth) =>
-            context.read<DiveCalculationBloc>().add(SetDepth(depth)),
+        onChanged: (depth) => context.read<DiveCalculationBloc>().add(SetDepth(depth)),
         minValue: state.settings.minDepth,
         maxValue: state.settings.maxDepth,
         gradual: true,

@@ -4,6 +4,7 @@ import '../models/cylinder_model.dart';
 import '../models/rockbottom_model.dart';
 import '../models/units.dart';
 import 'valueunit.dart';
+import 'foldable.dart';
 
 class DiveCalculationCylinderView extends StatelessWidget {
   final CylinderModel cylinder;
@@ -30,86 +31,79 @@ class DiveCalculationCylinderView extends StatelessWidget {
     final t = Theme.of(context);
     final h0 = t.textTheme.subtitle1;
     final h1 = t.textTheme.subtitle2.copyWith(color: t.disabledColor);
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Theme.of(context).cardColor,
+    return Foldable(
+      id: cylinder.id.toString(),
+      title: Row(
+        children: [
+          Expanded(child: Text("${cvm.cylinder.name} @ ${cvm.cylinder.pressure(pressure)}", style: h0)),
+          Text(
+            cvm.weight,
+            style: h1,
+            textAlign: TextAlign.right,
+          ),
+        ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Row(
               children: [
-                Expanded(child: Text("${cvm.cylinder.name} @ ${cvm.cylinder.pressure(pressure)}", style: h0)),
-                Text(
-                  cvm.weight,
-                  style: h1,
-                  textAlign: TextAlign.right,
+                Expanded(
+                  child: ValueUnit(
+                    title: "GAS",
+                    value: cvm.gas,
+                    unit: cvm.volumeUnit,
+                  ),
+                ),
+                Expanded(
+                  child: ValueUnit(
+                    title: "GAS TIME",
+                    value: cvm.airtime,
+                    unit: "min",
+                  ),
+                ),
+                Expanded(
+                  child: ValueUnit(
+                    title: "RB",
+                    value: cvm.rbPressure,
+                    unit: cvm.pressureUnit,
+                  ),
                 ),
               ],
             ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ValueUnit(
-                      title: "GAS",
-                      value: cvm.gas,
-                      unit: cvm.volumeUnit,
-                    ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ValueUnit(
+                    title: "START",
+                    value: cvm.buoyancyAtPressure,
+                    unit: cvm.weightUnit,
                   ),
-                  Expanded(
-                    child: ValueUnit(
-                      title: "GAS TIME",
-                      value: cvm.airtime,
-                      unit: "min",
-                    ),
+                ),
+                Expanded(
+                  child: ValueUnit(
+                    title: "EMPTY",
+                    value: cvm.buoyancyEmpty,
+                    unit: cvm.weightUnit,
                   ),
-                  Expanded(
-                    child: ValueUnit(
-                      title: "RB",
-                      value: cvm.rbPressure,
-                      unit: cvm.pressureUnit,
-                    ),
+                ),
+                Expanded(
+                  child: ValueUnit(
+                    title: "@RB",
+                    value: cvm.buoyancyAtReserve,
+                    unit: cvm.weightUnit,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ValueUnit(
-                      title: "START",
-                      value: cvm.buoyancyAtPressure,
-                      unit: cvm.weightUnit,
-                    ),
-                  ),
-                  Expanded(
-                    child: ValueUnit(
-                      title: "EMPTY",
-                      value: cvm.buoyancyEmpty,
-                      unit: cvm.weightUnit,
-                    ),
-                  ),
-                  Expanded(
-                    child: ValueUnit(
-                      title: "@RB",
-                      value: cvm.buoyancyAtReserve,
-                      unit: cvm.weightUnit,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

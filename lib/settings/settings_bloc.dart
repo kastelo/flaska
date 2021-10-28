@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protobuf/protobuf.dart';
 
-import '../models/units.dart';
 import '../proto/proto.dart';
 import '../services/service_locator.dart';
 import '../services/settings_service.dart';
@@ -49,8 +48,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       yield SettingsState(event.settings.deepCopy());
     }
     if (event is SetMeasurementSystem) {
-      final newSettings = state.settings.deepCopy()
-        ..measurements = event.measurements;
+      final newSettings = state.settings.deepCopy()..measurements = event.measurements;
       await settingsService.saveSettings(newSettings);
       yield SettingsState(newSettings);
     }
