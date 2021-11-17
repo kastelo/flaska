@@ -25,6 +25,7 @@ class _NavigationViewState extends State<NavigationView> {
         bottomNavigationBar: SafeArea(
           top: false,
           child: TabBar(
+            indicatorColor: Theme.of(context).colorScheme.secondary,
             tabs: [
               Tab(icon: Icon(Icons.calculate)),
               Tab(icon: Icon(Icons.sync)),
