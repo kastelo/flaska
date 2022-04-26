@@ -60,7 +60,7 @@ class LocalSettingsService implements SettingsService {
       if (data.isEmpty) {
         return defaultSettings.deepCopy();
       }
-      var s = defaultSettings.deepCopy();
+      SettingsData s = defaultSettings.deepCopy();
       s.mergeFromBuffer(data);
       return s;
     } catch (e) {

@@ -6,7 +6,7 @@ class TransfillCylinderModel {
   final CylinderModel cylinder;
   final Pressure pressure;
 
-  const TransfillCylinderModel({this.cylinder, this.pressure});
+  const TransfillCylinderModel({required this.cylinder, required this.pressure});
 
   Volume get gas =>
       VolumeL(gasVolumeAtPressure(pressure, cylinder.waterVolume).l *
@@ -19,7 +19,7 @@ class TransfillResultViewModel {
   final TransfillCylinderModel from;
   final TransfillCylinderModel to;
 
-  const TransfillResultViewModel({this.from, this.to});
+  const TransfillResultViewModel({required this.from, required this.to});
 
   Volume get totalGas => from.gas + to.gas;
   Volume get totalVolume => from.totalVolume + to.totalVolume;

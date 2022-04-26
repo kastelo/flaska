@@ -5,14 +5,14 @@ class ValueUnit extends StatelessWidget {
   final String value;
   final String unit;
 
-  const ValueUnit({@required this.title, @required this.value, @required this.unit});
+  const ValueUnit({required this.title, required this.value, required this.unit});
 
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context);
     final valueStyle = t.textTheme.headline5;
-    final titleStyle = t.textTheme.subtitle2.copyWith(color: t.colorScheme.primary);
-    final unitStyle = t.textTheme.bodyText1.copyWith(color: t.disabledColor);
+    final titleStyle = t.textTheme.subtitle2!.copyWith(color: t.colorScheme.primary);
+    final unitStyle = t.textTheme.bodyText1!.copyWith(color: t.disabledColor);
 
     return Column(
       children: [

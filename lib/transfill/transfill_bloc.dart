@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,15 +12,14 @@ import '../settings/settings_bloc.dart';
 import 'transfill_result_viewmodel.dart';
 
 class TransfillState {
-  final SettingsData settings;
-  final List<CylinderModel> cylinders;
-  final TransfillCylinderModel from;
-  final TransfillCylinderModel to;
+  final SettingsData? settings;
+  final List<CylinderModel>? cylinders;
+  final TransfillCylinderModel? from;
+  final TransfillCylinderModel? to;
 
-  bool get metric => settings.measurements == MeasurementSystem.METRIC;
+  bool get metric => settings!.measurements == MeasurementSystem.METRIC;
   bool get init => settings != null && cylinders != null;
-  bool get valid =>
-      settings != null && cylinders != null && from != null && to != null;
+  bool get valid => settings != null && cylinders != null && from != null && to != null;
 
   const TransfillState({this.settings, this.cylinders, this.from, this.to});
 
@@ -30,10 +30,10 @@ class TransfillState {
         to = null;
 
   TransfillState copyWith({
-    SettingsData settings,
-    List<CylinderModel> cylinders,
-    TransfillCylinderModel from,
-    TransfillCylinderModel to,
+    SettingsData? settings,
+    List<CylinderModel>? cylinders,
+    TransfillCylinderModel? from,
+    TransfillCylinderModel? to,
   }) =>
       TransfillState(
         settings: settings ?? this.settings,
@@ -58,22 +58,21 @@ class _NewCylinders extends TransfillEvent {
 }
 
 class NewFrom extends TransfillEvent {
-  final TransfillCylinderModel from;
+  final TransfillCylinderModel? from;
   const NewFrom(this.from);
 }
 
 class NewTo extends TransfillEvent {
-  final TransfillCylinderModel to;
+  final TransfillCylinderModel? to;
   const NewTo(this.to);
 }
 
 class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
-  StreamSubscription settingsSub;
-  StreamSubscription cylindersSub;
-  SharedPreferences preferences;
+  late StreamSubscription settingsSub;
+  late StreamSubscription cylindersSub;
+  SharedPreferences? preferences;
 
-  TransfillBloc(SettingsBloc settingsBloc, CylinderListBloc cylinderListBloc)
-      : super(TransfillState.empty()) {
+  TransfillBloc(SettingsBloc settingsBloc, CylinderListBloc cylinderListBloc) : super(TransfillState.empty()) {
     this.add(_NewSettings(settingsBloc.state.settings));
     settingsSub = settingsBloc.stream.listen((settingsState) {
       this.add(_NewSettings(settingsState.settings));
@@ -101,7 +100,7 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
           await loadPreferences();
         }
       } else if (newState.metric != state.metric) {
-        preferences.setBool('metric', newState.metric);
+        preferences!.setBool('metric', newState.metric);
         if (state.from != null) add(NewFrom(state.from));
         if (state.to != null) add(NewTo(state.to));
       }
@@ -109,12 +108,10 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
     }
 
     if (event is _NewCylinders) {
-      final selCylinders =
-          (event.cylinders ?? []).where((c) => c.selected).toList();
+      final selCylinders = event.cylinders.where((c) => c.selected).toList();
       var newState = state.copyWith(cylinders: selCylinders);
-      if (newState.cylinders.isNotEmpty) {
-        if (newState.from == null ||
-            !selCylinders.contains(newState.from.cylinder)) {
+      if (newState.cylinders!.isNotEmpty) {
+        if (newState.from == null || !selCylinders.contains(newState.from!.cylinder)) {
           newState = newState.copyWith(
             from: TransfillCylinderModel(
               cylinder: selCylinders.first,
@@ -122,8 +119,7 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
             ),
           );
         }
-        if (newState.to == null ||
-            !selCylinders.contains(newState.to.cylinder)) {
+        if (newState.to == null || !selCylinders.contains(newState.to!.cylinder)) {
           newState = newState.copyWith(
             to: TransfillCylinderModel(
               cylinder: selCylinders.first,
@@ -141,45 +137,38 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
     if (event is NewFrom) {
       yield state.copyWith(from: event.from);
       if (preferences != null) {
-        preferences.setInt('fromPressure',
-            state.metric ? event.from.pressure.bar : event.from.pressure.psi);
-        preferences.setString(
-            'fromCylinder', event.from.cylinder.id.toString());
+        preferences!.setInt('fromPressure', state.metric ? event.from!.pressure.bar : event.from!.pressure.psi);
+        preferences!.setString('fromCylinder', event.from!.cylinder.id.toString());
       }
     }
 
     if (event is NewTo) {
       yield state.copyWith(to: event.to);
       if (preferences != null) {
-        preferences.setInt('toPressure',
-            state.metric ? event.to.pressure.bar : event.to.pressure.psi);
-        preferences.setString('toCylinder', event.to.cylinder.id.toString());
+        preferences!.setInt('toPressure', state.metric ? event.to!.pressure.bar : event.to!.pressure.psi);
+        preferences!.setString('toCylinder', event.to!.cylinder.id.toString());
       }
     }
   }
 
   Future loadPreferences() async {
     preferences = await SharedPreferences.getInstance();
-    final metric = preferences.getBool('metric') ?? true;
-    final fromCylinder = preferences.getString('fromCylinder');
-    final toCylinder = preferences.getString('toCylinder');
-    final fromPressure = preferences.getInt('fromPressure');
-    final toPressure = preferences.getInt('toPressure');
+    final metric = preferences!.getBool('metric') ?? true;
+    final fromCylinder = preferences!.getString('fromCylinder');
+    final toCylinder = preferences!.getString('toCylinder');
+    final fromPressure = preferences!.getInt('fromPressure');
+    final toPressure = preferences!.getInt('toPressure');
 
     if (fromCylinder != null && fromPressure != null) {
-      final cyl = state.cylinders.firstWhere(
-          (c) => c.id.toString() == fromCylinder,
-          orElse: () => null);
-      final press =
-          metric ? PressureBar(fromPressure) : PressurePsi(fromPressure);
+      final cyl = state.cylinders!.firstWhereOrNull((c) => c.id.toString() == fromCylinder);
+      final press = metric ? PressureBar(fromPressure) : PressurePsi(fromPressure);
       if (cyl != null) {
         add(NewFrom(TransfillCylinderModel(cylinder: cyl, pressure: press)));
       }
     }
 
     if (toCylinder != null && toPressure != null) {
-      final cyl = state.cylinders
-          .firstWhere((c) => c.id.toString() == toCylinder, orElse: () => null);
+      final cyl = state.cylinders!.firstWhereOrNull((c) => c.id.toString() == toCylinder);
       final press = metric ? PressureBar(toPressure) : PressurePsi(toPressure);
       if (cyl != null) {
         add(NewTo(TransfillCylinderModel(cylinder: cyl, pressure: press)));

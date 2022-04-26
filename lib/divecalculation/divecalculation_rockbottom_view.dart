@@ -11,12 +11,9 @@ class RockBottomView extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Theme.of(context);
     final h0 = t.textTheme.subtitle1;
-    final h1 = t.textTheme.subtitle2.copyWith(color: t.disabledColor);
+    final h1 = t.textTheme.subtitle2!.copyWith(color: t.disabledColor);
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
       builder: (context, state) {
-        if (!state.valid) {
-          return Container();
-        }
         final dcvm = DiveCalculationViewModel(state);
         return Foldable(
           id: 'rockbottom',

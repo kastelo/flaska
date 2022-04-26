@@ -47,7 +47,7 @@ class CylinderModel {
 
   CylinderData toData() {
     return CylinderData()
-      ..id = id?.toString() ?? ""
+      ..id = id.toString()
       ..name = name
       ..measurements = measurements
       ..metal = metal
@@ -73,15 +73,15 @@ class CylinderModel {
 
   Volume get totalWaterVolume => VolumeL(twinFactor * waterVolume.l);
 
-  Pressure pressure(Pressure p) {
+  Pressure? pressure(Pressure? p) {
     if (overfill) return p;
-    if (measurements == MeasurementSystem.METRIC) return PressureBar(min(p.bar, workingPressure.bar));
-    return PressurePsi(min(p.psi, workingPressure.psi));
+    if (measurements == MeasurementSystem.METRIC) return PressureBar(min(p!.bar, workingPressure.bar));
+    return PressurePsi(min(p!.psi, workingPressure.psi));
   }
 
-  Volume compressedVolume(Pressure p) => VolumeL(twinFactor * gasVolumeAtPressure(pressure(p), waterVolume).l);
+  Volume compressedVolume(Pressure? p) => VolumeL(twinFactor * gasVolumeAtPressure(pressure(p)!, waterVolume).l);
 
-  Weight buoyancy(Pressure p) => WeightKg(
+  Weight buoyancy(Pressure? p) => WeightKg(
         twinFactor * _externalVolume.l * waterPerL -
             twinFactor * weight.kg +
             twinFactor * valveBuyoancyKg +
@@ -93,65 +93,65 @@ class CylinderModel {
 }
 
 class CylinderViewModel {
-  final CylinderModel cylinder;
-  final Pressure pressure;
-  final RockBottomModel rockBottom;
-  final bool metric;
+  final CylinderModel? cylinder;
+  final Pressure? pressure;
+  final RockBottomModel? rockBottom;
+  final bool? metric;
   const CylinderViewModel({this.cylinder, this.pressure, this.rockBottom, this.metric});
 
-  String get description => metric
-      ? sprintf("%s (%.01f kg)", [cylinder.name, cylinder.twinFactor * cylinder.weight.kg])
+  String? get description => metric!
+      ? sprintf("%s (%.01f kg)", [cylinder!.name, cylinder!.twinFactor * cylinder!.weight.kg])
       : sprintf("%s (%.01f lb)", [
-          cylinder.name,
-          cylinder.twinFactor * cylinder.weight.lb,
+          cylinder!.name,
+          cylinder!.twinFactor * cylinder!.weight.lb,
         ]);
 
-  String get weight => metric
-      ? sprintf("%.01f kg", [cylinder.twinFactor * cylinder.weight.kg])
+  String? get weight => metric!
+      ? sprintf("%.01f kg", [cylinder!.twinFactor * cylinder!.weight.kg])
       : sprintf("%.01f lb", [
-          cylinder.twinFactor * cylinder.weight.lb,
+          cylinder!.twinFactor * cylinder!.weight.lb,
         ]);
 
-  String get gas => metric
+  String? get gas => metric!
       ? sprintf("%.0f", [
-          cylinder.compressedVolume(pressure).l,
+          cylinder!.compressedVolume(pressure).l,
         ])
       : sprintf("%.1f", [
-          cylinder.compressedVolume(pressure).cuft,
+          cylinder!.compressedVolume(pressure).cuft,
         ]);
 
-  String get volumeUnit => metric ? "L" : "cuft";
-  String get pressureUnit => metric ? "bar" : "psi";
-  String get weightUnit => metric ? "kg" : "lb";
+  String get volumeUnit => metric! ? "L" : "cuft";
+  String get pressureUnit => metric! ? "bar" : "psi";
+  String get weightUnit => metric! ? "kg" : "lb";
 
-  String get airtime => sprintf("%.0f", [
-        rockBottom.airtimeUntilRB(cylinder, pressure),
+  String? get airtime => sprintf("%.0f", [
+        rockBottom!.airtimeUntilRB(cylinder!, pressure),
       ]);
 
-  String get rbPressure =>
-      sprintf("%d", [metric ? rockBottom.rockBottomPressure(cylinder).bar.roundi(5) : rockBottom.rockBottomPressure(cylinder).psi.roundi(100)]);
+  String? get rbPressure =>
+      sprintf("%d", [metric! ? rockBottom!.rockBottomPressure(cylinder!).bar.roundi(5) : rockBottom!.rockBottomPressure(cylinder!).psi.roundi(100)]);
 
-  String get buoyancyAtPressure => metric
+  String? get buoyancyAtPressure => metric!
       ? sprintf("%+.01f", [
-          cylinder.buoyancy(pressure).kg,
+          cylinder!.buoyancy(pressure).kg,
         ])
       : sprintf("%+.01f", [
-          cylinder.buoyancy(pressure).lb,
+          cylinder!.buoyancy(pressure).lb,
         ]);
 
-  String get buoyancyAtReserve => metric
+  String? get buoyancyAtReserve => metric!
       ? sprintf("%+.01f", [
-          cylinder.buoyancy(rockBottom.rockBottomPressure(cylinder)).kg,
+          cylinder!.buoyancy(rockBottom!.rockBottomPressure(cylinder!)).kg,
         ])
       : sprintf("%+.01f", [
-          cylinder.buoyancy(rockBottom.rockBottomPressure(cylinder)).lb,
+          cylinder!.buoyancy(rockBottom!.rockBottomPressure(cylinder!)).lb,
         ]);
 
-  String get buoyancyEmpty => metric
+  String? get buoyancyEmpty => metric!
       ? sprintf("%+.01f", [
-          cylinder.buoyancy(PressureBar(0)).kg,
+          cylinder!.buoyancy(PressureBar(0)).kg,
         ])
       : sprintf("%+.01f", [
-          cylinder.buoyancy(PressurePsi(0)).lb,
+          cylinder!.buoyancy(PressurePsi(0)).lb,
         ]);
 }

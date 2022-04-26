@@ -18,12 +18,12 @@ class PressureSlider extends StatelessWidget {
   String get _unit => metric ? "bar" : "psi";
 
   const PressureSlider({
-    @required this.value,
-    @required this.metric,
-    @required this.onChanged,
-    @required this.minValue,
-    @required this.maxValue,
-    @required this.step,
+    required this.value,
+    required this.metric,
+    required this.onChanged,
+    required this.minValue,
+    required this.maxValue,
+    required this.step,
   });
 
   @override

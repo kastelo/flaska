@@ -35,9 +35,9 @@ class _TransfillViewState extends State<TransfillView> {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: TransfillCylinderEditView(
                         title: "From",
-                        cylinders: state.cylinders,
-                        selected: state.from,
-                        settings: state.settings,
+                        cylinders: state.cylinders!,
+                        selected: state.from!,
+                        settings: state.settings!,
                         onChanged: (m) => context.read<TransfillBloc>().add(NewFrom(m)),
                       ),
                     ),
@@ -45,14 +45,14 @@ class _TransfillViewState extends State<TransfillView> {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: TransfillCylinderEditView(
                         title: "To",
-                        cylinders: state.cylinders,
-                        selected: state.to,
-                        settings: state.settings,
+                        cylinders: state.cylinders!,
+                        selected: state.to!,
+                        settings: state.settings!,
                         onChanged: (m) => context.read<TransfillBloc>().add(NewTo(m)),
                         child: TransfillResultView(
                           result: TransfillResultViewModel(
-                            from: state.from,
-                            to: state.to,
+                            from: state.from!,
+                            to: state.to!,
                           ),
                           metric: state.metric,
                         ),
@@ -74,14 +74,14 @@ class TransfillCylinderEditView extends StatelessWidget {
   final TransfillCylinderModel selected;
   final Function(TransfillCylinderModel) onChanged;
   final SettingsData settings;
-  final Widget child;
+  final Widget? child;
 
   const TransfillCylinderEditView({
-    @required this.title,
-    @required this.cylinders,
-    @required this.selected,
-    @required this.onChanged,
-    @required this.settings,
+    required this.title,
+    required this.cylinders,
+    required this.selected,
+    required this.onChanged,
+    required this.settings,
     this.child,
   });
 
@@ -110,7 +110,7 @@ class TransfillCylinderEditView extends StatelessWidget {
                       width: 30,
                       child: Text(
                         title,
-                        style: t.textTheme.caption.copyWith(color: t.disabledColor),
+                        style: t.textTheme.caption!.copyWith(color: t.disabledColor),
                       ),
                     ),
                   ),
@@ -118,7 +118,7 @@ class TransfillCylinderEditView extends StatelessWidget {
                     child: DropdownButton(
                       value: selected.cylinder,
                       items: cylinders.map((c) => DropdownMenuItem(value: c, child: Text(c.name))).toList(),
-                      onChanged: (cyl) {
+                      onChanged: (dynamic cyl) {
                         onChanged(TransfillCylinderModel(
                           cylinder: cyl,
                           pressure: selected.pressure,
@@ -130,7 +130,7 @@ class TransfillCylinderEditView extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text("With", style: t.textTheme.caption.copyWith(color: t.disabledColor)),
+                  Text("With", style: t.textTheme.caption!.copyWith(color: t.disabledColor)),
                   Expanded(
                     child: PressureSlider(
                       value: selected.pressure,
@@ -148,7 +148,7 @@ class TransfillCylinderEditView extends StatelessWidget {
                   ),
                 ],
               ),
-              if (child != null) child,
+              if (child != null) child!,
             ],
           )),
     );
@@ -162,7 +162,7 @@ class TransfillResultView extends StatelessWidget {
   String get _unit => metric ? "bar" : "psi";
   String _pressure(Pressure p) => metric ? p.bar.toString() : p.psi.toString();
 
-  const TransfillResultView({@required this.result, @required this.metric});
+  const TransfillResultView({required this.result, required this.metric});
 
   @override
   Widget build(BuildContext context) {

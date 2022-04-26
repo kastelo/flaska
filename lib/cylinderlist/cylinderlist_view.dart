@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/cylinder_model.dart';
 import '../models/units.dart';
@@ -8,7 +9,8 @@ import '../proto/proto.dart';
 import 'cylinderlist_bloc.dart';
 import 'cylinderlist_edit_view.dart';
 
-final _defaultNewCylinder = CylinderModel.imperial(null, "", Metal.ALUMINIUM, PressurePsi(3000), VolumeCuFt(77.4), WeightLb(31.9), false, true, false);
+final _defaultNewCylinder =
+    CylinderModel.imperial(Uuid().v4obj(), "", Metal.ALUMINIUM, PressurePsi(3000), VolumeCuFt(77.4), WeightLb(31.9), false, true, false);
 
 class CylinderListView extends StatelessWidget {
   @override
@@ -24,7 +26,7 @@ class CylinderListView extends StatelessWidget {
               pinned: true,
               floating: true,
               actions: [
-                FlatButton.icon(
+                TextButton.icon(
                   icon: Icon(Icons.add),
                   label: Text("Add..."),
                   onPressed: () => editCylinder(context, _defaultNewCylinder),

@@ -8,10 +8,10 @@ class Foldable extends StatelessWidget {
   final Widget title;
 
   const Foldable({
-    @required this.id,
-    @required this.child,
-    @required this.title,
-    Key key,
+    required this.id,
+    required this.child,
+    required this.title,
+    Key? key,
   }) : super(key: key);
 
   @override

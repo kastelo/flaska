@@ -14,7 +14,7 @@ final _decimalExp = RegExp(r'[0-9\.,]');
 final _integerExp = RegExp(r'[0-9]');
 
 double parseDouble(String s) {
-  return double.parse(s.trim().replaceAll(",", "."), (_) => 0.0);
+  return double.tryParse(s.trim().replaceAll(",", ".")) ?? 0.0;
 }
 
 class SettingsView extends StatefulWidget {
@@ -36,7 +36,7 @@ class _SettingsViewState extends State<SettingsView> {
   final _pressureStepController = TextEditingController();
   final _minDepthController = TextEditingController();
   final _maxDepthController = TextEditingController();
-  SettingsData prevSettings;
+  SettingsData? prevSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _generalSettings;
+  SettingsData? _generalSettings;
   Widget generalTable(BuildContext context, SettingsData settings) {
     if (settings != _generalSettings) {
       _generalSettings = settings;
@@ -105,7 +105,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "GENERAL",
-              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -156,7 +156,7 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _troubleSolvingSettings;
+  SettingsData? _troubleSolvingSettings;
   Widget troubleSolvingTable(BuildContext context, SettingsData settings) {
     if (settings != _troubleSolvingSettings) {
       _troubleSolvingSettings = settings;
@@ -179,7 +179,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "TROUBLE SOLVING",
-              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -229,7 +229,7 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _ascentSettings;
+  SettingsData? _ascentSettings;
   Widget ascentTable(BuildContext context, SettingsData settings) {
     if (settings != _ascentSettings) {
       _ascentSettings = settings;
@@ -252,7 +252,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "ASCENT",
-              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -305,7 +305,7 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _safetyStopSettings;
+  SettingsData? _safetyStopSettings;
   Widget safetyStopTable(BuildContext context, SettingsData settings) {
     if (settings != _safetyStopSettings) {
       _safetyStopSettings = settings;
@@ -329,7 +329,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "SAFETY STOP",
-              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -398,7 +398,7 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _pressureSlidersSettings;
+  SettingsData? _pressureSlidersSettings;
   Widget pressureSlidersTable(BuildContext context, SettingsData settings) {
     if (settings != _pressureSlidersSettings) {
       _pressureSlidersSettings = settings;
@@ -422,7 +422,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "PRESSURE SLIDERS",
-              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -437,7 +437,7 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = int.parse(_minPressureController.text, onError: (_) => 0);
+                      final d = int.tryParse(_minPressureController.text) ?? 0;
                       final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
                       context.read<SettingsBloc>().add(UpdateSettings((s) => s..minPressure = pres));
                     },
@@ -456,7 +456,7 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = int.parse(_maxPressureController.text, onError: (_) => 0);
+                      final d = int.tryParse(_maxPressureController.text) ?? 0;
                       final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
                       context.read<SettingsBloc>().add(UpdateSettings((s) => s..maxPressure = pres));
                     },
@@ -475,7 +475,7 @@ class _SettingsViewState extends State<SettingsView> {
                   child: FocusScope(
                     onFocusChange: (focus) {
                       if (focus) return;
-                      final d = int.parse(_pressureStepController.text, onError: (_) => 0);
+                      final d = int.tryParse(_pressureStepController.text) ?? 0;
                       final pres = settings.isMetric ? PressureBar(d) : PressurePsi(d);
                       context.read<SettingsBloc>().add(UpdateSettings((s) => s..pressureStep = pres));
                     },
@@ -497,7 +497,7 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  SettingsData _depthSlidersSettings;
+  SettingsData? _depthSlidersSettings;
   Widget depthSlidersTable(BuildContext context, SettingsData settings) {
     if (settings != _depthSlidersSettings) {
       _depthSlidersSettings = settings;
@@ -520,7 +520,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "DEPTH SLIDERS",
-              style: t.textTheme.subtitle2.copyWith(color: t.disabledColor),
+              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -577,20 +577,20 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   TableRow headerRow({
-    BuildContext context,
-    String title,
+    required BuildContext context,
+    required String title,
   }) {
     return TableRow(children: [
       Container(),
       Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child: Text(title, style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.grey)),
+        child: Text(title, style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.grey)),
       ),
       Container(),
     ]);
   }
 
-  TableRow titledRow({String title, Widget child, String trailer}) {
+  TableRow titledRow({required String title, required Widget child, String? trailer}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -604,7 +604,7 @@ class _SettingsViewState extends State<SettingsView> {
     ]);
   }
 
-  TableRow titledUnitRow({String title, Widget child, String metric, String imperial, SettingsData settings}) {
+  TableRow titledUnitRow({required String title, required Widget child, String? metric, String? imperial, required SettingsData settings}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -616,7 +616,7 @@ class _SettingsViewState extends State<SettingsView> {
       child,
       Padding(
         padding: const EdgeInsets.only(left: 16.0),
-        child: Text(settings.measurements == MeasurementSystem.METRIC ? metric : imperial),
+        child: Text(settings.measurements == MeasurementSystem.METRIC ? metric! : imperial!),
       )
     ]);
   }
@@ -628,7 +628,7 @@ class WithUnit extends StatelessWidget {
   final String imperial;
   final Widget child;
 
-  const WithUnit({@required this.measurements, @required this.metric, @required this.imperial, @required this.child});
+  const WithUnit({required this.measurements, required this.metric, required this.imperial, required this.child});
 
   @override
   Widget build(BuildContext context) {

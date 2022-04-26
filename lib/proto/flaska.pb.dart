@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: flaska.proto
 //
-// @dart = 2.7
+// @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
 import 'dart:core' as $core;
@@ -21,7 +21,7 @@ class CylinderSet extends $pb.GeneratedMessage {
 
   CylinderSet._() : super();
   factory CylinderSet({
-    $core.Iterable<CylinderData> cylinders,
+    $core.Iterable<CylinderData>? cylinders,
   }) {
     final _result = create();
     if (cylinders != null) {
@@ -48,7 +48,7 @@ class CylinderSet extends $pb.GeneratedMessage {
   static $pb.PbList<CylinderSet> createRepeated() => $pb.PbList<CylinderSet>();
   @$core.pragma('dart2js:noInline')
   static CylinderSet getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CylinderSet>(create);
-  static CylinderSet _defaultInstance;
+  static CylinderSet? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<CylinderData> get cylinders => $_getList(0);
@@ -71,16 +71,16 @@ class CylinderData extends $pb.GeneratedMessage {
 
   CylinderData._() : super();
   factory CylinderData({
-    $core.String id,
-    $core.String name,
-    Metal metal,
-    MeasurementSystem measurements,
-    $core.double volume,
-    $core.int workingPressure,
-    $core.double weight,
-    $core.bool twinset,
-    $core.bool selected,
-    $core.bool overfill,
+    $core.String? id,
+    $core.String? name,
+    Metal? metal,
+    MeasurementSystem? measurements,
+    $core.double? volume,
+    $core.int? workingPressure,
+    $core.double? weight,
+    $core.bool? twinset,
+    $core.bool? selected,
+    $core.bool? overfill,
   }) {
     final _result = create();
     if (id != null) {
@@ -134,7 +134,7 @@ class CylinderData extends $pb.GeneratedMessage {
   static $pb.PbList<CylinderData> createRepeated() => $pb.PbList<CylinderData>();
   @$core.pragma('dart2js:noInline')
   static CylinderData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CylinderData>(create);
-  static CylinderData _defaultInstance;
+  static CylinderData? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);
@@ -242,14 +242,14 @@ class SettingsData extends $pb.GeneratedMessage {
 
   SettingsData._() : super();
   factory SettingsData({
-    MeasurementSystem measurements,
-    MeasurementDependentSettingsData metric,
-    MeasurementDependentSettingsData imperial,
-    $core.double troubleSolvingDuration,
-    $core.double troubleSolvingSacMultiplier,
-    $core.double ascentSacMultiplier,
-    $core.double safetyStopDuration,
-    $core.double safetyStopSacMultiplier,
+    MeasurementSystem? measurements,
+    MeasurementDependentSettingsData? metric,
+    MeasurementDependentSettingsData? imperial,
+    $core.double? troubleSolvingDuration,
+    $core.double? troubleSolvingSacMultiplier,
+    $core.double? ascentSacMultiplier,
+    $core.double? safetyStopDuration,
+    $core.double? safetyStopSacMultiplier,
   }) {
     final _result = create();
     if (measurements != null) {
@@ -297,7 +297,7 @@ class SettingsData extends $pb.GeneratedMessage {
   static $pb.PbList<SettingsData> createRepeated() => $pb.PbList<SettingsData>();
   @$core.pragma('dart2js:noInline')
   static SettingsData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SettingsData>(create);
-  static SettingsData _defaultInstance;
+  static SettingsData? _defaultInstance;
 
   @$pb.TagNumber(1)
   MeasurementSystem get measurements => $_getN(0);
@@ -391,14 +391,14 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
 
   MeasurementDependentSettingsData._() : super();
   factory MeasurementDependentSettingsData({
-    $core.double sacRate,
-    $core.double ascentRate,
-    $core.double safetyStopDepth,
-    $core.int minPressure,
-    $core.int maxPressure,
-    $core.int pressureStep,
-    $core.int minDepth,
-    $core.int maxDepth,
+    $core.double? sacRate,
+    $core.double? ascentRate,
+    $core.double? safetyStopDepth,
+    $core.int? minPressure,
+    $core.int? maxPressure,
+    $core.int? pressureStep,
+    $core.int? minDepth,
+    $core.int? maxDepth,
   }) {
     final _result = create();
     if (sacRate != null) {
@@ -446,7 +446,7 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   static $pb.PbList<MeasurementDependentSettingsData> createRepeated() => $pb.PbList<MeasurementDependentSettingsData>();
   @$core.pragma('dart2js:noInline')
   static MeasurementDependentSettingsData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MeasurementDependentSettingsData>(create);
-  static MeasurementDependentSettingsData _defaultInstance;
+  static MeasurementDependentSettingsData? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.double get sacRate => $_getN(0);

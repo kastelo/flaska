@@ -14,30 +14,29 @@ class DiveCalculationState {
   final Pressure tankPressure;
   final Set<String> foldedClosed;
 
-  bool get valid => settings != null && settings.valid && depth != null && tankPressure != null;
   bool get metric => settings.measurements == MeasurementSystem.METRIC;
   RockBottomModel get rockBottom => RockBottomModel.fromSettings(settings, depth);
 
-  bool foldedOpen(String id) => !(foldedClosed ?? {}).contains(id);
+  bool foldedOpen(String id) => !foldedClosed.contains(id);
 
   const DiveCalculationState({
-    this.settings,
-    this.depth,
-    this.tankPressure,
-    this.foldedClosed,
+    required this.settings,
+    required this.depth,
+    required this.tankPressure,
+    required this.foldedClosed,
   });
 
-  const DiveCalculationState.empty()
-      : settings = null,
-        depth = null,
-        tankPressure = null,
-        foldedClosed = null;
+  DiveCalculationState.empty()
+      : settings = SettingsData(),
+        depth = const DistanceM(10),
+        tankPressure = const PressureBar(200),
+        foldedClosed = const {};
 
   DiveCalculationState copyWith({
-    SettingsData settings,
-    Distance depth,
-    Pressure tankPressure,
-    Set<String> foldedClosed,
+    SettingsData? settings,
+    Distance? depth,
+    Pressure? tankPressure,
+    Set<String>? foldedClosed,
   }) =>
       DiveCalculationState(
         settings: settings ?? this.settings,
@@ -77,8 +76,8 @@ class ToggleFolding extends DiveCalculationEvent {
 }
 
 class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationState> {
-  StreamSubscription settingsSub;
-  SharedPreferences preferences;
+  late StreamSubscription settingsSub;
+  SharedPreferences? preferences;
 
   DiveCalculationBloc(SettingsBloc settingsBloc) : super(DiveCalculationState.empty()) {
     this.add(_NewSettings(settingsBloc.state.settings));
@@ -97,13 +96,11 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
   Stream<DiveCalculationState> mapEventToState(DiveCalculationEvent event) async* {
     if (event is _NewSettings) {
       final newState = state.copyWith(settings: event.settings);
-      if (newState.settings != null && newState.settings.valid) {
-        if (preferences == null) {
-          await loadPreferences();
-        } else if (newState.metric != state.metric) {
-          add(SetTankPressure(newState.tankPressure));
-          add(SetDepth(newState.depth));
-        }
+      if (preferences == null) {
+        await loadPreferences();
+      } else if (newState.metric != state.metric) {
+        add(SetTankPressure(newState.tankPressure));
+        add(SetDepth(newState.depth));
       }
       yield newState;
     }
@@ -113,14 +110,14 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
       if (state.metric) {
         depth = DistanceM(depth.m.round().toDouble());
         if (preferences != null) {
-          preferences.setDouble('depth', depth.m);
-          preferences.setBool('metric', true);
+          preferences!.setDouble('depth', depth.m);
+          preferences!.setBool('metric', true);
         }
       } else {
         depth = DistanceFt(depth.ft.round().roundi(10).toDouble());
         if (preferences != null) {
-          preferences.setDouble('depth', depth.ft);
-          preferences.setBool('metric', false);
+          preferences!.setDouble('depth', depth.ft);
+          preferences!.setBool('metric', false);
         }
       }
       yield state.copyWith(depth: depth);
@@ -131,14 +128,14 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
       if (state.metric) {
         pressure = PressureBar(pressure.bar.round().roundi(5));
         if (preferences != null) {
-          preferences.setInt('pressure', pressure.bar);
-          preferences.setBool('metric', true);
+          preferences!.setInt('pressure', pressure.bar);
+          preferences!.setBool('metric', true);
         }
       } else {
         pressure = PressurePsi(pressure.psi.round().roundi(100));
         if (preferences != null) {
-          preferences.setInt('pressure', pressure.psi);
-          preferences.setBool('metric', false);
+          preferences!.setInt('pressure', pressure.psi);
+          preferences!.setBool('metric', false);
         }
       }
       yield state.copyWith(tankPressure: pressure);
@@ -149,27 +146,27 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
     }
 
     if (event is ToggleFolding) {
-      final foldedClosed = state.foldedClosed ?? {};
+      final foldedClosed = state.foldedClosed;
       if (foldedClosed.contains(event.id)) {
         foldedClosed.remove(event.id);
       } else {
         foldedClosed.add(event.id);
       }
       yield state.copyWith(foldedClosed: foldedClosed);
-      await preferences.setStringList('foldedClosed', foldedClosed.toList());
+      await preferences!.setStringList('foldedClosed', foldedClosed.toList());
     }
   }
 
   Future loadPreferences() async {
     preferences = await SharedPreferences.getInstance();
-    final metric = preferences.getBool('metric') ?? true;
-    final pres = preferences.getInt('pressure') ?? 200;
+    final metric = preferences!.getBool('metric') ?? true;
+    final pres = preferences!.getInt('pressure') ?? 200;
     add(SetTankPressure(metric ? PressureBar(pres) : PressurePsi(pres)));
 
-    final dep = preferences.getDouble('depth') ?? 15;
+    final dep = preferences!.getDouble('depth') ?? 15;
     add(SetDepth(metric ? DistanceM(dep) : DistanceFt(dep)));
 
-    final closed = (preferences.getStringList('foldedClosed') ?? ['rockbottom']).toSet();
+    final closed = (preferences!.getStringList('foldedClosed') ?? ['rockbottom']).toSet();
     add(_NewClosed(closed));
   }
 }

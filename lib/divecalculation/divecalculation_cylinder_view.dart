@@ -13,10 +13,10 @@ class DiveCalculationCylinderView extends StatelessWidget {
   final bool metric;
 
   DiveCalculationCylinderView({
-    @required this.cylinder,
-    @required this.rockBottom,
-    @required this.pressure,
-    @required this.metric,
+    required this.cylinder,
+    required this.rockBottom,
+    required this.pressure,
+    required this.metric,
   });
 
   @override
@@ -30,14 +30,14 @@ class DiveCalculationCylinderView extends StatelessWidget {
 
     final t = Theme.of(context);
     final h0 = t.textTheme.subtitle1;
-    final h1 = t.textTheme.subtitle2.copyWith(color: t.disabledColor);
+    final h1 = t.textTheme.subtitle2!.copyWith(color: t.disabledColor);
     return Foldable(
       id: cylinder.id.toString(),
       title: Row(
         children: [
-          Expanded(child: Text("${cvm.cylinder.name} @ ${cvm.cylinder.pressure(pressure)}", style: h0)),
+          Expanded(child: Text("${cvm.cylinder!.name} @ ${cvm.cylinder!.pressure(pressure)}", style: h0)),
           Text(
-            cvm.weight,
+            cvm.weight!,
             style: h1,
             textAlign: TextAlign.right,
           ),
@@ -54,21 +54,21 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 Expanded(
                   child: ValueUnit(
                     title: "GAS",
-                    value: cvm.gas,
+                    value: cvm.gas!,
                     unit: cvm.volumeUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
                     title: "GAS TIME",
-                    value: cvm.airtime,
+                    value: cvm.airtime!,
                     unit: "min",
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
                     title: "RB",
-                    value: cvm.rbPressure,
+                    value: cvm.rbPressure!,
                     unit: cvm.pressureUnit,
                   ),
                 ),
@@ -82,21 +82,21 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 Expanded(
                   child: ValueUnit(
                     title: "START",
-                    value: cvm.buoyancyAtPressure,
+                    value: cvm.buoyancyAtPressure!,
                     unit: cvm.weightUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
                     title: "EMPTY",
-                    value: cvm.buoyancyEmpty,
+                    value: cvm.buoyancyEmpty!,
                     unit: cvm.weightUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
                     title: "@RB",
-                    value: cvm.buoyancyAtReserve,
+                    value: cvm.buoyancyAtReserve!,
                     unit: cvm.weightUnit,
                   ),
                 ),

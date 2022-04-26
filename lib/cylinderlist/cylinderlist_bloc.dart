@@ -37,14 +37,14 @@ class Reordercylinders extends CylinderListEvent {
 }
 
 class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
-  final cylinderListService = serviceLocator<CylinderListService>();
+  final CylinderListService? cylinderListService = serviceLocator<CylinderListService>();
 
   CylinderListBloc() : super(CylinderListState([])) {
     loadData();
   }
 
   void loadData() async {
-    var cyls = await cylinderListService.getCylinders();
+    var cyls = await cylinderListService!.getCylinders();
     add(_NewCylinderList(cyls));
   }
 
@@ -66,20 +66,20 @@ class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
       if (!updated) {
         cylinders.add(event.cylinder);
       }
-      await cylinderListService.saveCylinders(cylinders);
+      await cylinderListService!.saveCylinders(cylinders);
       yield CylinderListState(cylinders);
     }
 
     if (event is DeleteCylinder) {
       var cylinders = state.cylinders.where((c) => c.id != event.id).toList();
-      await cylinderListService.saveCylinders(cylinders);
+      await cylinderListService!.saveCylinders(cylinders);
       yield CylinderListState(cylinders);
     }
 
     if (event is Reordercylinders) {
       var b = event.b;
       state.cylinders.insert(b, state.cylinders.removeAt(event.a));
-      await cylinderListService.saveCylinders(state.cylinders);
+      await cylinderListService!.saveCylinders(state.cylinders);
       yield CylinderListState(state.cylinders);
     }
   }

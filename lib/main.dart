@@ -36,9 +36,7 @@ class FlaskaApp extends StatelessWidget {
         ),
         colorScheme: ColorScheme.dark(
           primary: accent,
-          primaryVariant: accent,
           secondary: accent,
-          secondaryVariant: accent,
           surface: Color.fromRGBO(0, 0, 0, 1),
           background: Color.fromRGBO(32, 32, 32, 1),
           error: Colors.red,

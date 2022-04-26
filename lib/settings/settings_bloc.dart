@@ -7,7 +7,7 @@ import '../services/settings_service.dart';
 
 class SettingsState {
   final SettingsData settings;
-  const SettingsState.empty() : settings = null;
+  SettingsState.empty() : settings = SettingsData();
   const SettingsState(this.settings);
 }
 
@@ -21,7 +21,7 @@ class _NewSettingsEvent extends SettingsEvent {
 }
 
 class SetMeasurementSystem extends SettingsEvent {
-  final MeasurementSystem measurements;
+  final MeasurementSystem? measurements;
   const SetMeasurementSystem(this.measurements);
 }
 
@@ -31,14 +31,14 @@ class UpdateSettings extends SettingsEvent {
 }
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final settingsService = serviceLocator<SettingsService>();
+  final SettingsService? settingsService = serviceLocator<SettingsService>();
 
   SettingsBloc() : super(SettingsState.empty()) {
     loadData();
   }
 
   void loadData() async {
-    final s = await settingsService.getSettings();
+    final s = await settingsService!.getSettings();
     add(_NewSettingsEvent(s));
   }
 
@@ -48,13 +48,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       yield SettingsState(event.settings.deepCopy());
     }
     if (event is SetMeasurementSystem) {
-      final newSettings = state.settings.deepCopy()..measurements = event.measurements;
-      await settingsService.saveSettings(newSettings);
+      final SettingsData newSettings = state.settings.deepCopy()..measurements = event.measurements!;
+      await settingsService!.saveSettings(newSettings);
       yield SettingsState(newSettings);
     }
     if (event is UpdateSettings) {
       final newSettings = event.fn(state.settings.deepCopy());
-      await settingsService.saveSettings(newSettings);
+      await settingsService!.saveSettings(newSettings);
       yield SettingsState(newSettings);
     }
   }

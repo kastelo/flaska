@@ -22,7 +22,7 @@ abstract class Pressure {
     if (this is PressurePsi) {
       return this + other;
     }
-    assert(false, "unknown kind");
+    return PressureBar(0);
   }
 }
 
@@ -62,7 +62,7 @@ abstract class Volume {
     if (this is VolumeCuFt) {
       return this + other;
     }
-    assert(false, "unknown kind");
+    return VolumeL(0);
   }
 }
 
@@ -130,7 +130,6 @@ extension Rounding on int {
 }
 
 extension SettingsModel on SettingsData {
-  bool get valid => measurements != null;
   bool get isMetric => measurements == MeasurementSystem.METRIC;
 
   Volume get sacRate => isMetric ? VolumeL(metric.sacRate) : VolumeCuFt(imperial.sacRate);

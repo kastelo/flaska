@@ -41,7 +41,7 @@ class _NavigationViewState extends State<NavigationView> {
 
 class BodyWidget extends StatefulWidget {
   const BodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

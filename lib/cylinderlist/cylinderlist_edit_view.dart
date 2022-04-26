@@ -7,7 +7,7 @@ import '../proto/proto.dart';
 
 final _decimalExp = RegExp(r'[0-9\.,]');
 double parseDouble(String s) {
-  return double.parse(s.trim().replaceAll(",", "."), (_) => 0.0);
+  return double.tryParse(s.trim().replaceAll(",", ".")) ?? 0.0;
 }
 
 class CylinderEditView extends StatefulWidget {
@@ -16,9 +16,9 @@ class CylinderEditView extends StatefulWidget {
   final Function(UuidValue) onDelete;
 
   const CylinderEditView({
-    @required this.cylinder,
-    @required this.onChange,
-    @required this.onDelete,
+    required this.cylinder,
+    required this.onChange,
+    required this.onDelete,
   });
 
   @override
@@ -110,7 +110,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
               setState(() => cylinder.name = value);
             },
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'The cylinder needs a name';
               }
               return null;
@@ -127,7 +127,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
               DropdownMenuItem(value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
             ],
             onChanged: (value) {
-              setState(() => cylinder.measurements = value);
+              setState(() => cylinder.measurements = value!);
             },
           ),
         ),
@@ -141,7 +141,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
               DropdownMenuItem(value: Metal.ALUMINIUM, child: Text("Aluminium")),
             ],
             onChanged: (value) {
-              setState(() => cylinder.metal = value);
+              setState(() => cylinder.metal = value!);
             },
           ),
         ),
@@ -156,7 +156,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
               setState(() => cylinder.volume = parseDouble(value));
             },
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'The cylinder needs a volume';
               }
               if (parseDouble(value) <= 0) {
@@ -180,7 +180,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
             },
             autovalidateMode: AutovalidateMode.always,
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'The cylinder needs a working pressure';
               }
               try {
@@ -207,7 +207,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
               setState(() => cylinder.weight = parseDouble(value));
             },
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'The cylinder needs a weight';
               }
               if (parseDouble(value) <= 0) {
@@ -273,7 +273,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
     );
   }
 
-  TableRow titledRow({String title, Widget child}) {
+  TableRow titledRow({required String title, required Widget child}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -287,7 +287,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
     ]);
   }
 
-  TableRow titledUnitRow({String title, Widget child, String metric, String imperial}) {
+  TableRow titledUnitRow({required String title, required Widget child, required String metric, required String imperial}) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -311,7 +311,7 @@ class WithUnit extends StatelessWidget {
   final String imperial;
   final Widget child;
 
-  const WithUnit({@required this.measurements, @required this.metric, @required this.imperial, @required this.child});
+  const WithUnit({required this.measurements, required this.metric, required this.imperial, required this.child});
 
   @override
   Widget build(BuildContext context) {

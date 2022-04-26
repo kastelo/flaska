@@ -17,11 +17,11 @@ class DepthSlider extends StatelessWidget {
   String get _unit => metric ? "m" : "ft";
 
   DepthSlider({
-    @required this.value,
-    @required this.metric,
-    @required this.onChanged,
-    @required this.minValue,
-    @required this.maxValue,
+    required this.value,
+    required this.metric,
+    required this.onChanged,
+    required this.minValue,
+    required this.maxValue,
     this.gradual = false,
   });
 
@@ -54,10 +54,10 @@ class DepthSlider extends StatelessWidget {
   static const _pow = 2;
 
   double fromGradual(double v) {
-    return pow(v, _pow);
+    return pow(v, _pow) as double;
   }
 
   double toGradual(double v) {
-    return pow(v, 1 / _pow);
+    return pow(v, 1 / _pow) as double;
   }
 }

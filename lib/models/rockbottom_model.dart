@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-
 import '../models/cylinder_model.dart';
 import '../proto/proto.dart';
 import 'units.dart';
@@ -11,8 +9,8 @@ class RockBottomModel {
   final SettingsData settings;
 
   const RockBottomModel({
-    @required this.depth,
-    @required this.settings,
+    required this.depth,
+    required this.settings,
   });
 
   RockBottomModel.fromSettings(SettingsData settings, Distance depth)
@@ -20,15 +18,13 @@ class RockBottomModel {
         depth = depth;
 
   RockBottomModel copyWith({
-    Distance depth,
-    SettingsData settings,
+    Distance? depth,
+    SettingsData? settings,
   }) =>
       RockBottomModel(
         depth: depth ?? this.depth,
         settings: settings ?? this.settings,
       );
-
-  bool get valid => this.depth != null && this.settings != null;
 
   double get avgAtm => (10 + depth.m / 2) / 10;
 
@@ -41,7 +37,7 @@ class RockBottomModel {
     return VolumeL(troubleSolvingL + ascentL + safetyStopL);
   }
 
-  double airtimeUntilRB(CylinderModel cylinder, Pressure pressure) {
+  double airtimeUntilRB(CylinderModel cylinder, Pressure? pressure) {
     return max(0, (cylinder.compressedVolume(pressure).l - volume.l) / settings.sacRate.l / avgAtm);
   }
 

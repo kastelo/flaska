@@ -42,17 +42,15 @@ class DiveCalculationView extends StatelessWidget {
   }
 
   Widget cylinder(BuildContext context, CylinderModel cylinder) => BlocBuilder<DiveCalculationBloc, DiveCalculationState>(
-        builder: (context, state) => state.valid
-            ? Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: DiveCalculationCylinderView(
-                  cylinder: cylinder,
-                  rockBottom: state.rockBottom,
-                  pressure: state.tankPressure,
-                  metric: state.metric,
-                ),
-              )
-            : Container(),
+        builder: (context, state) => Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: DiveCalculationCylinderView(
+            cylinder: cylinder,
+            rockBottom: state.rockBottom,
+            pressure: state.tankPressure,
+            metric: state.metric,
+          ),
+        ),
       );
 }
 
@@ -60,9 +58,6 @@ class _PressureSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(builder: (context, state) {
-      if (!state.valid) {
-        return Container();
-      }
       return PressureSlider(
         value: state.tankPressure,
         minValue: state.settings.minPressure,
@@ -79,9 +74,6 @@ class _DepthSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DiveCalculationBloc, DiveCalculationState>(builder: (context, state) {
-      if (!state.valid) {
-        return Container();
-      }
       return DepthSlider(
         value: state.depth,
         metric: state.metric,
