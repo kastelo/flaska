@@ -75,12 +75,12 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
   TransfillBloc(SettingsBloc settingsBloc, CylinderListBloc cylinderListBloc)
       : super(TransfillState.empty()) {
     this.add(_NewSettings(settingsBloc.state.settings));
-    settingsSub = settingsBloc.listen((settingsState) {
+    settingsSub = settingsBloc.stream.listen((settingsState) {
       this.add(_NewSettings(settingsState.settings));
     });
 
     this.add(_NewCylinders(cylinderListBloc.state.cylinders));
-    cylindersSub = cylinderListBloc.listen((cylindersState) {
+    cylindersSub = cylinderListBloc.stream.listen((cylindersState) {
       this.add(_NewCylinders(cylindersState.cylinders));
     });
   }

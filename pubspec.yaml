@@ -9,14 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc:
-  flutter_guid:
-  get_it:
-  path_provider:
-  protobuf:
-  reorderables:
-  shared_preferences:
-  sprintf:
+  flutter_bloc: ^7.0.0
+  flutter_guid: ^0.2.0
+  get_it: ^7.2.0
+  path_provider: ^2.0.0
+  protobuf: ^2.0.0
+  reorderables: ^0.4.4
+  shared_preferences: ^2.0.0
+  sprintf: ^6.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
