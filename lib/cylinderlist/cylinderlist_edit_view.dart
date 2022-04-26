@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_guid/flutter_guid.dart';
+import 'package:uuid/uuid.dart';
 
-import '../proto/proto.dart';
 import '../models/cylinder_model.dart';
+import '../proto/proto.dart';
 
 final _decimalExp = RegExp(r'[0-9\.,]');
 double parseDouble(String s) {
@@ -13,7 +13,7 @@ double parseDouble(String s) {
 class CylinderEditView extends StatefulWidget {
   final CylinderData cylinder;
   final Function(CylinderModel) onChange;
-  final Function(Guid) onDelete;
+  final Function(UuidValue) onDelete;
 
   const CylinderEditView({
     @required this.cylinder,
@@ -61,7 +61,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                         ? () async {
                             if (cylinder.id.isEmpty) {
                               // This is a new cylinder
-                              cylinder.id = Guid.newGuid.toString();
+                              cylinder.id = Uuid().v4();
                             }
                             widget.onChange(CylinderModel.fromData(cylinder));
                             Navigator.pop(context);

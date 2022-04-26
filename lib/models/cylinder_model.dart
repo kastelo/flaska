@@ -1,18 +1,18 @@
 import 'dart:math';
 
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/rockbottom_model.dart';
 import '../proto/proto.dart';
-import 'units.dart';
 import 'compressibility.dart';
+import 'units.dart';
 
 const valveBuyoancyKg = -0.7;
 const twinBuyoancyKg = -0.5;
 
 class CylinderModel {
-  Guid id;
+  UuidValue id;
   String name;
   MeasurementSystem measurements;
   Metal metal;
@@ -33,7 +33,7 @@ class CylinderModel {
         waterVolume = VolumeL.fromPressure(userSetVolume.cuft, workingPressure.psi);
 
   CylinderModel.fromData(CylinderData d)
-      : id = Guid(d.id),
+      : id = UuidValue(d.id),
         name = d.name,
         measurements = d.measurements,
         metal = d.metal,

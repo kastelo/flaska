@@ -1,16 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_guid/flutter_guid.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/cylinder_model.dart';
-import '../services/service_locator.dart';
 import '../services/cylinderlist_service.dart';
+import '../services/service_locator.dart';
 
 class CylinderListState {
   final List<CylinderModel> cylinders;
   const CylinderListState(this.cylinders);
 
-  List<CylinderModel> get selectedCylinders =>
-      cylinders.where((c) => c.selected).toList();
+  List<CylinderModel> get selectedCylinders => cylinders.where((c) => c.selected).toList();
 }
 
 class CylinderListEvent {
@@ -28,7 +27,7 @@ class UpdateCylinder extends CylinderListEvent {
 }
 
 class DeleteCylinder extends CylinderListEvent {
-  final Guid id;
+  final UuidValue id;
   const DeleteCylinder(this.id);
 }
 

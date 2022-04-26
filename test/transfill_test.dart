@@ -1,13 +1,13 @@
 import 'package:flaska/models/cylinder_model.dart';
 import 'package:flaska/models/units.dart';
 import 'package:flaska/proto/flaska.pbserver.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:flaska/transfill/transfill_result_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
-  final c0 = CylinderModel.metric(Guid.newGuid, "c0", Metal.STEEL, PressureBar(300), VolumeL(8), WeightKg(0), false, false, false);
-  final c1 = CylinderModel.metric(Guid.newGuid, "c1", Metal.STEEL, PressureBar(200), VolumeL(12), WeightKg(0), false, false, false);
+  final c0 = CylinderModel.metric(Uuid().v4obj(), "c0", Metal.STEEL, PressureBar(300), VolumeL(8), WeightKg(0), false, false, false);
+  final c1 = CylinderModel.metric(Uuid().v4obj(), "c1", Metal.STEEL, PressureBar(200), VolumeL(12), WeightKg(0), false, false, false);
 
   test('Transfill should improve situation (200/300)', () {
     final m0 = TransfillCylinderModel(cylinder: c0, pressure: PressureBar(300));
