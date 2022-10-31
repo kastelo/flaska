@@ -40,21 +40,9 @@ class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
   final CylinderListService? cylinderListService = serviceLocator<CylinderListService>();
 
   CylinderListBloc() : super(CylinderListState([])) {
-    loadData();
-  }
+    on<_NewCylinderList>((event, emit) => emit(CylinderListState(event.cylinders)));
 
-  void loadData() async {
-    var cyls = await cylinderListService!.getCylinders();
-    add(_NewCylinderList(cyls));
-  }
-
-  @override
-  Stream<CylinderListState> mapEventToState(CylinderListEvent event) async* {
-    if (event is _NewCylinderList) {
-      yield CylinderListState(event.cylinders);
-    }
-
-    if (event is UpdateCylinder) {
+    on<UpdateCylinder>((event, emit) async {
       bool updated = false;
       var cylinders = state.cylinders.map((c) {
         if (c.id == event.cylinder.id) {
@@ -67,20 +55,29 @@ class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
         cylinders.add(event.cylinder);
       }
       await cylinderListService!.saveCylinders(cylinders);
-      yield CylinderListState(cylinders);
-    }
+      emit(CylinderListState(cylinders));
+    });
 
-    if (event is DeleteCylinder) {
+    on<DeleteCylinder>((event, emit) async {
       var cylinders = state.cylinders.where((c) => c.id != event.id).toList();
       await cylinderListService!.saveCylinders(cylinders);
-      yield CylinderListState(cylinders);
-    }
+      emit(CylinderListState(cylinders));
+    });
 
-    if (event is Reordercylinders) {
-      var b = event.b;
-      state.cylinders.insert(b, state.cylinders.removeAt(event.a));
-      await cylinderListService!.saveCylinders(state.cylinders);
-      yield CylinderListState(state.cylinders);
-    }
+    on<Reordercylinders>((event, emit) async {
+      var cylinders = state.cylinders;
+      var a = cylinders[event.a];
+      cylinders[event.a] = cylinders[event.b];
+      cylinders[event.b] = a;
+      await cylinderListService!.saveCylinders(cylinders);
+      emit(CylinderListState(cylinders));
+    });
+
+    loadData();
+  }
+
+  void loadData() async {
+    var cyls = await cylinderListService!.getCylinders();
+    add(_NewCylinderList(cyls));
   }
 }

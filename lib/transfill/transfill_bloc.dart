@@ -73,27 +73,7 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
   SharedPreferences? preferences;
 
   TransfillBloc(SettingsBloc settingsBloc, CylinderListBloc cylinderListBloc) : super(TransfillState.empty()) {
-    this.add(_NewSettings(settingsBloc.state.settings));
-    settingsSub = settingsBloc.stream.listen((settingsState) {
-      this.add(_NewSettings(settingsState.settings));
-    });
-
-    this.add(_NewCylinders(cylinderListBloc.state.cylinders));
-    cylindersSub = cylinderListBloc.stream.listen((cylindersState) {
-      this.add(_NewCylinders(cylindersState.cylinders));
-    });
-  }
-
-  @override
-  Future<void> close() {
-    settingsSub.cancel();
-    cylindersSub.cancel();
-    return super.close();
-  }
-
-  @override
-  Stream<TransfillState> mapEventToState(TransfillEvent event) async* {
-    if (event is _NewSettings) {
+    on<_NewSettings>((event, emit) async {
       final newState = state.copyWith(settings: event.settings);
       if (preferences == null) {
         if (newState.init) {
@@ -104,10 +84,10 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
         if (state.from != null) add(NewFrom(state.from));
         if (state.to != null) add(NewTo(state.to));
       }
-      yield newState;
-    }
+      emit(newState);
+    });
 
-    if (event is _NewCylinders) {
+    on<_NewCylinders>((event, emit) async {
       final selCylinders = event.cylinders.where((c) => c.selected).toList();
       var newState = state.copyWith(cylinders: selCylinders);
       if (newState.cylinders!.isNotEmpty) {
@@ -128,27 +108,44 @@ class TransfillBloc extends Bloc<TransfillEvent, TransfillState> {
           );
         }
       }
-      yield newState;
+      emit(newState);
       if (preferences == null && newState.init) {
         await loadPreferences();
       }
-    }
+    });
 
-    if (event is NewFrom) {
-      yield state.copyWith(from: event.from);
+    on<NewFrom>((event, emit) async {
+      emit(state.copyWith(from: event.from));
       if (preferences != null) {
         preferences!.setInt('fromPressure', state.metric ? event.from!.pressure.bar : event.from!.pressure.psi);
         preferences!.setString('fromCylinder', event.from!.cylinder.id.toString());
       }
-    }
+    });
 
-    if (event is NewTo) {
-      yield state.copyWith(to: event.to);
+    on<NewTo>((event, emit) async {
+      emit(state.copyWith(to: event.to));
       if (preferences != null) {
         preferences!.setInt('toPressure', state.metric ? event.to!.pressure.bar : event.to!.pressure.psi);
         preferences!.setString('toCylinder', event.to!.cylinder.id.toString());
       }
-    }
+    });
+
+    this.add(_NewSettings(settingsBloc.state.settings));
+    settingsSub = settingsBloc.stream.listen((settingsState) {
+      this.add(_NewSettings(settingsState.settings));
+    });
+
+    this.add(_NewCylinders(cylinderListBloc.state.cylinders));
+    cylindersSub = cylinderListBloc.stream.listen((cylindersState) {
+      this.add(_NewCylinders(cylindersState.cylinders));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    settingsSub.cancel();
+    cylindersSub.cancel();
+    return super.close();
   }
 
   Future loadPreferences() async {

@@ -80,21 +80,7 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
   SharedPreferences? preferences;
 
   DiveCalculationBloc(SettingsBloc settingsBloc) : super(DiveCalculationState.empty()) {
-    this.add(_NewSettings(settingsBloc.state.settings));
-    settingsSub = settingsBloc.stream.listen((settingsState) {
-      this.add(_NewSettings(settingsState.settings));
-    });
-  }
-
-  @override
-  Future<void> close() {
-    settingsSub.cancel();
-    return super.close();
-  }
-
-  @override
-  Stream<DiveCalculationState> mapEventToState(DiveCalculationEvent event) async* {
-    if (event is _NewSettings) {
+    on<_NewSettings>((event, emit) async {
       final newState = state.copyWith(settings: event.settings);
       if (preferences == null) {
         await loadPreferences();
@@ -102,10 +88,10 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
         add(SetTankPressure(newState.tankPressure));
         add(SetDepth(newState.depth));
       }
-      yield newState;
-    }
+      emit(newState);
+    });
 
-    if (event is SetDepth) {
+    on<SetDepth>((event, emit) async {
       var depth = event.depth;
       if (state.metric) {
         depth = DistanceM(depth.m.round().toDouble());
@@ -120,10 +106,10 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
           preferences!.setBool('metric', false);
         }
       }
-      yield state.copyWith(depth: depth);
-    }
+      emit(state.copyWith(depth: depth));
+    });
 
-    if (event is SetTankPressure) {
+    on<SetTankPressure>((event, emit) async {
       var pressure = event.pressure;
       if (state.metric) {
         pressure = PressureBar(pressure.bar.round().roundi(5));
@@ -138,23 +124,34 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
           preferences!.setBool('metric', false);
         }
       }
-      yield state.copyWith(tankPressure: pressure);
-    }
+      emit(state.copyWith(tankPressure: pressure));
+    });
 
-    if (event is _NewClosed) {
-      yield state.copyWith(foldedClosed: event.foldedClosed);
-    }
+    on<_NewClosed>((event, emit) async {
+      emit(state.copyWith(foldedClosed: event.foldedClosed));
+    });
 
-    if (event is ToggleFolding) {
+    on<ToggleFolding>((event, emit) async {
       final foldedClosed = state.foldedClosed;
       if (foldedClosed.contains(event.id)) {
         foldedClosed.remove(event.id);
       } else {
         foldedClosed.add(event.id);
       }
-      yield state.copyWith(foldedClosed: foldedClosed);
+      emit(state.copyWith(foldedClosed: foldedClosed));
       await preferences!.setStringList('foldedClosed', foldedClosed.toList());
-    }
+    });
+
+    this.add(_NewSettings(settingsBloc.state.settings));
+    settingsSub = settingsBloc.stream.listen((settingsState) {
+      this.add(_NewSettings(settingsState.settings));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    settingsSub.cancel();
+    return super.close();
   }
 
   Future loadPreferences() async {

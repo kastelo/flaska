@@ -34,28 +34,25 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsService? settingsService = serviceLocator<SettingsService>();
 
   SettingsBloc() : super(SettingsState.empty()) {
+    on<_NewSettingsEvent>((event, emit) => emit(SettingsState(event.settings.deepCopy())));
+
+    on<SetMeasurementSystem>((event, emit) async {
+      final SettingsData newSettings = state.settings.deepCopy()..measurements = event.measurements!;
+      await settingsService!.saveSettings(newSettings);
+      emit(SettingsState(newSettings));
+    });
+
+    on<UpdateSettings>((event, emit) async {
+      final newSettings = event.fn(state.settings.deepCopy());
+      await settingsService!.saveSettings(newSettings);
+      emit(SettingsState(newSettings));
+    });
+
     loadData();
   }
 
   void loadData() async {
     final s = await settingsService!.getSettings();
     add(_NewSettingsEvent(s));
-  }
-
-  @override
-  Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
-    if (event is _NewSettingsEvent) {
-      yield SettingsState(event.settings.deepCopy());
-    }
-    if (event is SetMeasurementSystem) {
-      final SettingsData newSettings = state.settings.deepCopy()..measurements = event.measurements!;
-      await settingsService!.saveSettings(newSettings);
-      yield SettingsState(newSettings);
-    }
-    if (event is UpdateSettings) {
-      final newSettings = event.fn(state.settings.deepCopy());
-      await settingsService!.saveSettings(newSettings);
-      yield SettingsState(newSettings);
-    }
   }
 }
