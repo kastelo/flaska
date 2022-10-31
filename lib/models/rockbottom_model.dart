@@ -27,15 +27,16 @@ class RockBottomModel {
       );
 
   double get avgAtm => (10 + depth.m / 2) / 10;
+  double get depthAtm => (10 + depth.m) / 10;
+  double get safetyStopAtm => (10 + settings.safetyStopDepth.m) / 10;
 
-  Volume get volume {
-    final depthAtm = (10 + depth.m) / 10;
-    final safetyStopAtm = (10 + settings.safetyStopDepth.m) / 10;
-    final troubleSolvingL = settings.troubleSolvingDuration * settings.sacRate.l * settings.troubleSolvingSacMultiplier * depthAtm;
-    final ascentL = depth.m / settings.ascentRate.m * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm;
-    final safetyStopL = settings.safetyStopDuration * settings.sacRate.l * settings.safetyStopSacMultiplier * safetyStopAtm;
-    return VolumeL(troubleSolvingL + ascentL + safetyStopL);
-  }
+  Volume get troubleSolvingVolume => VolumeL(settings.troubleSolvingDuration * settings.sacRate.l * settings.troubleSolvingSacMultiplier * depthAtm);
+
+  Volume get ascentVolume => VolumeL(depth.m / settings.ascentRate.m * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm);
+
+  Volume get safetyStopVolume => VolumeL(settings.safetyStopDuration * settings.sacRate.l * settings.safetyStopSacMultiplier * safetyStopAtm);
+
+  Volume get volume => troubleSolvingVolume + ascentVolume + safetyStopVolume;
 
   double airtimeUntilRB(CylinderModel cylinder, Pressure? pressure) {
     return max(0, (cylinder.compressedVolume(pressure).l - volume.l) / settings.sacRate.l / avgAtm);
