@@ -80,6 +80,7 @@ class CylinderModel {
   }
 
   Volume compressedVolume(Pressure? p) => VolumeL(twinFactor * gasVolumeAtPressure(pressure(p)!, waterVolume).l);
+  Volume get nominalVolume => compressedVolume(workingPressure);
 
   Weight buoyancy(Pressure? p) => WeightKg(
         twinFactor * _externalVolume.l * waterPerL -
