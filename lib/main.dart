@@ -24,9 +24,8 @@ class FlaskaApp extends StatelessWidget {
         cardColor: Color.fromRGBO(24, 24, 24, 1),
         dialogBackgroundColor: Color.fromRGBO(32, 32, 32, 1),
         dividerColor: Color.fromRGBO(64, 64, 64, 1),
-        toggleableActiveColor: accent,
         outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(primary: Colors.white),
+          style: OutlinedButton.styleFrom(foregroundColor: Colors.white),
         ),
         sliderTheme: SliderThemeData.fromPrimaryColors(
           primaryColor: accent,
@@ -39,7 +38,7 @@ class FlaskaApp extends StatelessWidget {
           secondary: accent,
           surface: Color.fromRGBO(0, 0, 0, 1),
           background: Color.fromRGBO(32, 32, 32, 1),
-          error: Colors.red,
+          error: Colors.redAccent,
           onPrimary: Colors.white,
         ),
       ),

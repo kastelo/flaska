@@ -36,15 +36,13 @@ class DepthSlider extends StatelessWidget {
               value: toGradual(max(min(_current, _max), _min)),
               min: toGradual(_min),
               max: toGradual(_max),
-              onChanged: (value) => onChanged(metric
-                  ? DistanceM(fromGradual(value))
-                  : DistanceFt(fromGradual(value))),
+              onChanged: (value) => onChanged(metric ? DistanceM(fromGradual(value)) : DistanceFt(fromGradual(value))),
             ),
           ),
           Text(
             "${_current.toInt()} $_unit",
             textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

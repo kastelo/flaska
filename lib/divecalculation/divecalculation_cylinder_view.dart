@@ -29,8 +29,8 @@ class DiveCalculationCylinderView extends StatelessWidget {
     );
 
     final t = Theme.of(context);
-    final h0 = t.textTheme.subtitle1;
-    final h1 = t.textTheme.subtitle2!.copyWith(color: t.disabledColor);
+    final h0 = t.textTheme.titleMedium;
+    final h1 = t.textTheme.titleSmall!.copyWith(color: t.disabledColor);
     return Foldable(
       id: cylinder.id.toString(),
       title: Row(

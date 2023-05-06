@@ -110,7 +110,7 @@ class TransfillCylinderEditView extends StatelessWidget {
                       width: 30,
                       child: Text(
                         title,
-                        style: t.textTheme.caption!.copyWith(color: t.disabledColor),
+                        style: t.textTheme.bodySmall!.copyWith(color: t.disabledColor),
                       ),
                     ),
                   ),
@@ -130,7 +130,7 @@ class TransfillCylinderEditView extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text("With", style: t.textTheme.caption!.copyWith(color: t.disabledColor)),
+                  Text("With", style: t.textTheme.bodySmall!.copyWith(color: t.disabledColor)),
                   Expanded(
                     child: PressureSlider(
                       value: selected.pressure,

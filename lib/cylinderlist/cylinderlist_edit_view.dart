@@ -56,7 +56,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                 children: [
                   OutlinedButton(
                     child: Text("Save"),
-                    style: OutlinedButton.styleFrom(primary: Colors.greenAccent),
+                    style: OutlinedButton.styleFrom(foregroundColor: Colors.greenAccent),
                     onPressed: valid
                         ? () async {
                             if (cylinder.id.isEmpty) {
@@ -77,7 +77,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                   if (cylinder.id.isNotEmpty)
                     OutlinedButton(
                       child: Text("Delete"),
-                      style: OutlinedButton.styleFrom(primary: Colors.redAccent),
+                      style: OutlinedButton.styleFrom(foregroundColor: Colors.redAccent),
                       onPressed: () async {
                         await widget.onDelete(CylinderModel.fromData(cylinder).id);
                         Navigator.pop(context);

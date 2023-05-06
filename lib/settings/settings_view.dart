@@ -71,7 +71,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   Text(
                     "Version $_marketingVer ($_appBuild)\n[$_gitVer]",
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -105,7 +105,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "GENERAL",
-              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -179,7 +179,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "TROUBLE SOLVING",
-              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -252,7 +252,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "ASCENT",
-              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -329,7 +329,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "SAFETY STOP",
-              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -422,7 +422,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "PRESSURE SLIDERS",
-              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -520,7 +520,7 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Text(
               "DEPTH SLIDERS",
-              style: t.textTheme.subtitle2!.copyWith(color: t.disabledColor),
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
             ),
             Table(
               columnWidths: {
@@ -584,7 +584,7 @@ class _SettingsViewState extends State<SettingsView> {
       Container(),
       Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child: Text(title, style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.grey)),
+        child: Text(title, style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.grey)),
       ),
       Container(),
     ]);

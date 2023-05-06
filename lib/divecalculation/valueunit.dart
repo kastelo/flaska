@@ -10,9 +10,9 @@ class ValueUnit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context);
-    final valueStyle = t.textTheme.headline5;
-    final titleStyle = t.textTheme.subtitle2!.copyWith(color: t.colorScheme.primary);
-    final unitStyle = t.textTheme.bodyText1!.copyWith(color: t.disabledColor);
+    final valueStyle = t.textTheme.headlineSmall;
+    final titleStyle = t.textTheme.titleSmall!.copyWith(color: t.colorScheme.primary);
+    final unitStyle = t.textTheme.bodyLarge!.copyWith(color: t.disabledColor);
 
     return Column(
       children: [
