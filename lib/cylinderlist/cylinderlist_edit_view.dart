@@ -119,30 +119,34 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         ),
         titledRow(
           title: "System",
-          child: DropdownButtonFormField<MeasurementSystem>(
-            dropdownColor: Theme.of(context).dialogBackgroundColor,
-            value: cylinder.measurements,
-            items: [
-              DropdownMenuItem(value: MeasurementSystem.METRIC, child: Text("Metric")),
-              DropdownMenuItem(value: MeasurementSystem.IMPERIAL, child: Text("Imperial")),
-            ],
-            onChanged: (value) {
-              setState(() => cylinder.measurements = value!);
-            },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            child: SegmentedButton<MeasurementSystem>(
+              segments: [
+                ButtonSegment(value: MeasurementSystem.METRIC, label: Text("Metric")),
+                ButtonSegment(value: MeasurementSystem.IMPERIAL, label: Text("Imperial")),
+              ],
+              selected: <MeasurementSystem>{cylinder.measurements},
+              onSelectionChanged: (value) {
+                setState(() => cylinder.measurements = value.first);
+              },
+            ),
           ),
         ),
         titledRow(
           title: "Material",
-          child: DropdownButtonFormField<Metal>(
-            dropdownColor: Theme.of(context).dialogBackgroundColor,
-            value: cylinder.metal,
-            items: [
-              DropdownMenuItem(value: Metal.STEEL, child: Text("Steel")),
-              DropdownMenuItem(value: Metal.ALUMINIUM, child: Text("Aluminium")),
-            ],
-            onChanged: (value) {
-              setState(() => cylinder.metal = value!);
-            },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            child: SegmentedButton<Metal>(
+              segments: [
+                ButtonSegment(value: Metal.ALUMINIUM, label: Text("Aluminium")),
+                ButtonSegment(value: Metal.STEEL, label: Text("Steel")),
+              ],
+              selected: <Metal>{cylinder.metal},
+              onSelectionChanged: (value) {
+                setState(() => cylinder.metal = value.first);
+              },
+            ),
           ),
         ),
         titledUnitRow(

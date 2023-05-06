@@ -9,9 +9,6 @@ import '../proto/proto.dart';
 import 'cylinderlist_bloc.dart';
 import 'cylinderlist_edit_view.dart';
 
-final _defaultNewCylinder =
-    CylinderModel.imperial(Uuid().v4obj(), "", Metal.ALUMINIUM, PressurePsi(3000), VolumeCuFt(77.4), WeightLb(31.9), false, true, false);
-
 class CylinderListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,7 @@ class CylinderListView extends StatelessWidget {
                 TextButton.icon(
                   icon: Icon(Icons.add),
                   label: Text("Add..."),
-                  onPressed: () => editCylinder(context, _defaultNewCylinder),
+                  onPressed: () => editCylinder(context, null),
                 ),
               ],
             ),
@@ -68,11 +65,11 @@ class CylinderListView extends StatelessWidget {
     );
   }
 
-  Future editCylinder(BuildContext context, CylinderModel cylinder) async {
+  Future editCylinder(BuildContext context, CylinderModel? cylinder) async {
     await showDialog(
       context: context,
       builder: (dialogContext) => CylinderEditView(
-        cylinder: cylinder.toData(),
+        cylinder: cylinder?.toData() ?? CylinderData(),
         onChange: (cyl) => context.read<CylinderListBloc>().add(UpdateCylinder(cyl)),
         onDelete: (id) => context.read<CylinderListBloc>().add(DeleteCylinder(id)),
       ),
