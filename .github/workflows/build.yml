@@ -26,13 +26,13 @@ jobs:
     needs:
       - meta
     steps:
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JAVA_VERSION }}
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Build app (Flutter)
@@ -58,7 +58,7 @@ jobs:
           bundle install
           bundle exec fastlane build
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ios
           path: |
@@ -80,13 +80,13 @@ jobs:
     name: Build App for Android
     needs: meta
     steps:
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JAVA_VERSION }}
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Build app
@@ -98,7 +98,7 @@ jobs:
           ./build-android.sh
           cp build/app/outputs/bundle/release/*.aab android
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: android
           path: android/*.aab
