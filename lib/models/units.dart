@@ -75,6 +75,12 @@ class VolumeL extends Volume {
   VolumeL operator +(Volume other) {
     return VolumeL(l + other.l);
   }
+
+  @override
+  bool operator ==(Object other) => other is VolumeL && l == other.l;
+
+  @override
+  int get hashCode => l.hashCode;
 }
 
 class VolumeCuFt extends Volume {
@@ -85,6 +91,12 @@ class VolumeCuFt extends Volume {
   VolumeCuFt operator +(Volume other) {
     return VolumeCuFt(cuft + other.cuft);
   }
+
+  @override
+  bool operator ==(Object other) => other is VolumeCuFt && cuft == other.cuft;
+
+  @override
+  int get hashCode => cuft.hashCode;
 }
 
 abstract class Distance {
