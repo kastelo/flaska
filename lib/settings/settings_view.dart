@@ -556,7 +556,7 @@ class _SettingsViewState extends State<SettingsView> {
                       if (focus) return;
                       final d = parseDouble(_maxDepthController.text);
                       final depth = settings.isMetric ? DistanceM(d) : DistanceFt(d);
-                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..minDepth = depth));
+                      context.read<SettingsBloc>().add(UpdateSettings((s) => s..maxDepth = depth));
                     },
                     child: TextField(
                       keyboardType: TextInputType.number,
