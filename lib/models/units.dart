@@ -168,43 +168,13 @@ extension SettingsModel on SettingsData {
       imperial.safetyStopDepth = v.ft;
   }
 
-  Pressure get minPressure => isMetric ? PressureBar(metric.minPressure) : PressurePsi(imperial.minPressure);
-  set minPressure(Pressure p) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.minPressure = p.bar;
-    else
-      imperial.minPressure = p.bar;
-  }
+  Pressure get minPressure => isMetric ? PressureBar(30) : PressurePsi(300);
 
-  Pressure get maxPressure => isMetric ? PressureBar(metric.maxPressure) : PressurePsi(imperial.maxPressure);
-  set maxPressure(Pressure p) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.maxPressure = p.bar;
-    else
-      imperial.maxPressure = p.bar;
-  }
+  Pressure get maxPressure => isMetric ? PressureBar(350) : PressurePsi(4000);
 
-  Pressure get pressureStep => isMetric ? PressureBar(metric.pressureStep) : PressurePsi(imperial.pressureStep);
-  set pressureStep(Pressure p) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.pressureStep = p.bar;
-    else
-      imperial.pressureStep = p.bar;
-  }
+  Pressure get pressureStep => isMetric ? PressureBar(5) : PressurePsi(100);
 
-  Distance get minDepth => isMetric ? DistanceM(metric.minDepth.toDouble()) : DistanceFt(imperial.minDepth.toDouble());
-  set minDepth(Distance d) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.minDepth = d.m.toInt();
-    else
-      imperial.minDepth = d.ft.toInt();
-  }
+  Distance get minDepth => isMetric ? DistanceM(2) : DistanceFt(10);
 
-  Distance get maxDepth => isMetric ? DistanceM(metric.maxDepth.toDouble()) : DistanceFt(imperial.maxDepth.toDouble());
-  set maxDepth(Distance d) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.maxDepth = d.m.toInt();
-    else
-      imperial.maxDepth = d.ft.toInt();
-  }
+  Distance get maxDepth => isMetric ? DistanceM(40) : DistanceFt(140);
 }

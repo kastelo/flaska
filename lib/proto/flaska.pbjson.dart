@@ -3,7 +3,7 @@
 //  source: flaska.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,deprecated_member_use_from_same_package,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
@@ -83,13 +83,11 @@ const MeasurementDependentSettingsData$json = const {
     const {'1': 'sac_rate', '3': 1, '4': 1, '5': 1, '10': 'sacRate'},
     const {'1': 'ascent_rate', '3': 2, '4': 1, '5': 1, '10': 'ascentRate'},
     const {'1': 'safety_stop_depth', '3': 3, '4': 1, '5': 1, '10': 'safetyStopDepth'},
-    const {'1': 'min_pressure', '3': 4, '4': 1, '5': 5, '10': 'minPressure'},
-    const {'1': 'max_pressure', '3': 5, '4': 1, '5': 5, '10': 'maxPressure'},
-    const {'1': 'pressure_step', '3': 6, '4': 1, '5': 5, '10': 'pressureStep'},
-    const {'1': 'min_depth', '3': 7, '4': 1, '5': 5, '10': 'minDepth'},
-    const {'1': 'max_depth', '3': 8, '4': 1, '5': 5, '10': 'maxDepth'},
+  ],
+  '9': const [
+    const {'1': 4, '2': 9},
   ],
 };
 
 /// Descriptor for `MeasurementDependentSettingsData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZRIfCgthc2NlbnRfcmF0ZRgCIAEoAVIKYXNjZW50UmF0ZRIqChFzYWZldHlfc3RvcF9kZXB0aBgDIAEoAVIPc2FmZXR5U3RvcERlcHRoEiEKDG1pbl9wcmVzc3VyZRgEIAEoBVILbWluUHJlc3N1cmUSIQoMbWF4X3ByZXNzdXJlGAUgASgFUgttYXhQcmVzc3VyZRIjCg1wcmVzc3VyZV9zdGVwGAYgASgFUgxwcmVzc3VyZVN0ZXASGwoJbWluX2RlcHRoGAcgASgFUghtaW5EZXB0aBIbCgltYXhfZGVwdGgYCCABKAVSCG1heERlcHRo');
+final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZRIfCgthc2NlbnRfcmF0ZRgCIAEoAVIKYXNjZW50UmF0ZRIqChFzYWZldHlfc3RvcF9kZXB0aBgDIAEoAVIPc2FmZXR5U3RvcERlcHRoSgQIBBAJ');

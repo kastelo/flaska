@@ -143,8 +143,8 @@ class _SettingsViewState extends State<SettingsView> {
                     child: SegmentedButton<double>(
                       segments: [
                         ButtonSegment<double>(label: Text("None"), value: 0.0),
-                        ButtonSegment<double>(label: Text("2 min"), value: 3.0),
-                        ButtonSegment<double>(label: Text("4 min"), value: 5.0),
+                        ButtonSegment<double>(label: Text("2 min"), value: 2.0),
+                        ButtonSegment<double>(label: Text("4 min"), value: 4.0),
                       ],
                       selected: <double>{settings.troubleSolvingDuration},
                       onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..troubleSolvingDuration = p0.first)),

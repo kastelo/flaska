@@ -20,21 +20,11 @@ final defaultSettings = SettingsData()
   ..metric = (MeasurementDependentSettingsData()
     ..sacRate = 15
     ..ascentRate = 10
-    ..safetyStopDepth = 5
-    ..minPressure = 30
-    ..maxPressure = 300
-    ..pressureStep = 5
-    ..minDepth = 2
-    ..maxDepth = 40)
+    ..safetyStopDepth = 5)
   ..imperial = (MeasurementDependentSettingsData()
     ..sacRate = 0.6
     ..ascentRate = 30
-    ..safetyStopDepth = 15
-    ..minPressure = 300
-    ..maxPressure = 4000
-    ..pressureStep = 100
-    ..minDepth = 10
-    ..maxDepth = 150);
+    ..safetyStopDepth = 15);
 
 class FakeSettingsListService implements SettingsService {
   var settings = SettingsData();

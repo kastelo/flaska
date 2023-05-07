@@ -3,7 +3,7 @@
 //  source: flaska.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 
@@ -381,11 +381,6 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
     ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sacRate', $pb.PbFieldType.OD)
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentRate', $pb.PbFieldType.OD)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDepth', $pb.PbFieldType.OD)
-    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minPressure', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxPressure', $pb.PbFieldType.O3)
-    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressureStep', $pb.PbFieldType.O3)
-    ..a<$core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minDepth', $pb.PbFieldType.O3)
-    ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxDepth', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -394,11 +389,6 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
     $core.double? sacRate,
     $core.double? ascentRate,
     $core.double? safetyStopDepth,
-    $core.int? minPressure,
-    $core.int? maxPressure,
-    $core.int? pressureStep,
-    $core.int? minDepth,
-    $core.int? maxDepth,
   }) {
     final _result = create();
     if (sacRate != null) {
@@ -409,21 +399,6 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
     }
     if (safetyStopDepth != null) {
       _result.safetyStopDepth = safetyStopDepth;
-    }
-    if (minPressure != null) {
-      _result.minPressure = minPressure;
-    }
-    if (maxPressure != null) {
-      _result.maxPressure = maxPressure;
-    }
-    if (pressureStep != null) {
-      _result.pressureStep = pressureStep;
-    }
-    if (minDepth != null) {
-      _result.minDepth = minDepth;
-    }
-    if (maxDepth != null) {
-      _result.maxDepth = maxDepth;
     }
     return _result;
   }
@@ -474,50 +449,5 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   $core.bool hasSafetyStopDepth() => $_has(2);
   @$pb.TagNumber(3)
   void clearSafetyStopDepth() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.int get minPressure => $_getIZ(3);
-  @$pb.TagNumber(4)
-  set minPressure($core.int v) { $_setSignedInt32(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasMinPressure() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearMinPressure() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get maxPressure => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set maxPressure($core.int v) { $_setSignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasMaxPressure() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearMaxPressure() => clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.int get pressureStep => $_getIZ(5);
-  @$pb.TagNumber(6)
-  set pressureStep($core.int v) { $_setSignedInt32(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasPressureStep() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearPressureStep() => clearField(6);
-
-  @$pb.TagNumber(7)
-  $core.int get minDepth => $_getIZ(6);
-  @$pb.TagNumber(7)
-  set minDepth($core.int v) { $_setSignedInt32(6, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasMinDepth() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearMinDepth() => clearField(7);
-
-  @$pb.TagNumber(8)
-  $core.int get maxDepth => $_getIZ(7);
-  @$pb.TagNumber(8)
-  set maxDepth($core.int v) { $_setSignedInt32(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasMaxDepth() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearMaxDepth() => clearField(8);
 }
 
