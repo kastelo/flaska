@@ -152,13 +152,7 @@ extension SettingsModel on SettingsData {
       imperial.sacRate = v.cuft;
   }
 
-  Distance get ascentRate => isMetric ? DistanceM(metric.ascentRate) : DistanceFt(imperial.ascentRate);
-  set ascentRate(Distance v) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.ascentRate = v.m;
-    else
-      imperial.ascentRate = v.ft;
-  }
+  Distance get ascentRate => isMetric ? DistanceM(10) : DistanceFt(30);
 
   Distance get safetyStopDepth => isMetric ? DistanceM(metric.safetyStopDepth) : DistanceFt(imperial.safetyStopDepth);
   set safetyStopDepth(Distance v) {

@@ -81,13 +81,13 @@ const MeasurementDependentSettingsData$json = const {
   '1': 'MeasurementDependentSettingsData',
   '2': const [
     const {'1': 'sac_rate', '3': 1, '4': 1, '5': 1, '10': 'sacRate'},
-    const {'1': 'ascent_rate', '3': 2, '4': 1, '5': 1, '10': 'ascentRate'},
     const {'1': 'safety_stop_depth', '3': 3, '4': 1, '5': 1, '10': 'safetyStopDepth'},
   ],
   '9': const [
+    const {'1': 2, '2': 3},
     const {'1': 4, '2': 9},
   ],
 };
 
 /// Descriptor for `MeasurementDependentSettingsData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZRIfCgthc2NlbnRfcmF0ZRgCIAEoAVIKYXNjZW50UmF0ZRIqChFzYWZldHlfc3RvcF9kZXB0aBgDIAEoAVIPc2FmZXR5U3RvcERlcHRoSgQIBBAJ');
+final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZRIqChFzYWZldHlfc3RvcF9kZXB0aBgDIAEoAVIPc2FmZXR5U3RvcERlcHRoSgQIAhADSgQIBBAJ');

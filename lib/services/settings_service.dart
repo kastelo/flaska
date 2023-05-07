@@ -19,11 +19,9 @@ final defaultSettings = SettingsData()
   ..troubleSolvingSacMultiplier = 4
   ..metric = (MeasurementDependentSettingsData()
     ..sacRate = 15
-    ..ascentRate = 10
     ..safetyStopDepth = 5)
   ..imperial = (MeasurementDependentSettingsData()
     ..sacRate = 0.6
-    ..ascentRate = 30
     ..safetyStopDepth = 15);
 
 class FakeSettingsListService implements SettingsService {

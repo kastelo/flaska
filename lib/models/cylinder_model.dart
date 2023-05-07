@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flaska/divecalculation/ndl.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:uuid/uuid.dart';
 
@@ -155,4 +156,6 @@ class CylinderViewModel {
       : sprintf("%+.01f", [
           cylinder!.buoyancy(PressurePsi(0)).lb,
         ]);
+
+  bool get exceedsNDL => rockBottom!.airtimeUntilRB(cylinder!, pressure) > ndlForDepth(rockBottom!.depth.m);
 }

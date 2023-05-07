@@ -379,7 +379,6 @@ class SettingsData extends $pb.GeneratedMessage {
 class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MeasurementDependentSettingsData', createEmptyInstance: create)
     ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sacRate', $pb.PbFieldType.OD)
-    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentRate', $pb.PbFieldType.OD)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDepth', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
@@ -387,15 +386,11 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   MeasurementDependentSettingsData._() : super();
   factory MeasurementDependentSettingsData({
     $core.double? sacRate,
-    $core.double? ascentRate,
     $core.double? safetyStopDepth,
   }) {
     final _result = create();
     if (sacRate != null) {
       _result.sacRate = sacRate;
-    }
-    if (ascentRate != null) {
-      _result.ascentRate = ascentRate;
     }
     if (safetyStopDepth != null) {
       _result.safetyStopDepth = safetyStopDepth;
@@ -432,21 +427,12 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearSacRate() => clearField(1);
 
-  @$pb.TagNumber(2)
-  $core.double get ascentRate => $_getN(1);
-  @$pb.TagNumber(2)
-  set ascentRate($core.double v) { $_setDouble(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasAscentRate() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearAscentRate() => clearField(2);
-
   @$pb.TagNumber(3)
-  $core.double get safetyStopDepth => $_getN(2);
+  $core.double get safetyStopDepth => $_getN(1);
   @$pb.TagNumber(3)
-  set safetyStopDepth($core.double v) { $_setDouble(2, v); }
+  set safetyStopDepth($core.double v) { $_setDouble(1, v); }
   @$pb.TagNumber(3)
-  $core.bool hasSafetyStopDepth() => $_has(2);
+  $core.bool hasSafetyStopDepth() => $_has(1);
   @$pb.TagNumber(3)
   void clearSafetyStopDepth() => clearField(3);
 }
