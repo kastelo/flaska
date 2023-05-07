@@ -33,10 +33,10 @@ class DepthSlider extends StatelessWidget {
         children: [
           Expanded(
             child: Slider(
-              value: toGradual(max(min(_current, _max), _min)),
-              min: toGradual(_min),
-              max: toGradual(_max),
-              onChanged: (value) => onChanged(metric ? DistanceM(fromGradual(value)) : DistanceFt(fromGradual(value))),
+              value: max(min(_current, _max), _min),
+              min: _min,
+              max: _max,
+              onChanged: (value) => onChanged(metric ? DistanceM(value) : DistanceFt(value)),
             ),
           ),
           Text(
@@ -47,15 +47,5 @@ class DepthSlider extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  static const _pow = 2;
-
-  double fromGradual(double v) {
-    return pow(v, _pow) as double;
-  }
-
-  double toGradual(double v) {
-    return pow(v, 1 / _pow) as double;
   }
 }
