@@ -38,13 +38,13 @@ class DiveCalculationCylinderView extends StatelessWidget {
           Expanded(child: Text("${cvm.cylinder!.name} @ ${cvm.cylinder!.pressure(pressure)}", style: h0)),
           if (!metric)
             Text(
-              "${cvm.cylinder!.waterVolume.l.toStringAsFixed(1)} L",
+              "${shortNumber(cvm.cylinder!.waterVolume.l)} L",
               style: h1,
               textAlign: TextAlign.right,
             ),
           if (metric)
             Text(
-              "${cvm.cylinder!.nominalVolume.cuft.toStringAsFixed(1)} cuft",
+              "${shortNumber(cvm.cylinder!.nominalVolume.cuft)} cuft",
               style: h1,
               textAlign: TextAlign.right,
             ),
@@ -122,4 +122,11 @@ class DiveCalculationCylinderView extends StatelessWidget {
       ),
     );
   }
+}
+
+String shortNumber(double value) {
+  if (value >= 100) return value.toStringAsFixed(0);
+  var s = value.toStringAsFixed(1);
+  if (s.endsWith(".0")) s = s.substring(0, s.length - 2);
+  return s;
 }
