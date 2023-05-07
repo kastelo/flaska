@@ -118,6 +118,19 @@ class DiveCalculationCylinderView extends StatelessWidget {
               ],
             ),
           ),
+          if (cvm.exceedsNDL)
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Icon(Icons.warning, color: Theme.of(context).colorScheme.primary),
+                  ),
+                  Expanded(child: Text("Gas time may exceed NDL for a square profile. Rock bottom calculation does not include deco!")),
+                ],
+              ),
+            ),
         ],
       ),
     );
