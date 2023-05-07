@@ -40,13 +40,13 @@ class DiveCalculationCylinderView extends StatelessWidget {
           Expanded(child: Text("${cvm.cylinder!.name} @ ${cvm.cylinder!.pressure(pressure)}", style: h0)),
           if (!metric)
             Text(
-              "${shortNumber(cvm.cylinder!.waterVolume.l)} L",
+              (cvm.cylinder!.twinset ? "2×" : "") + "${shortNumber(cvm.cylinder!.waterVolume.l)} L",
               style: h1,
               textAlign: TextAlign.right,
             ),
           if (metric)
             Text(
-              "${shortNumber(cvm.cylinder!.nominalVolume.cuft)} cuft",
+              (cvm.cylinder!.twinset ? "2×" : "") + "${shortNumber(cvm.cylinder!.nominalVolume.cuft)} cuft",
               style: h1,
               textAlign: TextAlign.right,
             ),
