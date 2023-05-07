@@ -92,7 +92,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             titledRow(
-              title: "SAC Rate " + (settings.measurements == MeasurementSystem.METRIC ? "(L/min)" : "(CuFt/min)"),
+              title: "SAC rate " + (settings.measurements == MeasurementSystem.METRIC ? "(L/min)" : "(cuft/min)"),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<Volume>(
@@ -108,6 +108,20 @@ class _SettingsViewState extends State<SettingsView> {
                   ],
                   selected: <Volume>{settings.sacRate},
                   onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..sacRate = p0.first)),
+                ),
+              ),
+            ),
+            titledRow(
+              title: "NDL exceeded notice",
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: SegmentedButton<bool>(
+                  segments: [
+                    ButtonSegment(value: false, label: Text("Shown")),
+                    ButtonSegment(value: true, label: Text("Hidden")),
+                  ],
+                  selected: <bool>{settings.hideNdlNotice},
+                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..hideNdlNotice = p0.first)),
                 ),
               ),
             ),

@@ -237,6 +237,7 @@ class SettingsData extends $pb.GeneratedMessage {
     ..a<$core.double>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentSacMultiplier', $pb.PbFieldType.OD)
     ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDuration', $pb.PbFieldType.OD)
     ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopSacMultiplier', $pb.PbFieldType.OD)
+    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hideNdlNotice')
     ..hasRequiredFields = false
   ;
 
@@ -250,6 +251,7 @@ class SettingsData extends $pb.GeneratedMessage {
     $core.double? ascentSacMultiplier,
     $core.double? safetyStopDuration,
     $core.double? safetyStopSacMultiplier,
+    $core.bool? hideNdlNotice,
   }) {
     final _result = create();
     if (measurements != null) {
@@ -275,6 +277,9 @@ class SettingsData extends $pb.GeneratedMessage {
     }
     if (safetyStopSacMultiplier != null) {
       _result.safetyStopSacMultiplier = safetyStopSacMultiplier;
+    }
+    if (hideNdlNotice != null) {
+      _result.hideNdlNotice = hideNdlNotice;
     }
     return _result;
   }
@@ -374,6 +379,15 @@ class SettingsData extends $pb.GeneratedMessage {
   $core.bool hasSafetyStopSacMultiplier() => $_has(7);
   @$pb.TagNumber(8)
   void clearSafetyStopSacMultiplier() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get hideNdlNotice => $_getBF(8);
+  @$pb.TagNumber(9)
+  set hideNdlNotice($core.bool v) { $_setBool(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasHideNdlNotice() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearHideNdlNotice() => clearField(9);
 }
 
 class MeasurementDependentSettingsData extends $pb.GeneratedMessage {

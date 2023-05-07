@@ -71,11 +71,12 @@ const SettingsData$json = const {
     const {'1': 'ascent_sac_multiplier', '3': 6, '4': 1, '5': 1, '10': 'ascentSacMultiplier'},
     const {'1': 'safety_stop_duration', '3': 7, '4': 1, '5': 1, '10': 'safetyStopDuration'},
     const {'1': 'safety_stop_sac_multiplier', '3': 8, '4': 1, '5': 1, '10': 'safetyStopSacMultiplier'},
+    const {'1': 'hide_ndl_notice', '3': 9, '4': 1, '5': 8, '10': 'hideNdlNotice'},
   ],
 };
 
 /// Descriptor for `SettingsData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXI=');
+final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXISJgoPaGlkZV9uZGxfbm90aWNlGAkgASgIUg1oaWRlTmRsTm90aWNl');
 @$core.Deprecated('Use measurementDependentSettingsDataDescriptor instead')
 const MeasurementDependentSettingsData$json = const {
   '1': 'MeasurementDependentSettingsData',

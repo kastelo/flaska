@@ -11,12 +11,14 @@ class DiveCalculationCylinderView extends StatelessWidget {
   final RockBottomModel rockBottom;
   final Pressure pressure;
   final bool metric;
+  final bool hideNDLNotice;
 
   DiveCalculationCylinderView({
     required this.cylinder,
     required this.rockBottom,
     required this.pressure,
     required this.metric,
+    required this.hideNDLNotice,
   });
 
   @override
@@ -118,7 +120,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
               ],
             ),
           ),
-          if (cvm.exceedsNDL)
+          if (!hideNDLNotice && cvm.exceedsNDL)
             Padding(
               padding: const EdgeInsets.only(top: 12.0),
               child: Row(

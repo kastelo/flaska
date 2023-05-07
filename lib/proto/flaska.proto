@@ -36,6 +36,7 @@ message SettingsData {
     double ascent_sac_multiplier = 6;
     double safety_stop_duration = 7; // minutes
     double safety_stop_sac_multiplier = 8;
+    bool hide_ndl_notice = 9;
 }
 
 message MeasurementDependentSettingsData {
