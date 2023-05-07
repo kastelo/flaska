@@ -31,6 +31,17 @@ class _CylinderEditViewState extends State<CylinderEditView> {
   _CylinderEditViewState(this.cylinder);
 
   final _formKey = GlobalKey<FormState>();
+  final _volumeController = TextEditingController();
+  final _pressureController = TextEditingController();
+  final _weightController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _volumeController.text = cylinder.volume.toString();
+    _pressureController.text = cylinder.workingPressure.toString();
+    _weightController.text = cylinder.weight.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,49 +54,52 @@ class _CylinderEditViewState extends State<CylinderEditView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              formTable(),
-              Divider(
-                height: 32,
-              ),
-              Wrap(
-                alignment: WrapAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    child: Text("Save"),
-                    style: OutlinedButton.styleFrom(foregroundColor: Colors.greenAccent),
-                    onPressed: valid
-                        ? () async {
-                            if (cylinder.id.isEmpty) {
-                              // This is a new cylinder
-                              cylinder.id = Uuid().v4();
-                            }
-                            widget.onChange(CylinderModel.fromData(cylinder));
-                            Navigator.pop(context);
-                          }
-                        : null,
-                  ),
-                  OutlinedButton(
-                    child: Text("Cancel"),
-                    onPressed: () async {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  if (cylinder.id.isNotEmpty)
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                formTable(),
+                Divider(
+                  height: 32,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  children: [
                     OutlinedButton(
-                      child: Text("Delete"),
-                      style: OutlinedButton.styleFrom(foregroundColor: Colors.redAccent),
+                      child: Text("Save"),
+                      style: OutlinedButton.styleFrom(foregroundColor: Colors.greenAccent),
+                      onPressed: valid
+                          ? () async {
+                              if (cylinder.id.isEmpty) {
+                                // This is a new cylinder
+                                cylinder.id = Uuid().v4();
+                              }
+                              widget.onChange(CylinderModel.fromData(cylinder));
+                              Navigator.pop(context);
+                            }
+                          : null,
+                    ),
+                    OutlinedButton(
+                      child: Text("Cancel"),
                       onPressed: () async {
-                        await widget.onDelete(CylinderModel.fromData(cylinder).id);
                         Navigator.pop(context);
                       },
                     ),
-                ],
-              ),
-            ],
+                    if (cylinder.id.isNotEmpty)
+                      OutlinedButton(
+                        child: Text("Delete"),
+                        style: OutlinedButton.styleFrom(foregroundColor: Colors.redAccent),
+                        onPressed: () async {
+                          await widget.onDelete(CylinderModel.fromData(cylinder).id);
+                          Navigator.pop(context);
+                        },
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -152,13 +166,16 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Volume",
           child: TextFormField(
+            controller: _volumeController,
             decoration: InputDecoration(hintText: cylinder.measurements == MeasurementSystem.METRIC ? "Water volume in liters" : "Air volume in cuft"),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-            initialValue: cylinder.volume.toString(),
+            autocorrect: false,
+            enableSuggestions: false,
             onChanged: (value) {
               setState(() => cylinder.volume = parseDouble(value));
             },
+            onTap: () => _volumeController.selection = TextSelection(baseOffset: 0, extentOffset: _volumeController.value.text.length),
             validator: (value) {
               if (value!.isEmpty) {
                 return 'The cylinder needs a volume';
@@ -175,13 +192,16 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Pressure",
           child: TextFormField(
+            controller: _pressureController,
             decoration: InputDecoration(hintText: cylinder.measurements == MeasurementSystem.METRIC ? "Working pressure in psi" : "Working pressure in bar"),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
-            initialValue: cylinder.workingPressure.toString(),
+            autocorrect: false,
+            enableSuggestions: false,
             onChanged: (value) {
               setState(() => cylinder.workingPressure = int.parse(value));
             },
+            onTap: () => _pressureController.selection = TextSelection(baseOffset: 0, extentOffset: _pressureController.value.text.length),
             autovalidateMode: AutovalidateMode.always,
             validator: (value) {
               if (value!.isEmpty) {
@@ -203,13 +223,16 @@ class _CylinderEditViewState extends State<CylinderEditView> {
         titledUnitRow(
           title: "Weight",
           child: TextFormField(
+            controller: _weightController,
             decoration: InputDecoration(hintText: cylinder.measurements == MeasurementSystem.METRIC ? "Empty weight in kg" : "Empty weight in lb"),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [FilteringTextInputFormatter.allow(_decimalExp)],
-            initialValue: cylinder.weight.toString(),
+            autocorrect: false,
+            enableSuggestions: false,
             onChanged: (value) {
               setState(() => cylinder.weight = parseDouble(value));
             },
+            onTap: () => _weightController.selection = TextSelection(baseOffset: 0, extentOffset: _weightController.value.text.length),
             validator: (value) {
               if (value!.isEmpty) {
                 return 'The cylinder needs a weight';
