@@ -198,6 +198,7 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<double>(
                   segments: [
+                    ButtonSegment<double>(label: Text("1×"), value: 1.0),
                     ButtonSegment<double>(label: Text("2×"), value: 2.0),
                     ButtonSegment<double>(label: Text("3×"), value: 3.0),
                     ButtonSegment<double>(label: Text("4×"), value: 4.0),
@@ -252,6 +253,7 @@ class _SettingsViewState extends State<SettingsView> {
                   padding: const EdgeInsets.symmetric(vertical: 6.0),
                   child: SegmentedButton<double>(
                     segments: [
+                      ButtonSegment<double>(label: Text("1×"), value: 1.0),
                       ButtonSegment<double>(label: Text("2×"), value: 2.0),
                       ButtonSegment<double>(label: Text("3×"), value: 3.0),
                       ButtonSegment<double>(label: Text("4×"), value: 4.0),
