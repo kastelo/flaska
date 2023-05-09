@@ -30,6 +30,20 @@ const Metal$json = const {
 
 /// Descriptor for `Metal`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List metalDescriptor = $convert.base64Decode('CgVNZXRhbBIJCgVTVEVFTBAAEg0KCUFMVU1JTklVTRAB');
+@$core.Deprecated('Use themeColorDescriptor instead')
+const ThemeColor$json = const {
+  '1': 'ThemeColor',
+  '2': const [
+    const {'1': 'BLUE', '2': 0},
+    const {'1': 'PINK', '2': 1},
+    const {'1': 'GREEN', '2': 2},
+    const {'1': 'ORANGE', '2': 3},
+    const {'1': 'PURPLE', '2': 4},
+  ],
+};
+
+/// Descriptor for `ThemeColor`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List themeColorDescriptor = $convert.base64Decode('CgpUaGVtZUNvbG9yEggKBEJMVUUQABIICgRQSU5LEAESCQoFR1JFRU4QAhIKCgZPUkFOR0UQAxIKCgZQVVJQTEUQBA==');
 @$core.Deprecated('Use cylinderSetDescriptor instead')
 const CylinderSet$json = const {
   '1': 'CylinderSet',
@@ -72,11 +86,12 @@ const SettingsData$json = const {
     const {'1': 'safety_stop_duration', '3': 7, '4': 1, '5': 1, '10': 'safetyStopDuration'},
     const {'1': 'safety_stop_sac_multiplier', '3': 8, '4': 1, '5': 1, '10': 'safetyStopSacMultiplier'},
     const {'1': 'hide_ndl_notice', '3': 9, '4': 1, '5': 8, '10': 'hideNdlNotice'},
+    const {'1': 'theme_color', '3': 10, '4': 1, '5': 14, '6': '.ThemeColor', '10': 'themeColor'},
   ],
 };
 
 /// Descriptor for `SettingsData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXISJgoPaGlkZV9uZGxfbm90aWNlGAkgASgIUg1oaWRlTmRsTm90aWNl');
+final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXISJgoPaGlkZV9uZGxfbm90aWNlGAkgASgIUg1oaWRlTmRsTm90aWNlEiwKC3RoZW1lX2NvbG9yGAogASgOMgsuVGhlbWVDb2xvclIKdGhlbWVDb2xvcg==');
 @$core.Deprecated('Use measurementDependentSettingsDataDescriptor instead')
 const MeasurementDependentSettingsData$json = const {
   '1': 'MeasurementDependentSettingsData',

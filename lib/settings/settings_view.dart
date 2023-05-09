@@ -125,6 +125,23 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ),
             ),
+            titledRow(
+              title: "Theme color",
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: SegmentedButton<ThemeColor>(
+                  segments: [
+                    ButtonSegment(value: ThemeColor.BLUE, label: Text("Bl")),
+                    ButtonSegment(value: ThemeColor.GREEN, label: Text("Gr")),
+                    ButtonSegment(value: ThemeColor.ORANGE, label: Text("Or")),
+                    ButtonSegment(value: ThemeColor.PINK, label: Text("Pi")),
+                    ButtonSegment(value: ThemeColor.PURPLE, label: Text("Pu")),
+                  ],
+                  selected: <ThemeColor>{settings.themeColor},
+                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..themeColor = p0.first)),
+                ),
+              ),
+            ),
           ],
         ),
       ),

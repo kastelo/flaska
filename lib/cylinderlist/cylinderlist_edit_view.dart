@@ -46,6 +46,7 @@ class _CylinderEditViewState extends State<CylinderEditView> {
   @override
   Widget build(BuildContext context) {
     final valid = _formKey.currentState?.validate() ?? false;
+    final t = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -69,7 +70,12 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                   children: [
                     OutlinedButton(
                       child: Text("Save"),
-                      style: OutlinedButton.styleFrom(foregroundColor: Colors.greenAccent),
+                      style: valid
+                          ? OutlinedButton.styleFrom(
+                              foregroundColor: t.colorScheme.secondary,
+                              side: BorderSide(color: t.colorScheme.secondary),
+                            )
+                          : null,
                       onPressed: valid
                           ? () async {
                               if (cylinder.id.isEmpty) {
@@ -90,7 +96,10 @@ class _CylinderEditViewState extends State<CylinderEditView> {
                     if (cylinder.id.isNotEmpty)
                       OutlinedButton(
                         child: Text("Delete"),
-                        style: OutlinedButton.styleFrom(foregroundColor: Colors.redAccent),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: t.colorScheme.error,
+                          side: BorderSide(color: t.colorScheme.error),
+                        ),
                         onPressed: () async {
                           await widget.onDelete(CylinderModel.fromData(cylinder).id);
                           Navigator.pop(context);

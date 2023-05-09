@@ -37,6 +37,7 @@ message SettingsData {
     double safety_stop_duration = 7; // minutes
     double safety_stop_sac_multiplier = 8;
     bool hide_ndl_notice = 9;
+    ThemeColor theme_color = 10;
 }
 
 message MeasurementDependentSettingsData {
@@ -49,4 +50,12 @@ message MeasurementDependentSettingsData {
     // int32 min_depth = 7; // distance units
     // int32 max_depth = 8; // distance units
     reserved 2, 4 to 8;
+}
+
+enum ThemeColor {
+    BLUE = 0;
+    PINK = 1;
+    GREEN = 2;
+    ORANGE = 3;
+    PURPLE = 4;
 }

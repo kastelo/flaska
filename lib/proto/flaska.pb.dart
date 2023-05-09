@@ -238,6 +238,7 @@ class SettingsData extends $pb.GeneratedMessage {
     ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDuration', $pb.PbFieldType.OD)
     ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopSacMultiplier', $pb.PbFieldType.OD)
     ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hideNdlNotice')
+    ..e<ThemeColor>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'themeColor', $pb.PbFieldType.OE, defaultOrMaker: ThemeColor.BLUE, valueOf: ThemeColor.valueOf, enumValues: ThemeColor.values)
     ..hasRequiredFields = false
   ;
 
@@ -252,6 +253,7 @@ class SettingsData extends $pb.GeneratedMessage {
     $core.double? safetyStopDuration,
     $core.double? safetyStopSacMultiplier,
     $core.bool? hideNdlNotice,
+    ThemeColor? themeColor,
   }) {
     final _result = create();
     if (measurements != null) {
@@ -280,6 +282,9 @@ class SettingsData extends $pb.GeneratedMessage {
     }
     if (hideNdlNotice != null) {
       _result.hideNdlNotice = hideNdlNotice;
+    }
+    if (themeColor != null) {
+      _result.themeColor = themeColor;
     }
     return _result;
   }
@@ -388,6 +393,15 @@ class SettingsData extends $pb.GeneratedMessage {
   $core.bool hasHideNdlNotice() => $_has(8);
   @$pb.TagNumber(9)
   void clearHideNdlNotice() => clearField(9);
+
+  @$pb.TagNumber(10)
+  ThemeColor get themeColor => $_getN(9);
+  @$pb.TagNumber(10)
+  set themeColor(ThemeColor v) { setField(10, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasThemeColor() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearThemeColor() => clearField(10);
 }
 
 class MeasurementDependentSettingsData extends $pb.GeneratedMessage {

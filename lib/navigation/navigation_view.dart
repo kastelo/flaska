@@ -49,12 +49,10 @@ class BodyWidget extends StatefulWidget {
 }
 
 class _BodyWidgetState extends State<BodyWidget> {
-  final SettingsBloc settingsBloc = SettingsBloc();
   final CylinderListBloc cylinderListBloc = CylinderListBloc();
 
   @override
   void dispose() {
-    settingsBloc.close();
     cylinderListBloc.close();
     super.dispose();
   }
@@ -67,13 +65,10 @@ class _BodyWidgetState extends State<BodyWidget> {
           create: (_) => cylinderListBloc,
         ),
         BlocProvider(
-          create: (_) => settingsBloc,
+          create: (_) => DiveCalculationBloc(context.read<SettingsBloc>()),
         ),
         BlocProvider(
-          create: (_) => DiveCalculationBloc(settingsBloc),
-        ),
-        BlocProvider(
-          create: (_) => TransfillBloc(settingsBloc, cylinderListBloc),
+          create: (_) => TransfillBloc(context.read<SettingsBloc>(), cylinderListBloc),
         ),
       ],
       child: TabBarView(

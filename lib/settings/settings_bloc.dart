@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protobuf/protobuf.dart';
 
@@ -9,6 +10,23 @@ class SettingsState {
   final SettingsData settings;
   SettingsState.empty() : settings = SettingsData();
   const SettingsState(this.settings);
+
+  Color get themeColor {
+    switch (settings.themeColor) {
+      case ThemeColor.BLUE:
+        return const Color.fromRGBO(64, 224, 255, 1);
+      case ThemeColor.PINK:
+        return Color.fromARGB(255, 255, 64, 204);
+      case ThemeColor.GREEN:
+        return Color.fromARGB(255, 64, 255, 74);
+      case ThemeColor.ORANGE:
+        return Color.fromARGB(255, 255, 166, 64);
+      case ThemeColor.PURPLE:
+        return Color.fromARGB(255, 191, 64, 255);
+      default:
+        return const Color.fromRGBO(64, 224, 255, 1);
+    }
+  }
 }
 
 class SettingsEvent {

@@ -39,3 +39,24 @@ class Metal extends $pb.ProtobufEnum {
   const Metal._($core.int v, $core.String n) : super(v, n);
 }
 
+class ThemeColor extends $pb.ProtobufEnum {
+  static const ThemeColor BLUE = ThemeColor._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BLUE');
+  static const ThemeColor PINK = ThemeColor._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PINK');
+  static const ThemeColor GREEN = ThemeColor._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GREEN');
+  static const ThemeColor ORANGE = ThemeColor._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ORANGE');
+  static const ThemeColor PURPLE = ThemeColor._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PURPLE');
+
+  static const $core.List<ThemeColor> values = <ThemeColor> [
+    BLUE,
+    PINK,
+    GREEN,
+    ORANGE,
+    PURPLE,
+  ];
+
+  static final $core.Map<$core.int, ThemeColor> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ThemeColor? valueOf($core.int value) => _byValue[value];
+
+  const ThemeColor._($core.int v, $core.String n) : super(v, n);
+}
+

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reorderables/reorderables.dart';
-import 'package:uuid/uuid.dart';
 
 import '../models/cylinder_model.dart';
-import '../models/units.dart';
 import '../proto/proto.dart';
 import 'cylinderlist_bloc.dart';
 import 'cylinderlist_edit_view.dart';
