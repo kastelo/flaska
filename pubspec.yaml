@@ -12,7 +12,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   get_it: ^7.2.0
   path_provider: ^2.0.0
-  protobuf: ^2.0.0
+  protobuf: ^3.0.0
   reorderables: ^0.6.0
   shared_preferences: ^2.0.0
   sprintf: ^7.0.0
