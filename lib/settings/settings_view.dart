@@ -38,9 +38,9 @@ class _SettingsViewState extends State<SettingsView> {
               delegate: SliverChildListDelegate(
                 [
                   generalTable(context, state.settings),
-                  troubleSolvingTable(context, state.settings),
-                  ascentTable(context, state.settings),
-                  safetyStopTable(context, state.settings),
+                  if (state.settings.principles == Principles.RECREATIONAL) troubleSolvingTable(context, state.settings),
+                  if (state.settings.principles == Principles.RECREATIONAL) ascentTable(context, state.settings),
+                  if (state.settings.principles == Principles.RECREATIONAL) safetyStopTable(context, state.settings),
                   Divider(
                     height: 32,
                     indent: 32,
@@ -92,39 +92,58 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             titledRow(
+              title: "Principles",
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: SegmentedButton<Principles>(
+                  segments: [
+                    ButtonSegment(value: Principles.RECREATIONAL, label: Text("Recreational")),
+                    ButtonSegment(value: Principles.GUE, label: Text("GUE")),
+                  ],
+                  selected: <Principles>{settings.principles},
+                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(SetPrinciples(p0.first)),
+                ),
+              ),
+            ),
+            titledRow(
               title: "SAC rate " + (settings.measurements == MeasurementSystem.METRIC ? "(L/min)" : "(cuft/min)"),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<Volume>(
                   segments: [
-                    if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(10), label: Text("10")),
+                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.RECREATIONAL)
+                      ButtonSegment(value: VolumeL(10), label: Text("10")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(15), label: Text("15")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(20), label: Text("20")),
-                    if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(25), label: Text("25")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
+                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.RECREATIONAL)
+                      ButtonSegment(value: VolumeL(25), label: Text("25")),
+                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.RECREATIONAL)
+                      ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.6), label: Text("0.6")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.8), label: Text("0.8")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
+                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.RECREATIONAL)
+                      ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
                   ],
                   selected: <Volume>{settings.sacRate},
                   onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..sacRate = p0.first)),
                 ),
               ),
             ),
-            titledRow(
-              title: "NDL exceeded notice",
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: SegmentedButton<bool>(
-                  segments: [
-                    ButtonSegment(value: false, label: Text("Shown")),
-                    ButtonSegment(value: true, label: Text("Hidden")),
-                  ],
-                  selected: <bool>{settings.hideNdlNotice},
-                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..hideNdlNotice = p0.first)),
+            if (settings.principles == Principles.RECREATIONAL)
+              titledRow(
+                title: "NDL exceeded notice",
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: SegmentedButton<bool>(
+                    segments: [
+                      ButtonSegment(value: false, label: Text("Shown")),
+                      ButtonSegment(value: true, label: Text("Hidden")),
+                    ],
+                    selected: <bool>{settings.hideNdlNotice},
+                    onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..hideNdlNotice = p0.first)),
+                  ),
                 ),
               ),
-            ),
             titledRow(
               title: "Theme color",
               child: Padding(

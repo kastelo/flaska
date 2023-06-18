@@ -44,6 +44,17 @@ const ThemeColor$json = const {
 
 /// Descriptor for `ThemeColor`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List themeColorDescriptor = $convert.base64Decode('CgpUaGVtZUNvbG9yEggKBEJMVUUQABIICgRQSU5LEAESCQoFR1JFRU4QAhIKCgZPUkFOR0UQAxIKCgZQVVJQTEUQBA==');
+@$core.Deprecated('Use principlesDescriptor instead')
+const Principles$json = const {
+  '1': 'Principles',
+  '2': const [
+    const {'1': 'RECREATIONAL', '2': 0},
+    const {'1': 'GUE', '2': 1},
+  ],
+};
+
+/// Descriptor for `Principles`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List principlesDescriptor = $convert.base64Decode('CgpQcmluY2lwbGVzEhAKDFJFQ1JFQVRJT05BTBAAEgcKA0dVRRAB');
 @$core.Deprecated('Use cylinderSetDescriptor instead')
 const CylinderSet$json = const {
   '1': 'CylinderSet',
@@ -87,23 +98,22 @@ const SettingsData$json = const {
     const {'1': 'safety_stop_sac_multiplier', '3': 8, '4': 1, '5': 1, '10': 'safetyStopSacMultiplier'},
     const {'1': 'hide_ndl_notice', '3': 9, '4': 1, '5': 8, '10': 'hideNdlNotice'},
     const {'1': 'theme_color', '3': 10, '4': 1, '5': 14, '6': '.ThemeColor', '10': 'themeColor'},
+    const {'1': 'principles', '3': 11, '4': 1, '5': 14, '6': '.Principles', '10': 'principles'},
   ],
 };
 
 /// Descriptor for `SettingsData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXISJgoPaGlkZV9uZGxfbm90aWNlGAkgASgIUg1oaWRlTmRsTm90aWNlEiwKC3RoZW1lX2NvbG9yGAogASgOMgsuVGhlbWVDb2xvclIKdGhlbWVDb2xvcg==');
+final $typed_data.Uint8List settingsDataDescriptor = $convert.base64Decode('CgxTZXR0aW5nc0RhdGESNgoMbWVhc3VyZW1lbnRzGAEgASgOMhIuTWVhc3VyZW1lbnRTeXN0ZW1SDG1lYXN1cmVtZW50cxI5CgZtZXRyaWMYAiABKAsyIS5NZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YVIGbWV0cmljEj0KCGltcGVyaWFsGAMgASgLMiEuTWVhc3VyZW1lbnREZXBlbmRlbnRTZXR0aW5nc0RhdGFSCGltcGVyaWFsEjgKGHRyb3VibGVfc29sdmluZ19kdXJhdGlvbhgEIAEoAVIWdHJvdWJsZVNvbHZpbmdEdXJhdGlvbhJDCh50cm91YmxlX3NvbHZpbmdfc2FjX211bHRpcGxpZXIYBSABKAFSG3Ryb3VibGVTb2x2aW5nU2FjTXVsdGlwbGllchIyChVhc2NlbnRfc2FjX211bHRpcGxpZXIYBiABKAFSE2FzY2VudFNhY011bHRpcGxpZXISMAoUc2FmZXR5X3N0b3BfZHVyYXRpb24YByABKAFSEnNhZmV0eVN0b3BEdXJhdGlvbhI7ChpzYWZldHlfc3RvcF9zYWNfbXVsdGlwbGllchgIIAEoAVIXc2FmZXR5U3RvcFNhY011bHRpcGxpZXISJgoPaGlkZV9uZGxfbm90aWNlGAkgASgIUg1oaWRlTmRsTm90aWNlEiwKC3RoZW1lX2NvbG9yGAogASgOMgsuVGhlbWVDb2xvclIKdGhlbWVDb2xvchIrCgpwcmluY2lwbGVzGAsgASgOMgsuUHJpbmNpcGxlc1IKcHJpbmNpcGxlcw==');
 @$core.Deprecated('Use measurementDependentSettingsDataDescriptor instead')
 const MeasurementDependentSettingsData$json = const {
   '1': 'MeasurementDependentSettingsData',
   '2': const [
     const {'1': 'sac_rate', '3': 1, '4': 1, '5': 1, '10': 'sacRate'},
-    const {'1': 'safety_stop_depth', '3': 3, '4': 1, '5': 1, '10': 'safetyStopDepth'},
   ],
   '9': const [
-    const {'1': 2, '2': 3},
-    const {'1': 4, '2': 9},
+    const {'1': 2, '2': 9},
   ],
 };
 
 /// Descriptor for `MeasurementDependentSettingsData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZRIqChFzYWZldHlfc3RvcF9kZXB0aBgDIAEoAVIPc2FmZXR5U3RvcERlcHRoSgQIAhADSgQIBBAJ');
+final $typed_data.Uint8List measurementDependentSettingsDataDescriptor = $convert.base64Decode('CiBNZWFzdXJlbWVudERlcGVuZGVudFNldHRpbmdzRGF0YRIZCghzYWNfcmF0ZRgBIAEoAVIHc2FjUmF0ZUoECAIQCQ==');
