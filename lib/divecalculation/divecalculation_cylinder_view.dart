@@ -1,3 +1,4 @@
+import 'package:flaska/proto/flaska.pbserver.dart';
 import 'package:flutter/material.dart';
 
 import '../models/cylinder_model.dart';
@@ -7,6 +8,7 @@ import 'valueunit.dart';
 import 'foldable.dart';
 
 class DiveCalculationCylinderView extends StatelessWidget {
+  final Principles principles;
   final CylinderModel cylinder;
   final RockBottomModel rockBottom;
   final Pressure pressure;
@@ -14,6 +16,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
   final bool hideNDLNotice;
 
   DiveCalculationCylinderView({
+    required this.principles,
     required this.cylinder,
     required this.rockBottom,
     required this.pressure,
@@ -84,7 +87,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: "RB",
+                    title: principles == Principles.MINGAS ? "MGR" : "RB",
                     value: cvm.rbPressure!,
                     unit: cvm.pressureUnit,
                   ),
@@ -112,7 +115,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: "@RB",
+                    title: principles == Principles.MINGAS ? "@MGR" : "@RB",
                     value: cvm.buoyancyAtReserve!,
                     unit: cvm.weightUnit,
                   ),

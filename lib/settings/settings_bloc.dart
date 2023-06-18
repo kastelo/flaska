@@ -1,3 +1,4 @@
+import 'package:flaska/models/units.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protobuf/protobuf.dart';
@@ -39,8 +40,13 @@ class _NewSettingsEvent extends SettingsEvent {
 }
 
 class SetMeasurementSystem extends SettingsEvent {
-  final MeasurementSystem? measurements;
+  final MeasurementSystem measurements;
   const SetMeasurementSystem(this.measurements);
+}
+
+class SetPrinciples extends SettingsEvent {
+  final Principles principles;
+  const SetPrinciples(this.principles);
 }
 
 class UpdateSettings extends SettingsEvent {
@@ -55,7 +61,22 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<_NewSettingsEvent>((event, emit) => emit(SettingsState(event.settings.deepCopy())));
 
     on<SetMeasurementSystem>((event, emit) async {
-      final SettingsData newSettings = state.settings.deepCopy()..measurements = event.measurements!;
+      final SettingsData newSettings = state.settings.deepCopy()..measurements = event.measurements;
+      await settingsService!.saveSettings(newSettings);
+      emit(SettingsState(newSettings));
+    });
+
+    on<SetPrinciples>((event, emit) async {
+      final SettingsData newSettings = state.settings.deepCopy()..principles = event.principles;
+      if (event.principles == Principles.MINGAS) {
+        if (newSettings.isMetric && newSettings.sacRate.l < 15) newSettings.sacRate = VolumeL(15);
+        if (!newSettings.isMetric && newSettings.sacRate.cuft < 0.5) newSettings.sacRate = VolumeL(0.5);
+        newSettings.troubleSolvingSacMultiplier = 4;
+        newSettings.ascentSacMultiplier = 4;
+        newSettings.safetyStopDuration = 0;
+        newSettings.safetyStopSacMultiplier = 0;
+        newSettings.hideNdlNotice = true;
+      }
       await settingsService!.saveSettings(newSettings);
       emit(SettingsState(newSettings));
     });

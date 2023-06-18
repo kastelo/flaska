@@ -153,22 +153,10 @@ extension SettingsModel on SettingsData {
   }
 
   Distance get ascentRate => isMetric ? DistanceM(10) : DistanceFt(30);
-
-  Distance get safetyStopDepth => isMetric ? DistanceM(metric.safetyStopDepth) : DistanceFt(imperial.safetyStopDepth);
-  set safetyStopDepth(Distance v) {
-    if (measurements == MeasurementSystem.METRIC)
-      metric.safetyStopDepth = v.m;
-    else
-      imperial.safetyStopDepth = v.ft;
-  }
-
+  Distance get safetyStopDepth => isMetric ? DistanceM(5) : DistanceFt(15);
   Pressure get minPressure => isMetric ? PressureBar(30) : PressurePsi(300);
-
   Pressure get maxPressure => isMetric ? PressureBar(350) : PressurePsi(4000);
-
   Pressure get pressureStep => isMetric ? PressureBar(5) : PressurePsi(100);
-
   Distance get minDepth => isMetric ? DistanceM(2) : DistanceFt(10);
-
   Distance get maxDepth => isMetric ? DistanceM(40) : DistanceFt(140);
 }

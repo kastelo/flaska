@@ -17,12 +17,8 @@ final defaultSettings = SettingsData()
   ..safetyStopSacMultiplier = 3
   ..troubleSolvingDuration = 4
   ..troubleSolvingSacMultiplier = 4
-  ..metric = (MeasurementDependentSettingsData()
-    ..sacRate = 15
-    ..safetyStopDepth = 5)
-  ..imperial = (MeasurementDependentSettingsData()
-    ..sacRate = 0.6
-    ..safetyStopDepth = 15);
+  ..metric = (MeasurementDependentSettingsData()..sacRate = 15)
+  ..imperial = (MeasurementDependentSettingsData()..sacRate = 0.5);
 
 class FakeSettingsListService implements SettingsService {
   var settings = SettingsData();

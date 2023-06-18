@@ -60,3 +60,18 @@ class ThemeColor extends $pb.ProtobufEnum {
   const ThemeColor._($core.int v, $core.String n) : super(v, n);
 }
 
+class Principles extends $pb.ProtobufEnum {
+  static const Principles ROCKBOTTOM = Principles._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ROCKBOTTOM');
+  static const Principles MINGAS = Principles._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MINGAS');
+
+  static const $core.List<Principles> values = <Principles> [
+    ROCKBOTTOM,
+    MINGAS,
+  ];
+
+  static final $core.Map<$core.int, Principles> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static Principles? valueOf($core.int value) => _byValue[value];
+
+  const Principles._($core.int v, $core.String n) : super(v, n);
+}
+

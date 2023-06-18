@@ -239,6 +239,7 @@ class SettingsData extends $pb.GeneratedMessage {
     ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopSacMultiplier', $pb.PbFieldType.OD)
     ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hideNdlNotice')
     ..e<ThemeColor>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'themeColor', $pb.PbFieldType.OE, defaultOrMaker: ThemeColor.BLUE, valueOf: ThemeColor.valueOf, enumValues: ThemeColor.values)
+    ..e<Principles>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'principles', $pb.PbFieldType.OE, defaultOrMaker: Principles.ROCKBOTTOM, valueOf: Principles.valueOf, enumValues: Principles.values)
     ..hasRequiredFields = false
   ;
 
@@ -254,6 +255,7 @@ class SettingsData extends $pb.GeneratedMessage {
     $core.double? safetyStopSacMultiplier,
     $core.bool? hideNdlNotice,
     ThemeColor? themeColor,
+    Principles? principles,
   }) {
     final _result = create();
     if (measurements != null) {
@@ -285,6 +287,9 @@ class SettingsData extends $pb.GeneratedMessage {
     }
     if (themeColor != null) {
       _result.themeColor = themeColor;
+    }
+    if (principles != null) {
+      _result.principles = principles;
     }
     return _result;
   }
@@ -402,26 +407,30 @@ class SettingsData extends $pb.GeneratedMessage {
   $core.bool hasThemeColor() => $_has(9);
   @$pb.TagNumber(10)
   void clearThemeColor() => clearField(10);
+
+  @$pb.TagNumber(11)
+  Principles get principles => $_getN(10);
+  @$pb.TagNumber(11)
+  set principles(Principles v) { setField(11, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasPrinciples() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearPrinciples() => clearField(11);
 }
 
 class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MeasurementDependentSettingsData', createEmptyInstance: create)
     ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sacRate', $pb.PbFieldType.OD)
-    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDepth', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
   MeasurementDependentSettingsData._() : super();
   factory MeasurementDependentSettingsData({
     $core.double? sacRate,
-    $core.double? safetyStopDepth,
   }) {
     final _result = create();
     if (sacRate != null) {
       _result.sacRate = sacRate;
-    }
-    if (safetyStopDepth != null) {
-      _result.safetyStopDepth = safetyStopDepth;
     }
     return _result;
   }
@@ -454,14 +463,5 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   $core.bool hasSacRate() => $_has(0);
   @$pb.TagNumber(1)
   void clearSacRate() => clearField(1);
-
-  @$pb.TagNumber(3)
-  $core.double get safetyStopDepth => $_getN(1);
-  @$pb.TagNumber(3)
-  set safetyStopDepth($core.double v) { $_setDouble(1, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasSafetyStopDepth() => $_has(1);
-  @$pb.TagNumber(3)
-  void clearSafetyStopDepth() => clearField(3);
 }
 
