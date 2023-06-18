@@ -41,6 +41,7 @@ class _SettingsViewState extends State<SettingsView> {
                   troubleSolvingTable(context, state.settings),
                   if (state.settings.principles == Principles.ROCKBOTTOM) ascentTable(context, state.settings),
                   if (state.settings.principles == Principles.ROCKBOTTOM) safetyStopTable(context, state.settings),
+                  visualTable(context, state.settings),
                   Divider(
                     height: 32,
                     indent: 32,
@@ -144,23 +145,6 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                 ),
               ),
-            titledRow(
-              title: "Theme color",
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: SegmentedButton<ThemeColor>(
-                  segments: [
-                    ButtonSegment(value: ThemeColor.BLUE, label: Text("Bl")),
-                    ButtonSegment(value: ThemeColor.GREEN, label: Text("Gr")),
-                    ButtonSegment(value: ThemeColor.ORANGE, label: Text("Or")),
-                    ButtonSegment(value: ThemeColor.PINK, label: Text("Pi")),
-                    ButtonSegment(value: ThemeColor.PURPLE, label: Text("Pu")),
-                  ],
-                  selected: <ThemeColor>{settings.themeColor},
-                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..themeColor = p0.first)),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -314,6 +298,46 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget visualTable(BuildContext context, SettingsData settings) {
+    final t = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "VISUAL",
+              style: t.textTheme.titleSmall!.copyWith(color: t.disabledColor),
+            ),
+            titledRow(
+              title: "Theme color",
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: SegmentedButton<ThemeColor>(
+                  segments: [
+                    ButtonSegment(value: ThemeColor.BLUE, label: Text("Bl")),
+                    ButtonSegment(value: ThemeColor.GREEN, label: Text("Gr")),
+                    ButtonSegment(value: ThemeColor.ORANGE, label: Text("Or")),
+                    ButtonSegment(value: ThemeColor.PINK, label: Text("Pi")),
+                    ButtonSegment(value: ThemeColor.PURPLE, label: Text("Pu")),
+                  ],
+                  selected: <ThemeColor>{settings.themeColor},
+                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..themeColor = p0.first)),
+                ),
+              ),
+            ),
           ],
         ),
       ),

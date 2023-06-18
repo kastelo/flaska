@@ -70,8 +70,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       final SettingsData newSettings = state.settings.deepCopy()..principles = event.principles;
       if (event.principles == Principles.MINGAS) {
         if (newSettings.isMetric && newSettings.sacRate.l < 15) newSettings.sacRate = VolumeL(15);
-        if (!newSettings.isMetric && newSettings.sacRate.cuft < 0.6) newSettings.sacRate = VolumeL(0.6);
-        newSettings.troubleSolvingDuration = 1;
+        if (!newSettings.isMetric && newSettings.sacRate.cuft < 0.5) newSettings.sacRate = VolumeL(0.5);
         newSettings.troubleSolvingSacMultiplier = 4;
         newSettings.ascentSacMultiplier = 4;
         newSettings.safetyStopDuration = 0;
