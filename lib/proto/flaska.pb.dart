@@ -239,7 +239,7 @@ class SettingsData extends $pb.GeneratedMessage {
     ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopSacMultiplier', $pb.PbFieldType.OD)
     ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hideNdlNotice')
     ..e<ThemeColor>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'themeColor', $pb.PbFieldType.OE, defaultOrMaker: ThemeColor.BLUE, valueOf: ThemeColor.valueOf, enumValues: ThemeColor.values)
-    ..e<Principles>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'principles', $pb.PbFieldType.OE, defaultOrMaker: Principles.RECREATIONAL, valueOf: Principles.valueOf, enumValues: Principles.values)
+    ..e<Principles>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'principles', $pb.PbFieldType.OE, defaultOrMaker: Principles.ROCKBOTTOM, valueOf: Principles.valueOf, enumValues: Principles.values)
     ..hasRequiredFields = false
   ;
 

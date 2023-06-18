@@ -61,12 +61,12 @@ class ThemeColor extends $pb.ProtobufEnum {
 }
 
 class Principles extends $pb.ProtobufEnum {
-  static const Principles RECREATIONAL = Principles._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'RECREATIONAL');
-  static const Principles GUE = Principles._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GUE');
+  static const Principles ROCKBOTTOM = Principles._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ROCKBOTTOM');
+  static const Principles MINGAS = Principles._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MINGAS');
 
   static const $core.List<Principles> values = <Principles> [
-    RECREATIONAL,
-    GUE,
+    ROCKBOTTOM,
+    MINGAS,
   ];
 
   static final $core.Map<$core.int, Principles> _byValue = $pb.ProtobufEnum.initByValue(values);

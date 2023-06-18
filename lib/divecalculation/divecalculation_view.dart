@@ -45,6 +45,7 @@ class DiveCalculationView extends StatelessWidget {
         builder: (context, state) => Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: DiveCalculationCylinderView(
+            principles: state.settings.principles,
             cylinder: cylinder,
             rockBottom: state.rockBottom,
             pressure: state.tankPressure,

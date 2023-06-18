@@ -48,13 +48,13 @@ final $typed_data.Uint8List themeColorDescriptor = $convert.base64Decode('CgpUaG
 const Principles$json = const {
   '1': 'Principles',
   '2': const [
-    const {'1': 'RECREATIONAL', '2': 0},
-    const {'1': 'GUE', '2': 1},
+    const {'1': 'ROCKBOTTOM', '2': 0},
+    const {'1': 'MINGAS', '2': 1},
   ],
 };
 
 /// Descriptor for `Principles`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List principlesDescriptor = $convert.base64Decode('CgpQcmluY2lwbGVzEhAKDFJFQ1JFQVRJT05BTBAAEgcKA0dVRRAB');
+final $typed_data.Uint8List principlesDescriptor = $convert.base64Decode('CgpQcmluY2lwbGVzEg4KClJPQ0tCT1RUT00QABIKCgZNSU5HQVMQAQ==');
 @$core.Deprecated('Use cylinderSetDescriptor instead')
 const CylinderSet$json = const {
   '1': 'CylinderSet',

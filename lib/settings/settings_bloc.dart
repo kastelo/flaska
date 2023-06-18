@@ -68,7 +68,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     on<SetPrinciples>((event, emit) async {
       final SettingsData newSettings = state.settings.deepCopy()..principles = event.principles;
-      if (event.principles == Principles.GUE) {
+      if (event.principles == Principles.MINGAS) {
         if (newSettings.isMetric && newSettings.sacRate.l < 15) newSettings.sacRate = VolumeL(15);
         if (!newSettings.isMetric && newSettings.sacRate.cuft < 0.6) newSettings.sacRate = VolumeL(0.6);
         newSettings.troubleSolvingDuration = 1;

@@ -1,3 +1,4 @@
+import 'package:flaska/proto/proto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +18,7 @@ class RockBottomView extends StatelessWidget {
         final dcvm = DiveCalculationViewModel(state);
         return Foldable(
           id: 'rockbottom',
-          title: Text("ROCK BOTTOM CALCULATION", style: h0),
+          title: state.settings.principles == Principles.MINGAS ? Text("MIN GAS CALCULATION", style: h0) : Text("ROCK BOTTOM CALCULATION", style: h0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

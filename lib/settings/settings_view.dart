@@ -38,9 +38,9 @@ class _SettingsViewState extends State<SettingsView> {
               delegate: SliverChildListDelegate(
                 [
                   generalTable(context, state.settings),
-                  if (state.settings.principles == Principles.RECREATIONAL) troubleSolvingTable(context, state.settings),
-                  if (state.settings.principles == Principles.RECREATIONAL) ascentTable(context, state.settings),
-                  if (state.settings.principles == Principles.RECREATIONAL) safetyStopTable(context, state.settings),
+                  troubleSolvingTable(context, state.settings),
+                  if (state.settings.principles == Principles.ROCKBOTTOM) ascentTable(context, state.settings),
+                  if (state.settings.principles == Principles.ROCKBOTTOM) safetyStopTable(context, state.settings),
                   Divider(
                     height: 32,
                     indent: 32,
@@ -97,8 +97,8 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<Principles>(
                   segments: [
-                    ButtonSegment(value: Principles.RECREATIONAL, label: Text("Recreational")),
-                    ButtonSegment(value: Principles.GUE, label: Text("GUE")),
+                    ButtonSegment(value: Principles.ROCKBOTTOM, label: Text("Rock bottom")),
+                    ButtonSegment(value: Principles.MINGAS, label: Text("Min gas (GUE)")),
                   ],
                   selected: <Principles>{settings.principles},
                   onSelectionChanged: (p0) => context.read<SettingsBloc>().add(SetPrinciples(p0.first)),
@@ -111,17 +111,17 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<Volume>(
                   segments: [
-                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.RECREATIONAL)
+                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.ROCKBOTTOM)
                       ButtonSegment(value: VolumeL(10), label: Text("10")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(15), label: Text("15")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(20), label: Text("20")),
-                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.RECREATIONAL)
+                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.ROCKBOTTOM)
                       ButtonSegment(value: VolumeL(25), label: Text("25")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.RECREATIONAL)
+                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.ROCKBOTTOM)
                       ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.6), label: Text("0.6")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.8), label: Text("0.8")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.RECREATIONAL)
+                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.ROCKBOTTOM)
                       ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
                   ],
                   selected: <Volume>{settings.sacRate},
@@ -129,7 +129,7 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ),
             ),
-            if (settings.principles == Principles.RECREATIONAL)
+            if (settings.principles == Principles.ROCKBOTTOM)
               titledRow(
                 title: "NDL exceeded notice",
                 child: Padding(
@@ -192,7 +192,8 @@ class _SettingsViewState extends State<SettingsView> {
                     padding: const EdgeInsets.symmetric(vertical: 6.0),
                     child: SegmentedButton<double>(
                       segments: [
-                        ButtonSegment<double>(label: Text("None"), value: 0.0),
+                        ButtonSegment<double>(label: Text("0 min"), value: 0.0),
+                        ButtonSegment<double>(label: Text("1 min"), value: 1.0),
                         ButtonSegment<double>(label: Text("2 min"), value: 2.0),
                         ButtonSegment<double>(label: Text("4 min"), value: 4.0),
                       ],
@@ -201,7 +202,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                 ),
-                if (settings.troubleSolvingDuration > 0)
+                if (settings.principles == Principles.ROCKBOTTOM && settings.troubleSolvingDuration > 0)
                   titledRow(
                     title: "SAC multiplier",
                     child: Padding(

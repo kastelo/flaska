@@ -62,6 +62,6 @@ enum ThemeColor {
 }
 
 enum Principles {
-    RECREATIONAL = 0;
-    GUE = 1;
+    ROCKBOTTOM = 0;
+    MINGAS = 1;
 }

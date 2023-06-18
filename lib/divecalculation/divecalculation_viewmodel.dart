@@ -28,8 +28,7 @@ class DiveCalculationViewModel {
   Distance get ascentAverageDepth => DistanceM(state.depth.m / 2);
   String get ascentAverageDepthLabel => state.metric ? sprintf("%.0f", [ascentAverageDepth.m]) : sprintf("%.0f", [ascentAverageDepth.ft]);
 
-  double get ascentDuration => state.settings.ascentRate.m == 0 ? 0 : state.depth.m / state.settings.ascentRate.m;
-  String get ascentDurationLabel => sprintf("%.1f", [ascentDuration]);
+  String get ascentDurationLabel => sprintf("%.1f", [state.rockBottom.ascentDuration]);
 
   Volume get ascentSac => VolumeL(state.settings.ascentSacMultiplier * state.settings.sacRate.l);
   String get ascentSacLabel => state.metric ? sprintf("%.0f", [ascentSac.l]) : sprintf("%.1f", [ascentSac.cuft]);
@@ -47,9 +46,8 @@ class DiveCalculationViewModel {
   Volume get safetyStopVolume => state.rockBottom.safetyStopVolume;
   String get safetyStopVolumeLabel => state.metric ? sprintf("%.0f", [safetyStopVolume.l]) : sprintf("%.1f", [safetyStopVolume.cuft]);
 
-  double get totalDuration => state.settings.ascentRate.m == 0
-      ? 0
-      : state.settings.troubleSolvingDuration + state.settings.safetyStopDuration + state.depth.m / state.settings.ascentRate.m;
+  double get totalDuration =>
+      state.settings.ascentRate.m == 0 ? 0 : state.settings.troubleSolvingDuration + state.settings.safetyStopDuration + state.rockBottom.ascentDuration;
   String get totalDurationLabel => sprintf("%.1f", [totalDuration]);
 
   Volume get totalVolume => state.rockBottom.volume;
