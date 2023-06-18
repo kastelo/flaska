@@ -119,8 +119,8 @@ class _SettingsViewState extends State<SettingsView> {
                       ButtonSegment(value: VolumeL(25), label: Text("25")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.ROCKBOTTOM)
                       ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.6), label: Text("0.6")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.8), label: Text("0.8")),
+                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.5), label: Text("0.5")),
+                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.75), label: Text("0.75")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.ROCKBOTTOM)
                       ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
                   ],
