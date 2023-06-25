@@ -5,7 +5,7 @@ on:
 env:
   BUILD_OFFSET: 1000
   FASTLANE_SKIP_UPDATE_CHECK: 1
-  FLUTTER_VERSION: '3.7.12'
+  FLUTTER_VERSION: '3.10.5'
   JAVA_VERSION: '12.x'
 
 jobs:
@@ -75,6 +75,35 @@ jobs:
         run: |
           cd ios
           bundle exec fastlane upload
+
+  build-macos:
+    runs-on: macos-latest
+    name: Build App for macOS
+    needs:
+      - meta
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Build app (Flutter)
+        env:
+          BUILD_NUMBER: ${{ needs.meta.outputs.build_number }}
+        run: |
+          ./build-macos.sh
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: |
+            build/macos/Build/Products/Release/*.zip
+          retention-days: 14
 
   build-android:
     runs-on: ubuntu-latest
