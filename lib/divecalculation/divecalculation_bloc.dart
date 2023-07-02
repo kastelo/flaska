@@ -112,7 +112,7 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
     on<SetTankPressure>((event, emit) async {
       var pressure = event.pressure;
       if (state.metric) {
-        pressure = PressureBar(pressure.bar.round().roundi(5));
+        pressure = PressureBar(pressure.bar.round().roundi(10));
         if (preferences != null) {
           preferences!.setInt('pressure', pressure.bar);
           preferences!.setBool('metric', true);

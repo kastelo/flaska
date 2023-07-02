@@ -39,7 +39,7 @@ class _SettingsViewState extends State<SettingsView> {
                 [
                   generalTable(context, state.settings),
                   troubleSolvingTable(context, state.settings),
-                  if (state.settings.principles == Principles.ROCKBOTTOM) ascentTable(context, state.settings),
+                  ascentTable(context, state.settings),
                   if (state.settings.principles == Principles.ROCKBOTTOM) safetyStopTable(context, state.settings),
                   visualTable(context, state.settings),
                   Divider(
@@ -112,18 +112,14 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<Volume>(
                   segments: [
-                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.ROCKBOTTOM)
-                      ButtonSegment(value: VolumeL(10), label: Text("10")),
+                    if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(10), label: Text("10")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(15), label: Text("15")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(20), label: Text("20")),
-                    if (settings.measurements == MeasurementSystem.METRIC && settings.principles == Principles.ROCKBOTTOM)
-                      ButtonSegment(value: VolumeL(25), label: Text("25")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.ROCKBOTTOM)
-                      ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
+                    if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(25), label: Text("25")),
+                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.5), label: Text("0.5")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.75), label: Text("0.75")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL && settings.principles == Principles.ROCKBOTTOM)
-                      ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
+                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
                   ],
                   selected: <Volume>{settings.sacRate},
                   onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..sacRate = p0.first)),
@@ -186,22 +182,22 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                 ),
-                if (settings.principles == Principles.ROCKBOTTOM && settings.troubleSolvingDuration > 0)
-                  titledRow(
-                    title: "SAC multiplier",
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: SegmentedButton<double>(
-                        segments: [
-                          ButtonSegment<double>(label: Text("2×"), value: 2.0),
-                          ButtonSegment<double>(label: Text("3×"), value: 3.0),
-                          ButtonSegment<double>(label: Text("4×"), value: 4.0),
-                        ],
-                        selected: <double>{settings.troubleSolvingSacMultiplier},
-                        onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..troubleSolvingSacMultiplier = p0.first)),
-                      ),
+                titledRow(
+                  title: "SAC multiplier",
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    child: SegmentedButton<double>(
+                      segments: [
+                        if (settings.principles == Principles.ROCKBOTTOM) ButtonSegment<double>(label: Text("1×"), value: 1.0),
+                        ButtonSegment<double>(label: Text("2×"), value: 2.0),
+                        ButtonSegment<double>(label: Text("3×"), value: 3.0),
+                        ButtonSegment<double>(label: Text("4×"), value: 4.0),
+                      ],
+                      selected: <double>{settings.troubleSolvingSacMultiplier},
+                      onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..troubleSolvingSacMultiplier = p0.first)),
                     ),
                   ),
+                ),
               ],
             ),
           ],
@@ -233,7 +229,7 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<double>(
                   segments: [
-                    ButtonSegment<double>(label: Text("1×"), value: 1.0),
+                    if (settings.principles == Principles.ROCKBOTTOM) ButtonSegment<double>(label: Text("1×"), value: 1.0),
                     ButtonSegment<double>(label: Text("2×"), value: 2.0),
                     ButtonSegment<double>(label: Text("3×"), value: 3.0),
                     ButtonSegment<double>(label: Text("4×"), value: 4.0),

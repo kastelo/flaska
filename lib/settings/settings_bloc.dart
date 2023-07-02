@@ -71,8 +71,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       if (event.principles == Principles.MINGAS) {
         if (newSettings.isMetric && newSettings.sacRate.l < 15) newSettings.sacRate = VolumeL(15);
         if (!newSettings.isMetric && newSettings.sacRate.cuft < 0.5) newSettings.sacRate = VolumeL(0.5);
-        newSettings.troubleSolvingSacMultiplier = 4;
-        newSettings.ascentSacMultiplier = 4;
+        if (newSettings.troubleSolvingSacMultiplier < 2) newSettings.troubleSolvingSacMultiplier = 2;
+        if (newSettings.ascentSacMultiplier < 2) newSettings.ascentSacMultiplier = 2;
         newSettings.safetyStopDuration = 0;
         newSettings.safetyStopSacMultiplier = 0;
         newSettings.hideNdlNotice = true;

@@ -152,7 +152,13 @@ extension SettingsModel on SettingsData {
       imperial.sacRate = v.cuft;
   }
 
-  Distance get ascentRate => isMetric ? DistanceM(10) : DistanceFt(30);
+  Distance get ascentRate => principles == Principles.ROCKBOTTOM
+      ? isMetric
+          ? DistanceM(9)
+          : DistanceFt(30)
+      : isMetric
+          ? DistanceM(3)
+          : DistanceFt(9);
   Distance get safetyStopDepth => isMetric ? DistanceM(5) : DistanceFt(15);
   Pressure get minPressure => isMetric ? PressureBar(30) : PressurePsi(300);
   Pressure get maxPressure => isMetric ? PressureBar(350) : PressurePsi(4000);

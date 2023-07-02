@@ -32,27 +32,9 @@ class RockBottomModel {
 
   Volume get troubleSolvingVolume => VolumeL(settings.troubleSolvingDuration * settings.sacRate.l * settings.troubleSolvingSacMultiplier * depthAtm);
 
-  double get ascentDuration {
-    if (settings.principles == Principles.ROCKBOTTOM) return depth.m / settings.ascentRate.m;
-    // GUE ascent, 9 m/min to half depth, then 3 m/min
-    final initialMinutes = (depth.m / 2 / 9).ceil();
-    final secondMinutes = (depth.m / 2 / 3).ceil();
-    return (initialMinutes + secondMinutes).toDouble();
-  }
+  double get ascentDuration => depth.m / settings.ascentRate.m;
 
-  Volume get ascentVolume {
-    if (settings.principles == Principles.ROCKBOTTOM)
-      return VolumeL(depth.m / settings.ascentRate.m * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm);
-
-    // GUE ascent, 9 m/min to half depth, then 3 m/min
-    final initialAtm = (10 + depth.m / 4 * 3) / 10;
-    final initialMinutes = (depth.m / 2 / 9).ceil();
-    final initialVolume = VolumeL(initialMinutes * settings.sacRate.l * settings.ascentSacMultiplier * initialAtm);
-    final secondAtm = (10 + depth.m / 4) / 10;
-    final secondMinutes = (depth.m / 2 / 3).ceil();
-    final secondVolume = VolumeL(secondMinutes * settings.sacRate.l * settings.ascentSacMultiplier * secondAtm);
-    return initialVolume + secondVolume;
-  }
+  Volume get ascentVolume => VolumeL(depth.m / settings.ascentRate.m * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm);
 
   Volume get safetyStopVolume => VolumeL(settings.safetyStopDuration * settings.sacRate.l * settings.safetyStopSacMultiplier * safetyStopAtm);
 

@@ -87,7 +87,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: principles == Principles.MINGAS ? "MGR" : "RB",
+                    title: principles == Principles.MINGAS ? "MG" : "RB",
                     value: cvm.rbPressure!,
                     unit: cvm.pressureUnit,
                   ),
@@ -115,7 +115,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: principles == Principles.MINGAS ? "@MGR" : "@RB",
+                    title: principles == Principles.MINGAS ? "@MG" : "@RB",
                     value: cvm.buoyancyAtReserve!,
                     unit: cvm.weightUnit,
                   ),
