@@ -23,14 +23,16 @@ class DiveCalculationView extends StatelessWidget {
                 pinned: true,
                 floating: true,
                 bottom: PreferredSize(
-                  child: _PressureSlider(),
-                  preferredSize: Size.fromHeight(48),
+                  child: Column(
+                    children: [
+                      _PressureSlider(),
+                      _DepthSlider(),
+                    ],
+                  ),
+                  preferredSize: Size.fromHeight(96),
                 )),
             SliverList(
-              delegate: SliverChildListDelegate([
-                _DepthSlider(),
-                RockBottomView(),
-              ]),
+              delegate: SliverChildListDelegate([RockBottomView()]),
             ),
             SliverList(
               delegate: SliverChildListDelegate(cylinderListState.selectedCylinders.map((cyl) => cylinder(context, cyl)).toList()),
