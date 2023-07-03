@@ -1,3 +1,4 @@
+import 'package:flaska/models/cylinder_viewmodel.dart';
 import 'package:flaska/proto/flaska.pbserver.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
   final Pressure pressure;
   final bool metric;
   final bool hideNDLNotice;
+  final UsableGas usableGas;
 
   DiveCalculationCylinderView({
     required this.principles,
@@ -22,6 +24,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
     required this.pressure,
     required this.metric,
     required this.hideNDLNotice,
+    required this.usableGas,
   });
 
   @override
@@ -56,7 +59,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: Text(
-              cvm.weight!,
+              cvm.weight,
               style: h1,
               textAlign: TextAlign.right,
             ),
@@ -74,22 +77,22 @@ class DiveCalculationCylinderView extends StatelessWidget {
                 Expanded(
                   child: ValueUnit(
                     title: "GAS",
-                    value: cvm.gas!,
+                    value: cvm.gas,
                     unit: cvm.volumeUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: "GAS TIME",
-                    value: cvm.airtime!,
-                    unit: "min",
+                    title: principles == Principles.MINGAS ? "MIN GAS" : "ROCK BOT",
+                    value: cvm.rbPressure,
+                    unit: cvm.pressureUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: principles == Principles.MINGAS ? "MG" : "RB",
-                    value: cvm.rbPressure!,
-                    unit: cvm.pressureUnit,
+                    title: "GAS TIME",
+                    value: cvm.airtime,
+                    unit: "min",
                   ),
                 ),
               ],
@@ -101,22 +104,54 @@ class DiveCalculationCylinderView extends StatelessWidget {
               children: [
                 Expanded(
                   child: ValueUnit(
-                    title: "START",
-                    value: cvm.buoyancyAtPressure!,
+                    title: "USABLE",
+                    value: cvm.usableVolume,
+                    unit: cvm.volumeUnit,
+                  ),
+                ),
+                Expanded(
+                  child: usableGas == UsableGas.ALL_USABLE
+                      ? Container()
+                      : ValueUnit(
+                          title: "TURN",
+                          value: cvm.turnPressure,
+                          unit: cvm.pressureUnit,
+                        ),
+                ),
+                Expanded(
+                  child: usableGas == UsableGas.ALL_USABLE
+                      ? Container()
+                      : ValueUnit(
+                          title: "TURN TIME",
+                          value: cvm.airtimeUntilTurn,
+                          unit: "min",
+                        ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ValueUnit(
+                    title: "@START",
+                    value: cvm.buoyancyAtPressure,
                     unit: cvm.weightUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: "EMPTY",
-                    value: cvm.buoyancyEmpty!,
+                    title: principles == Principles.MINGAS ? "@MIN GAS" : "@ROCK BOT",
+                    value: cvm.buoyancyAtReserve,
                     unit: cvm.weightUnit,
                   ),
                 ),
                 Expanded(
                   child: ValueUnit(
-                    title: principles == Principles.MINGAS ? "@MG" : "@RB",
-                    value: cvm.buoyancyAtReserve!,
+                    title: "@EMPTY",
+                    value: cvm.buoyancyEmpty,
                     unit: cvm.weightUnit,
                   ),
                 ),

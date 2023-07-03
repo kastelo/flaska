@@ -1,15 +1,15 @@
 import 'package:sprintf/sprintf.dart';
 
-import '../models/units.dart';
-import 'divecalculation_bloc.dart';
+import 'units.dart';
+import '../divecalculation/divecalculation_bloc.dart';
 
 class DiveCalculationViewModel {
   final DiveCalculationState state;
   const DiveCalculationViewModel(this.state);
 
   String get distanceUnit => state.metric ? "m" : "ft";
-  String get sacUnit => state.metric ? "L/min" : "cuft/min";
-  String get volumeUnit => state.metric ? "L" : "cuft";
+  String get sacUnit => state.metric ? "L/min" : "ft³/min";
+  String get volumeUnit => state.metric ? "L" : "ft³";
   String get pressureUnit => state.metric ? "bar" : "psi";
 
   double get depth => state.metric ? state.depth.m : state.depth.ft;

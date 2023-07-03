@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'divecalculation_bloc.dart';
-import 'divecalculation_viewmodel.dart';
+import '../models/divecalculation_viewmodel.dart';
 import 'valueunit.dart';
 import 'foldable.dart';
 

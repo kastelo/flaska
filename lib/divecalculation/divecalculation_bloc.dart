@@ -15,7 +15,7 @@ class DiveCalculationState {
   final Set<String> foldedClosed;
 
   bool get metric => settings.measurements == MeasurementSystem.METRIC;
-  RockBottomModel get rockBottom => RockBottomModel.fromSettings(settings, depth);
+  RockBottomModel get rockBottom => RockBottomModel.fromSettings(settings, depth, tankPressure);
 
   bool foldedOpen(String id) => !foldedClosed.contains(id);
 
@@ -100,7 +100,7 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
           preferences!.setBool('metric', true);
         }
       } else {
-        depth = DistanceFt(depth.ft.round().roundi(10).toDouble());
+        depth = DistanceFt(depth.ft.round().roundEven(10).toDouble());
         if (preferences != null) {
           preferences!.setDouble('depth', depth.ft);
           preferences!.setBool('metric', false);
@@ -112,13 +112,13 @@ class DiveCalculationBloc extends Bloc<DiveCalculationEvent, DiveCalculationStat
     on<SetTankPressure>((event, emit) async {
       var pressure = event.pressure;
       if (state.metric) {
-        pressure = PressureBar(pressure.bar.round().roundi(10));
+        pressure = PressureBar(pressure.bar.round().roundEven(10));
         if (preferences != null) {
           preferences!.setInt('pressure', pressure.bar);
           preferences!.setBool('metric', true);
         }
       } else {
-        pressure = PressurePsi(pressure.psi.round().roundi(100));
+        pressure = PressurePsi(pressure.psi.round().roundEven(100));
         if (preferences != null) {
           preferences!.setInt('pressure', pressure.psi);
           preferences!.setBool('metric', false);

@@ -7,23 +7,28 @@ import 'units.dart';
 class RockBottomModel {
   final Distance depth;
   final SettingsData settings;
+  final Pressure tankPressure;
 
   const RockBottomModel({
     required this.depth,
     required this.settings,
+    required this.tankPressure,
   });
 
-  RockBottomModel.fromSettings(SettingsData settings, Distance depth)
+  RockBottomModel.fromSettings(SettingsData settings, Distance depth, Pressure tankPressure)
       : settings = settings,
-        depth = depth;
+        depth = depth,
+        tankPressure = tankPressure;
 
   RockBottomModel copyWith({
     Distance? depth,
     SettingsData? settings,
+    Pressure? tankPressure,
   }) =>
       RockBottomModel(
         depth: depth ?? this.depth,
         settings: settings ?? this.settings,
+        tankPressure: tankPressure ?? this.tankPressure,
       );
 
   double get avgAtm => (10 + depth.m / 2) / 10;
@@ -51,5 +56,32 @@ class RockBottomModel {
     var pBar = volume.l ~/ cylinder.totalWaterVolume.l;
     if (settings.principles == Principles.MINGAS && pBar < 40) pBar = 40;
     return PressureBar(pBar);
+  }
+
+  Volume usableGas(CylinderModel cylinder) {
+    return cylinder.compressedVolume(tankPressure) - volume;
+  }
+
+  Volume turnVolume(CylinderModel cylinder) {
+    var usable = usableGas(cylinder);
+    switch (settings.usableGas) {
+      case UsableGas.ALL_USABLE:
+        break;
+      case UsableGas.HALVES:
+        usable = VolumeL(usable.l / 2);
+        break;
+      case UsableGas.THIRDS:
+        usable = VolumeL(usable.l / 3);
+        break;
+    }
+    return cylinder.compressedVolume(tankPressure) - usable;
+  }
+
+  Pressure turnPressure(CylinderModel cylinder) {
+    return PressureBar(turnVolume(cylinder).l ~/ cylinder.totalWaterVolume.l);
+  }
+
+  double airtimeUntilTurn(CylinderModel cylinder, Pressure? pressure) {
+    return max(0, (cylinder.compressedVolume(pressure).l - turnVolume(cylinder).l) / settings.sacRate.l / depthAtm);
   }
 }

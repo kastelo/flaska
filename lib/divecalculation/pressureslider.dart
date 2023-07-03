@@ -36,7 +36,7 @@ class PressureSlider extends StatelessWidget {
               min: _min,
               max: _max,
               onChanged: (v) {
-                final pressure = metric ? PressureBar(v.toInt().roundi(step.bar)) : PressurePsi(v.toInt().roundi(step.psi));
+                final pressure = metric ? PressureBar(v.toInt().roundEven(step.bar)) : PressurePsi(v.toInt().roundEven(step.psi));
                 onChanged(pressure);
               }),
         ),

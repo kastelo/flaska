@@ -1,10 +1,7 @@
 import 'dart:math';
 
-import 'package:flaska/divecalculation/ndl.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/rockbottom_model.dart';
 import '../proto/proto.dart';
 import 'compressibility.dart';
 import 'units.dart';
@@ -92,70 +89,4 @@ class CylinderModel {
       );
 
   Volume get _externalVolume => VolumeL(weight.kg / materialDensity + waterVolume.l);
-}
-
-class CylinderViewModel {
-  final CylinderModel? cylinder;
-  final Pressure? pressure;
-  final RockBottomModel? rockBottom;
-  final bool? metric;
-  const CylinderViewModel({this.cylinder, this.pressure, this.rockBottom, this.metric});
-
-  String? get description => metric!
-      ? sprintf("%s (%.01f kg)", [cylinder!.name, cylinder!.twinFactor * cylinder!.weight.kg])
-      : sprintf("%s (%.01f lb)", [
-          cylinder!.name,
-          cylinder!.twinFactor * cylinder!.weight.lb,
-        ]);
-
-  String? get weight => metric!
-      ? sprintf("%.01f kg", [cylinder!.twinFactor * cylinder!.weight.kg])
-      : sprintf("%.01f lb", [
-          cylinder!.twinFactor * cylinder!.weight.lb,
-        ]);
-
-  String? get gas => metric!
-      ? sprintf("%.0f", [
-          cylinder!.compressedVolume(pressure).l,
-        ])
-      : sprintf("%.1f", [
-          cylinder!.compressedVolume(pressure).cuft,
-        ]);
-
-  String get volumeUnit => metric! ? "L" : "cuft";
-  String get pressureUnit => metric! ? "bar" : "psi";
-  String get weightUnit => metric! ? "kg" : "lb";
-
-  String? get airtime => sprintf("%.0f", [
-        rockBottom!.airtimeUntilRB(cylinder!, pressure),
-      ]);
-
-  String? get rbPressure =>
-      sprintf("%d", [metric! ? rockBottom!.rockBottomPressure(cylinder!).bar.roundi(5) : rockBottom!.rockBottomPressure(cylinder!).psi.roundi(100)]);
-
-  String? get buoyancyAtPressure => metric!
-      ? sprintf("%+.01f", [
-          cylinder!.buoyancy(pressure).kg,
-        ])
-      : sprintf("%+.01f", [
-          cylinder!.buoyancy(pressure).lb,
-        ]);
-
-  String? get buoyancyAtReserve => metric!
-      ? sprintf("%+.01f", [
-          cylinder!.buoyancy(rockBottom!.rockBottomPressure(cylinder!)).kg,
-        ])
-      : sprintf("%+.01f", [
-          cylinder!.buoyancy(rockBottom!.rockBottomPressure(cylinder!)).lb,
-        ]);
-
-  String? get buoyancyEmpty => metric!
-      ? sprintf("%+.01f", [
-          cylinder!.buoyancy(PressureBar(0)).kg,
-        ])
-      : sprintf("%+.01f", [
-          cylinder!.buoyancy(PressurePsi(0)).lb,
-        ]);
-
-  bool get exceedsNDL => rockBottom!.airtimeUntilRB(cylinder!, pressure) > ndlForDepth(rockBottom!.depth.m);
 }

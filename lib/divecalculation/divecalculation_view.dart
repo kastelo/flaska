@@ -51,6 +51,7 @@ class DiveCalculationView extends StatelessWidget {
             pressure: state.tankPressure,
             metric: state.metric,
             hideNDLNotice: state.settings.hideNdlNotice,
+            usableGas: state.settings.usableGas,
           ),
         ),
       );

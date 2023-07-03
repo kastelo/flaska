@@ -107,6 +107,21 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             titledRow(
+              title: "Usable Gas",
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: SegmentedButton<UsableGas>(
+                  segments: [
+                    ButtonSegment(value: UsableGas.ALL_USABLE, label: Text("All usable")),
+                    ButtonSegment(value: UsableGas.HALVES, label: Text("Halves")),
+                    ButtonSegment(value: UsableGas.THIRDS, label: Text("Thirds")),
+                  ],
+                  selected: <UsableGas>{settings.usableGas},
+                  onSelectionChanged: (p0) => context.read<SettingsBloc>().add(UpdateSettings((s) => s..usableGas = p0.first)),
+                ),
+              ),
+            ),
+            titledRow(
               title: "SAC rate " + (settings.measurements == MeasurementSystem.METRIC ? "(L/min)" : "(cuft/min)"),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),

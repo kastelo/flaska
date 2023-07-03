@@ -1,12 +1,12 @@
 syntax = "proto3";
 
 enum MeasurementSystem {
-    METRIC = 0;
+    METRIC   = 0;
     IMPERIAL = 1;
 }
 
 enum Metal {
-    STEEL = 0;
+    STEEL     = 0;
     ALUMINIUM = 1;
 }
 
@@ -15,34 +15,35 @@ message CylinderSet {
 }
 
 message CylinderData {
-    string id = 1;
-    string name = 2;
-    Metal metal = 3;
-    MeasurementSystem measurements = 4;
-    double volume = 5;
-    int32 working_pressure = 6;
-    double weight = 7;
-    bool twinset = 8;
-    bool selected = 9;
-    bool overfill = 10;
+    string            id               = 1;
+    string            name             = 2;
+    Metal             metal            = 3;
+    MeasurementSystem measurements     = 4;
+    double            volume           = 5;
+    int32             working_pressure = 6;
+    double            weight           = 7;
+    bool              twinset          = 8;
+    bool              selected         = 9;
+    bool              overfill         = 10;
 }
 
 message SettingsData {
-    MeasurementSystem measurements = 1;
-    MeasurementDependentSettingsData metric = 2;
-    MeasurementDependentSettingsData imperial = 3;
-    double trouble_solving_duration = 4; // minutes
-    double trouble_solving_sac_multiplier = 5;
-    double ascent_sac_multiplier = 6;
-    double safety_stop_duration = 7; // minutes
-    double safety_stop_sac_multiplier = 8;
-    bool hide_ndl_notice = 9;
-    ThemeColor theme_color = 10;
-    Principles principles = 11;
+    MeasurementSystem                measurements                   = 1;
+    MeasurementDependentSettingsData metric                         = 2;
+    MeasurementDependentSettingsData imperial                       = 3;
+    double                           trouble_solving_duration       = 4;  // minutes
+    double                           trouble_solving_sac_multiplier = 5;
+    double                           ascent_sac_multiplier          = 6;
+    double                           safety_stop_duration           = 7;  // minutes
+    double                           safety_stop_sac_multiplier     = 8;
+    bool                             hide_ndl_notice                = 9;
+    ThemeColor                       theme_color                    = 10;
+    Principles                       principles                     = 11;
+    UsableGas                        usable_gas                     = 12;
 }
 
 message MeasurementDependentSettingsData {
-    double sac_rate = 1; // volume units per min
+    double sac_rate = 1;  // volume units per min
     // double ascent_rate = 2; // distance units per min
     // double safety_stop_depth = 3; // distance units
     // int32 min_pressure = 4; // pressure units
@@ -54,14 +55,20 @@ message MeasurementDependentSettingsData {
 }
 
 enum ThemeColor {
-    BLUE = 0;
-    PINK = 1;
-    GREEN = 2;
+    BLUE   = 0;
+    PINK   = 1;
+    GREEN  = 2;
     ORANGE = 3;
     PURPLE = 4;
 }
 
 enum Principles {
     ROCKBOTTOM = 0;
-    MINGAS = 1;
+    MINGAS     = 1;
+}
+
+enum UsableGas {
+    ALL_USABLE = 0;
+    HALVES     = 1;
+    THIRDS     = 2;
 }

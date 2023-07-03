@@ -1,9 +1,13 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: flaska.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+
+// ignore_for_file: annotate_overrides, camel_case_types
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
 
@@ -14,23 +18,16 @@ import 'flaska.pbenum.dart';
 export 'flaska.pbenum.dart';
 
 class CylinderSet extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CylinderSet', createEmptyInstance: create)
-    ..pc<CylinderData>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'cylinders', $pb.PbFieldType.PM, subBuilder: CylinderData.create)
+  factory CylinderSet() => create();
+  CylinderSet._() : super();
+  factory CylinderSet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CylinderSet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CylinderSet', createEmptyInstance: create)
+    ..pc<CylinderData>(1, _omitFieldNames ? '' : 'cylinders', $pb.PbFieldType.PM, subBuilder: CylinderData.create)
     ..hasRequiredFields = false
   ;
 
-  CylinderSet._() : super();
-  factory CylinderSet({
-    $core.Iterable<CylinderData>? cylinders,
-  }) {
-    final _result = create();
-    if (cylinders != null) {
-      _result.cylinders.addAll(cylinders);
-    }
-    return _result;
-  }
-  factory CylinderSet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CylinderSet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -40,8 +37,10 @@ class CylinderSet extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CylinderSet copyWith(void Function(CylinderSet) updates) => super.copyWith((message) => updates(message as CylinderSet)) as CylinderSet; // ignore: deprecated_member_use
+  CylinderSet copyWith(void Function(CylinderSet) updates) => super.copyWith((message) => updates(message as CylinderSet)) as CylinderSet;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static CylinderSet create() => CylinderSet._();
   CylinderSet createEmptyInstance() => create();
@@ -55,68 +54,25 @@ class CylinderSet extends $pb.GeneratedMessage {
 }
 
 class CylinderData extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CylinderData', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..e<Metal>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metal', $pb.PbFieldType.OE, defaultOrMaker: Metal.STEEL, valueOf: Metal.valueOf, enumValues: Metal.values)
-    ..e<MeasurementSystem>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
-    ..a<$core.double>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'volume', $pb.PbFieldType.OD)
-    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'workingPressure', $pb.PbFieldType.O3)
-    ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', $pb.PbFieldType.OD)
-    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'twinset')
-    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selected')
-    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'overfill')
+  factory CylinderData() => create();
+  CylinderData._() : super();
+  factory CylinderData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CylinderData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CylinderData', createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..e<Metal>(3, _omitFieldNames ? '' : 'metal', $pb.PbFieldType.OE, defaultOrMaker: Metal.STEEL, valueOf: Metal.valueOf, enumValues: Metal.values)
+    ..e<MeasurementSystem>(4, _omitFieldNames ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'volume', $pb.PbFieldType.OD)
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'workingPressure', $pb.PbFieldType.O3)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'weight', $pb.PbFieldType.OD)
+    ..aOB(8, _omitFieldNames ? '' : 'twinset')
+    ..aOB(9, _omitFieldNames ? '' : 'selected')
+    ..aOB(10, _omitFieldNames ? '' : 'overfill')
     ..hasRequiredFields = false
   ;
 
-  CylinderData._() : super();
-  factory CylinderData({
-    $core.String? id,
-    $core.String? name,
-    Metal? metal,
-    MeasurementSystem? measurements,
-    $core.double? volume,
-    $core.int? workingPressure,
-    $core.double? weight,
-    $core.bool? twinset,
-    $core.bool? selected,
-    $core.bool? overfill,
-  }) {
-    final _result = create();
-    if (id != null) {
-      _result.id = id;
-    }
-    if (name != null) {
-      _result.name = name;
-    }
-    if (metal != null) {
-      _result.metal = metal;
-    }
-    if (measurements != null) {
-      _result.measurements = measurements;
-    }
-    if (volume != null) {
-      _result.volume = volume;
-    }
-    if (workingPressure != null) {
-      _result.workingPressure = workingPressure;
-    }
-    if (weight != null) {
-      _result.weight = weight;
-    }
-    if (twinset != null) {
-      _result.twinset = twinset;
-    }
-    if (selected != null) {
-      _result.selected = selected;
-    }
-    if (overfill != null) {
-      _result.overfill = overfill;
-    }
-    return _result;
-  }
-  factory CylinderData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CylinderData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -126,8 +82,10 @@ class CylinderData extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CylinderData copyWith(void Function(CylinderData) updates) => super.copyWith((message) => updates(message as CylinderData)) as CylinderData; // ignore: deprecated_member_use
+  CylinderData copyWith(void Function(CylinderData) updates) => super.copyWith((message) => updates(message as CylinderData)) as CylinderData;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static CylinderData create() => CylinderData._();
   CylinderData createEmptyInstance() => create();
@@ -228,73 +186,27 @@ class CylinderData extends $pb.GeneratedMessage {
 }
 
 class SettingsData extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SettingsData', createEmptyInstance: create)
-    ..e<MeasurementSystem>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
-    ..aOM<MeasurementDependentSettingsData>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metric', subBuilder: MeasurementDependentSettingsData.create)
-    ..aOM<MeasurementDependentSettingsData>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imperial', subBuilder: MeasurementDependentSettingsData.create)
-    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'troubleSolvingDuration', $pb.PbFieldType.OD)
-    ..a<$core.double>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'troubleSolvingSacMultiplier', $pb.PbFieldType.OD)
-    ..a<$core.double>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ascentSacMultiplier', $pb.PbFieldType.OD)
-    ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopDuration', $pb.PbFieldType.OD)
-    ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'safetyStopSacMultiplier', $pb.PbFieldType.OD)
-    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hideNdlNotice')
-    ..e<ThemeColor>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'themeColor', $pb.PbFieldType.OE, defaultOrMaker: ThemeColor.BLUE, valueOf: ThemeColor.valueOf, enumValues: ThemeColor.values)
-    ..e<Principles>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'principles', $pb.PbFieldType.OE, defaultOrMaker: Principles.ROCKBOTTOM, valueOf: Principles.valueOf, enumValues: Principles.values)
+  factory SettingsData() => create();
+  SettingsData._() : super();
+  factory SettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SettingsData', createEmptyInstance: create)
+    ..e<MeasurementSystem>(1, _omitFieldNames ? '' : 'measurements', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.METRIC, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
+    ..aOM<MeasurementDependentSettingsData>(2, _omitFieldNames ? '' : 'metric', subBuilder: MeasurementDependentSettingsData.create)
+    ..aOM<MeasurementDependentSettingsData>(3, _omitFieldNames ? '' : 'imperial', subBuilder: MeasurementDependentSettingsData.create)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'troubleSolvingDuration', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'troubleSolvingSacMultiplier', $pb.PbFieldType.OD)
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'ascentSacMultiplier', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'safetyStopDuration', $pb.PbFieldType.OD)
+    ..a<$core.double>(8, _omitFieldNames ? '' : 'safetyStopSacMultiplier', $pb.PbFieldType.OD)
+    ..aOB(9, _omitFieldNames ? '' : 'hideNdlNotice')
+    ..e<ThemeColor>(10, _omitFieldNames ? '' : 'themeColor', $pb.PbFieldType.OE, defaultOrMaker: ThemeColor.BLUE, valueOf: ThemeColor.valueOf, enumValues: ThemeColor.values)
+    ..e<Principles>(11, _omitFieldNames ? '' : 'principles', $pb.PbFieldType.OE, defaultOrMaker: Principles.ROCKBOTTOM, valueOf: Principles.valueOf, enumValues: Principles.values)
+    ..e<UsableGas>(12, _omitFieldNames ? '' : 'usableGas', $pb.PbFieldType.OE, defaultOrMaker: UsableGas.ALL_USABLE, valueOf: UsableGas.valueOf, enumValues: UsableGas.values)
     ..hasRequiredFields = false
   ;
 
-  SettingsData._() : super();
-  factory SettingsData({
-    MeasurementSystem? measurements,
-    MeasurementDependentSettingsData? metric,
-    MeasurementDependentSettingsData? imperial,
-    $core.double? troubleSolvingDuration,
-    $core.double? troubleSolvingSacMultiplier,
-    $core.double? ascentSacMultiplier,
-    $core.double? safetyStopDuration,
-    $core.double? safetyStopSacMultiplier,
-    $core.bool? hideNdlNotice,
-    ThemeColor? themeColor,
-    Principles? principles,
-  }) {
-    final _result = create();
-    if (measurements != null) {
-      _result.measurements = measurements;
-    }
-    if (metric != null) {
-      _result.metric = metric;
-    }
-    if (imperial != null) {
-      _result.imperial = imperial;
-    }
-    if (troubleSolvingDuration != null) {
-      _result.troubleSolvingDuration = troubleSolvingDuration;
-    }
-    if (troubleSolvingSacMultiplier != null) {
-      _result.troubleSolvingSacMultiplier = troubleSolvingSacMultiplier;
-    }
-    if (ascentSacMultiplier != null) {
-      _result.ascentSacMultiplier = ascentSacMultiplier;
-    }
-    if (safetyStopDuration != null) {
-      _result.safetyStopDuration = safetyStopDuration;
-    }
-    if (safetyStopSacMultiplier != null) {
-      _result.safetyStopSacMultiplier = safetyStopSacMultiplier;
-    }
-    if (hideNdlNotice != null) {
-      _result.hideNdlNotice = hideNdlNotice;
-    }
-    if (themeColor != null) {
-      _result.themeColor = themeColor;
-    }
-    if (principles != null) {
-      _result.principles = principles;
-    }
-    return _result;
-  }
-  factory SettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory SettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -304,8 +216,10 @@ class SettingsData extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  SettingsData copyWith(void Function(SettingsData) updates) => super.copyWith((message) => updates(message as SettingsData)) as SettingsData; // ignore: deprecated_member_use
+  SettingsData copyWith(void Function(SettingsData) updates) => super.copyWith((message) => updates(message as SettingsData)) as SettingsData;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static SettingsData create() => SettingsData._();
   SettingsData createEmptyInstance() => create();
@@ -416,26 +330,28 @@ class SettingsData extends $pb.GeneratedMessage {
   $core.bool hasPrinciples() => $_has(10);
   @$pb.TagNumber(11)
   void clearPrinciples() => clearField(11);
+
+  @$pb.TagNumber(12)
+  UsableGas get usableGas => $_getN(11);
+  @$pb.TagNumber(12)
+  set usableGas(UsableGas v) { setField(12, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasUsableGas() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearUsableGas() => clearField(12);
 }
 
 class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MeasurementDependentSettingsData', createEmptyInstance: create)
-    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sacRate', $pb.PbFieldType.OD)
+  factory MeasurementDependentSettingsData() => create();
+  MeasurementDependentSettingsData._() : super();
+  factory MeasurementDependentSettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MeasurementDependentSettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MeasurementDependentSettingsData', createEmptyInstance: create)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'sacRate', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
-  MeasurementDependentSettingsData._() : super();
-  factory MeasurementDependentSettingsData({
-    $core.double? sacRate,
-  }) {
-    final _result = create();
-    if (sacRate != null) {
-      _result.sacRate = sacRate;
-    }
-    return _result;
-  }
-  factory MeasurementDependentSettingsData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MeasurementDependentSettingsData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -445,8 +361,10 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  MeasurementDependentSettingsData copyWith(void Function(MeasurementDependentSettingsData) updates) => super.copyWith((message) => updates(message as MeasurementDependentSettingsData)) as MeasurementDependentSettingsData; // ignore: deprecated_member_use
+  MeasurementDependentSettingsData copyWith(void Function(MeasurementDependentSettingsData) updates) => super.copyWith((message) => updates(message as MeasurementDependentSettingsData)) as MeasurementDependentSettingsData;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static MeasurementDependentSettingsData create() => MeasurementDependentSettingsData._();
   MeasurementDependentSettingsData createEmptyInstance() => create();
@@ -465,3 +383,6 @@ class MeasurementDependentSettingsData extends $pb.GeneratedMessage {
   void clearSacRate() => clearField(1);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

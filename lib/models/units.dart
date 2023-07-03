@@ -64,6 +64,16 @@ abstract class Volume {
     }
     return VolumeL(0);
   }
+
+  Volume operator -(Volume other) {
+    if (this is VolumeL) {
+      return this - other;
+    }
+    if (this is VolumeCuFt) {
+      return this - other;
+    }
+    return VolumeL(0);
+  }
 }
 
 class VolumeL extends Volume {
@@ -74,6 +84,10 @@ class VolumeL extends Volume {
 
   VolumeL operator +(Volume other) {
     return VolumeL(l + other.l);
+  }
+
+  VolumeL operator -(Volume other) {
+    return VolumeL(l - other.l);
   }
 
   @override
@@ -90,6 +104,10 @@ class VolumeCuFt extends Volume {
 
   VolumeCuFt operator +(Volume other) {
     return VolumeCuFt(cuft + other.cuft);
+  }
+
+  VolumeCuFt operator -(Volume other) {
+    return VolumeCuFt(cuft - other.cuft);
   }
 
   @override
@@ -136,8 +154,16 @@ class WeightLb extends Weight {
 }
 
 extension Rounding on int {
-  int roundi(int intv) {
+  int roundEven(int intv) {
     return (this + intv / 2) ~/ intv * intv;
+  }
+
+  int roundDown(int intv) {
+    return this ~/ intv * intv;
+  }
+
+  int roundUp(int intv) {
+    return (this ~/ intv + 1) * intv;
   }
 }
 
