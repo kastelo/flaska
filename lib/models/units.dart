@@ -163,6 +163,7 @@ extension Rounding on int {
   }
 
   int roundUp(int intv) {
+    if (this % intv == 0) return this;
     return (this ~/ intv + 1) * intv;
   }
 }

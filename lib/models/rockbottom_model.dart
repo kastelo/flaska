@@ -37,9 +37,9 @@ class RockBottomModel {
 
   Volume get troubleSolvingVolume => VolumeL(settings.troubleSolvingDuration * settings.sacRate.l * settings.troubleSolvingSacMultiplier * depthAtm);
 
-  double get ascentDuration => depth.m / settings.ascentRate.m;
+  double get ascentDuration => (depth.m / settings.ascentRate.m).roundToDouble();
 
-  Volume get ascentVolume => VolumeL(depth.m / settings.ascentRate.m * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm);
+  Volume get ascentVolume => VolumeL(ascentDuration * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm);
 
   Volume get safetyStopVolume => VolumeL(settings.safetyStopDuration * settings.sacRate.l * settings.safetyStopSacMultiplier * safetyStopAtm);
 

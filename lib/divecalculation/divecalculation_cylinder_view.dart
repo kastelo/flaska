@@ -76,7 +76,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
               children: [
                 Expanded(
                   child: ValueUnit(
-                    title: "GAS",
+                    title: "TOTAL",
                     value: cvm.gas,
                     unit: cvm.volumeUnit,
                   ),
