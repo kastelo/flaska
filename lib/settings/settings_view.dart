@@ -127,11 +127,9 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: SegmentedButton<Volume>(
                   segments: [
-                    if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(10), label: Text("10")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(15), label: Text("15")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(20), label: Text("20")),
                     if (settings.measurements == MeasurementSystem.METRIC) ButtonSegment(value: VolumeL(25), label: Text("25")),
-                    if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.4), label: Text("0.4")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.5), label: Text("0.5")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(0.75), label: Text("0.75")),
                     if (settings.measurements == MeasurementSystem.IMPERIAL) ButtonSegment(value: VolumeCuFt(1.0), label: Text("1.0")),
