@@ -46,7 +46,7 @@ class CylinderViewModel {
       ]);
 
   String get rbPressure =>
-      sprintf("%d", [metric! ? rockBottom!.rockBottomPressure(cylinder!).bar.roundUp(5) : rockBottom!.rockBottomPressure(cylinder!).psi.roundUp(100)]);
+      sprintf("%d", [metric! ? rockBottom!.rockBottomPressure(cylinder!).bar.roundUp(10) : rockBottom!.rockBottomPressure(cylinder!).psi.roundUp(100)]);
 
   String get buoyancyAtPressure => metric!
       ? sprintf("%+.01f", [
@@ -83,6 +83,6 @@ class CylinderViewModel {
         ]);
 
   String get turnPressure => sprintf("%d", [
-        metric! ? rockBottom!.turnPressure(cylinder!).bar.roundUp(5) : rockBottom!.turnPressure(cylinder!).psi.roundUp(100),
+        metric! ? rockBottom!.turnPressure(cylinder!).bar.roundUp(10) : rockBottom!.turnPressure(cylinder!).psi.roundUp(100),
       ]);
 }

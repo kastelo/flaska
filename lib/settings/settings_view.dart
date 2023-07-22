@@ -38,8 +38,8 @@ class _SettingsViewState extends State<SettingsView> {
               delegate: SliverChildListDelegate(
                 [
                   generalTable(context, state.settings),
-                  troubleSolvingTable(context, state.settings),
-                  ascentTable(context, state.settings),
+                  if (state.settings.principles == Principles.ROCKBOTTOM) troubleSolvingTable(context, state.settings),
+                  if (state.settings.principles == Principles.ROCKBOTTOM) ascentTable(context, state.settings),
                   if (state.settings.principles == Principles.ROCKBOTTOM) safetyStopTable(context, state.settings),
                   visualTable(context, state.settings),
                   Divider(
