@@ -36,14 +36,20 @@ class RockBottomModel {
   double get safetyStopAtm => (10 + settings.safetyStopDepth.m) / 10;
 
   Volume get troubleSolvingVolume {
-    // Min gas trouble solving is calculated at the average depth for simplicity.
+    // Min gas trouble solving is calculated at the average depth, so it
+    // comes in the ascent duration.
     if (settings.principles == Principles.MINGAS) {
-      return VolumeL(settings.troubleSolvingDuration * settings.sacRate.l * settings.troubleSolvingSacMultiplier * avgAtm);
+      return VolumeL(0);
     }
     return VolumeL(settings.troubleSolvingDuration * settings.sacRate.l * settings.troubleSolvingSacMultiplier * depthAtm);
   }
 
-  double get ascentDuration => (depth.m / settings.ascentRate.m).ceilToDouble();
+  double get ascentDuration {
+    // Min gas trouble solving is one minute at the average depth, so we add
+    // it here.
+    final margin = settings.principles == Principles.MINGAS ? 1 : 0;
+    return (depth.m / settings.ascentRate.m).ceilToDouble() + margin;
+  }
 
   Volume get ascentVolume => VolumeL(ascentDuration * settings.sacRate.l * settings.ascentSacMultiplier * avgAtm);
 

@@ -1,3 +1,4 @@
+import 'package:flaska/divecalculation/divecalculation_cylinder_view.dart';
 import 'package:flaska/proto/proto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,23 +23,24 @@ class RockBottomView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text("TROUBLE SOLVING AT DEPTH", style: h1),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ValueUnit(title: "TIME", value: state.settings.troubleSolvingDuration.toString(), unit: "min"),
-                    ),
-                    Expanded(
-                      child: ValueUnit(title: "SAC", value: dcvm.troubleSolvingSacLabel, unit: dcvm.sacUnit),
-                    ),
-                    Expanded(
-                      child: ValueUnit(title: "GAS", value: dcvm.troubleSolvingVolumeLabel, unit: dcvm.volumeUnit),
-                    ),
-                  ],
+              if (dcvm.troubleSolvingVolume.l > 0) Text("TROUBLE SOLVING AT DEPTH", style: h1),
+              if (dcvm.troubleSolvingVolume.l > 0)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ValueUnit(title: "TIME", value: shortNumber(state.settings.troubleSolvingDuration), unit: "min"),
+                      ),
+                      Expanded(
+                        child: ValueUnit(title: "SAC", value: dcvm.troubleSolvingSacLabel, unit: dcvm.sacUnit),
+                      ),
+                      Expanded(
+                        child: ValueUnit(title: "GAS", value: dcvm.troubleSolvingVolumeLabel, unit: dcvm.volumeUnit),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Text("ASCENT", style: h1),
@@ -81,24 +83,26 @@ class RockBottomView extends StatelessWidget {
                     ],
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Text("TOTAL", style: h1),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ValueUnit(title: "TIME", value: dcvm.totalDurationLabel, unit: "min"),
-                    ),
-                    Expanded(child: Container()),
-                    Expanded(
-                      child: ValueUnit(title: "GAS", value: dcvm.totalVolumeLabel, unit: dcvm.volumeUnit),
-                    ),
-                  ],
+              if (dcvm.troubleSolvingVolume.l > 0 || dcvm.safetyStopVolume.l > 0)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Text("TOTAL", style: h1),
                 ),
-              ),
+              if (dcvm.troubleSolvingVolume.l > 0 || dcvm.safetyStopVolume.l > 0)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ValueUnit(title: "TIME", value: dcvm.totalDurationLabel, unit: "min"),
+                      ),
+                      Expanded(child: Container()),
+                      Expanded(
+                        child: ValueUnit(title: "GAS", value: dcvm.totalVolumeLabel, unit: dcvm.volumeUnit),
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         );

@@ -73,7 +73,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         if (!newSettings.isMetric && newSettings.sacRate.cuft < 0.5) newSettings.sacRate = VolumeL(0.5);
         newSettings.troubleSolvingSacMultiplier = 2;
         newSettings.ascentSacMultiplier = 2;
-        newSettings.troubleSolvingDuration = 1;
+        newSettings.troubleSolvingDuration = 0;
         newSettings.safetyStopDuration = 0;
         newSettings.safetyStopSacMultiplier = 0;
         newSettings.hideNdlNotice = true;

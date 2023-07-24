@@ -1,3 +1,4 @@
+import 'package:flaska/divecalculation/divecalculation_cylinder_view.dart';
 import 'package:sprintf/sprintf.dart';
 
 import 'units.dart';
@@ -28,7 +29,7 @@ class DiveCalculationViewModel {
   Distance get ascentAverageDepth => DistanceM(state.depth.m / 2);
   String get ascentAverageDepthLabel => state.metric ? sprintf("%.0f", [ascentAverageDepth.m]) : sprintf("%.0f", [ascentAverageDepth.ft]);
 
-  String get ascentDurationLabel => sprintf("%.1f", [state.rockBottom.ascentDuration]);
+  String get ascentDurationLabel => shortNumber(state.rockBottom.ascentDuration);
 
   Volume get ascentSac => VolumeL(state.settings.ascentSacMultiplier * state.settings.sacRate.l);
   String get ascentSacLabel => state.metric ? sprintf("%.0f", [ascentSac.l]) : sprintf("%.1f", [ascentSac.cuft]);
@@ -38,7 +39,7 @@ class DiveCalculationViewModel {
 
   String get safetyStopDepthLabel => state.metric ? sprintf("%.0f", [state.settings.safetyStopDepth.m]) : sprintf("%.0f", [state.settings.safetyStopDepth.ft]);
 
-  String get safetyStopDurationLabel => sprintf("%.1f", [state.settings.safetyStopDuration]);
+  String get safetyStopDurationLabel => shortNumber(state.settings.safetyStopDuration);
 
   Volume get safetyStopSac => VolumeL(state.settings.safetyStopSacMultiplier * state.settings.sacRate.l);
   String get safetyStopSacLabel => state.metric ? sprintf("%.0f", [safetyStopSac.l]) : sprintf("%.1f", [safetyStopSac.cuft]);
@@ -48,7 +49,7 @@ class DiveCalculationViewModel {
 
   double get totalDuration =>
       state.settings.ascentRate.m == 0 ? 0 : state.settings.troubleSolvingDuration + state.settings.safetyStopDuration + state.rockBottom.ascentDuration;
-  String get totalDurationLabel => sprintf("%.1f", [totalDuration]);
+  String get totalDurationLabel => shortNumber(totalDuration);
 
   Volume get totalVolume => state.rockBottom.volume;
   String get totalVolumeLabel => state.metric ? sprintf("%.0f", [totalVolume.l]) : sprintf("%.1f", [totalVolume.cuft]);
