@@ -14,6 +14,10 @@ class CylinderListState {
 
 class CylinderListEvent {
   const CylinderListEvent();
+  factory CylinderListEvent.update(CylinderModel cylinder) => _UpdateCylinder(cylinder);
+  factory CylinderListEvent.delete(UuidValue id) => _DeleteCylinder(id);
+  factory CylinderListEvent.reorder(int a, int b) => _ReorderCylinders(a, b);
+  factory CylinderListEvent.reset() => _ResetCylinders();
 }
 
 class _NewCylinderList extends CylinderListEvent {
@@ -21,19 +25,23 @@ class _NewCylinderList extends CylinderListEvent {
   const _NewCylinderList(this.cylinders);
 }
 
-class UpdateCylinder extends CylinderListEvent {
+class _UpdateCylinder extends CylinderListEvent {
   final CylinderModel cylinder;
-  const UpdateCylinder(this.cylinder);
+  const _UpdateCylinder(this.cylinder);
 }
 
-class DeleteCylinder extends CylinderListEvent {
+class _DeleteCylinder extends CylinderListEvent {
   final UuidValue id;
-  const DeleteCylinder(this.id);
+  const _DeleteCylinder(this.id);
 }
 
-class Reordercylinders extends CylinderListEvent {
+class _ReorderCylinders extends CylinderListEvent {
   final int a, b;
-  const Reordercylinders(this.a, this.b);
+  const _ReorderCylinders(this.a, this.b);
+}
+
+class _ResetCylinders extends CylinderListEvent {
+  const _ResetCylinders();
 }
 
 class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
@@ -42,7 +50,7 @@ class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
   CylinderListBloc() : super(CylinderListState([])) {
     on<_NewCylinderList>((event, emit) => emit(CylinderListState(event.cylinders)));
 
-    on<UpdateCylinder>((event, emit) async {
+    on<_UpdateCylinder>((event, emit) async {
       bool updated = false;
       var cylinders = state.cylinders.map((c) {
         if (c.id == event.cylinder.id) {
@@ -58,19 +66,23 @@ class CylinderListBloc extends Bloc<CylinderListEvent, CylinderListState> {
       emit(CylinderListState(cylinders));
     });
 
-    on<DeleteCylinder>((event, emit) async {
+    on<_DeleteCylinder>((event, emit) async {
       var cylinders = state.cylinders.where((c) => c.id != event.id).toList();
       await cylinderListService!.saveCylinders(cylinders);
       emit(CylinderListState(cylinders));
     });
 
-    on<Reordercylinders>((event, emit) async {
+    on<_ReorderCylinders>((event, emit) async {
       var cylinders = state.cylinders;
       var a = cylinders[event.a];
       cylinders[event.a] = cylinders[event.b];
       cylinders[event.b] = a;
       await cylinderListService!.saveCylinders(cylinders);
       emit(CylinderListState(cylinders));
+    });
+
+    on<_ResetCylinders>((event, emit) async {
+      emit(CylinderListState(await cylinderListService!.defaultCylinders()));
     });
 
     loadData();

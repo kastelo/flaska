@@ -27,10 +27,10 @@ class _NavigationViewState extends State<NavigationView> {
           child: TabBar(
             indicatorColor: Theme.of(context).colorScheme.secondary,
             tabs: [
-              Tab(icon: Icon(Icons.calculate)),
-              Tab(icon: Icon(Icons.sync)),
-              Tab(icon: Icon(Icons.list)),
-              Tab(icon: Icon(Icons.settings)),
+              Tab(icon: Icon(Icons.scuba_diving)),
+              Tab(icon: Icon(Icons.equalizer)),
+              Tab(icon: Icon(Icons.storage)),
+              Tab(icon: Icon(Icons.tune)),
             ],
           ),
         ),

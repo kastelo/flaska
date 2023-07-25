@@ -30,7 +30,7 @@ class CylinderListView extends StatelessWidget {
             ),
             ReorderableSliverList(
               onReorder: (a, b) {
-                context.read<CylinderListBloc>().add(Reordercylinders(a, b));
+                context.read<CylinderListBloc>().add(CylinderListEvent.reorder(a, b));
               },
               delegate: ReorderableSliverChildListDelegate(state.cylinders
                   .map(
@@ -44,18 +44,57 @@ class CylinderListView extends StatelessWidget {
                         child: ListTile(
                           key: ValueKey(c.id),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                          leading: c.twinset ? Icon(Icons.looks_two, color: t.colorScheme.primary) : Icon(Icons.looks_one),
                           title: Text(c.name),
-                          trailing: Switch(
+                          leading: Switch(
                             value: c.selected,
-                            onChanged: (selected) => context.read<CylinderListBloc>().add(UpdateCylinder(c..selected = selected)),
+                            onChanged: (selected) => context.read<CylinderListBloc>().add(CylinderListEvent.update(c..selected = selected)),
                           ),
+                          trailing: c.twinset
+                              ? RotatedBox(
+                                  quarterTurns: 1,
+                                  child: Icon(Icons.view_stream),
+                                )
+                              : null,
                           onTap: () async => await editCylinder(context, c),
                         ),
                       ),
                     ),
                   )
                   .toList()),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButtonTheme(
+                  data: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error)),
+                  child: TextButton.icon(
+                    icon: Icon(Icons.restart_alt),
+                    label: Text("Reset to default"),
+                    onPressed: () async {
+                      final res = await showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Reset to default"),
+                          content: Text("Are you sure you want to reset the cylinder list to the default?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: Text("Reset", style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (context.mounted && res == true) {
+                        context.read<CylinderListBloc>().add(CylinderListEvent.reset());
+                      }
+                    },
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -68,8 +107,8 @@ class CylinderListView extends StatelessWidget {
       context: context,
       builder: (dialogContext) => CylinderEditView(
         cylinder: cylinder?.toData() ?? CylinderData(),
-        onChange: (cyl) => context.read<CylinderListBloc>().add(UpdateCylinder(cyl)),
-        onDelete: (id) => context.read<CylinderListBloc>().add(DeleteCylinder(id)),
+        onChange: (cyl) => context.read<CylinderListBloc>().add(CylinderListEvent.update(cyl)),
+        onDelete: (id) => context.read<CylinderListBloc>().add(CylinderListEvent.delete(id)),
       ),
     );
   }
