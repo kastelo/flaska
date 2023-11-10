@@ -52,7 +52,7 @@ class DiveCalculationCylinderView extends StatelessWidget {
             ),
           if (metric)
             Text(
-              (cvm.cylinder!.twinset ? "2×" : "") + "${shortNumber(cvm.cylinder!.nominalVolume.cuft)} cuft",
+              (cvm.cylinder!.twinset ? "2×" : "") + "${shortNumber(cvm.cylinder!.compressedVolume(pressure).cuft)} cuft",
               style: h1,
               textAlign: TextAlign.right,
             ),

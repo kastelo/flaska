@@ -12,18 +12,9 @@ class CylinderViewModel {
   final bool? metric;
   const CylinderViewModel({this.cylinder, this.pressure, this.rockBottom, this.metric});
 
-  String get description => metric!
-      ? sprintf("%s (%.01f kg)", [cylinder!.name, cylinder!.twinFactor * cylinder!.weight.kg])
-      : sprintf("%s (%.01f lb)", [
-          cylinder!.name,
-          cylinder!.twinFactor * cylinder!.weight.lb,
-        ]);
+  String get description => sprintf("%s (%s)", [cylinder!.name, weight]);
 
-  String get weight => metric!
-      ? sprintf("%.01f kg", [cylinder!.twinFactor * cylinder!.weight.kg])
-      : sprintf("%.01f lb", [
-          cylinder!.twinFactor * cylinder!.weight.lb,
-        ]);
+  String get weight => metric! ? sprintf("%.01f kg", [cylinder!.dryWeight(pressure).kg]) : sprintf("%.01f lb", [cylinder!.dryWeight(pressure).lb]);
 
   String get gas => metric!
       ? sprintf("%d", [

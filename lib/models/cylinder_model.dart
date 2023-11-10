@@ -8,6 +8,8 @@ import 'units.dart';
 
 const valveBuyoancyKg = -0.7;
 const twinBuyoancyKg = -0.5;
+const valveWeightKg = 0.8; // a single valve
+const twinWeightKg = 0.6 + 0.8; // manifold and bands
 
 class CylinderModel {
   UuidValue id;
@@ -86,6 +88,10 @@ class CylinderModel {
             twinFactor * valveBuyoancyKg +
             twinBuyoancyKg * (twinFactor - 1) -
             compressedVolume(pressure(p)).l * airKgPerL,
+      );
+
+  Weight dryWeight(Pressure? p) => WeightKg(
+        twinFactor * weight.kg + twinFactor * valveWeightKg + twinWeightKg * (twinFactor - 1) + compressedVolume(pressure(p)).l * airKgPerL,
       );
 
   Volume get _externalVolume => VolumeL(weight.kg / materialDensity + waterVolume.l);
